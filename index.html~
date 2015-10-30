@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Pre Fab </title>
+		<title>Pre Fab Workshop</title>
 
 		<meta name="description" content="A presentation for ExpEYES and MicroHOPE">
 		<meta name="author" content="Akshai M">
@@ -41,7 +41,7 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h2>Pre Fab </h2>
+					<h2>Pre Fab Workshop</h2>
 					<h3>Documentation</h3>
 					<p>
 						<small>Akshai M <a href="https://www.facebook.com/akshaimkurup"></a> / <a href="http://microhope.org">MicroHOPE</a></small>
