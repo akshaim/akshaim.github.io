@@ -25,9 +25,9 @@
 				<nav id="nav">
 					<ul>
 						<li><a href="#one" class="active">About</a></li>
-						<li><a href="#two">Things I Do</a></li>
-						<li><a href="#three">My Code HUB</a></li>
-						<li><a href="#four">Contact</a></li>
+						<li><a href="#two">What we tried</a></li>
+						<li><a href="#three">Stages </a></li>
+						
 					</ul>
 				</nav>
 				<footer>
@@ -51,26 +51,26 @@
 							<section id="one">
 								<div class="container">
 									<header class="major">
-										<h2>Life as a Hacker</h2>
-										<p>How did it start<br />
+										<h2>PreFab Training</h2>
+										<p>About<br />
 </p>
 									</header>
-									<p>Toys, thats where it all started. Hacking the DC motor and LED's to do things of relevance to me. That did suffice my neighbours recommendations to represent myself as a hardware hacker till my 8th Grade , then it happened. I blew up my father's old Optonica- Sharp TV and then I was famous. And then I made a mosquito killer using HV transformer. A massive overkill for the purpose but one which did serve well.Then it happened, I got qualified as a Maker.</p>
+									<p>Pre Fab training is an effort from <a href="https://startupmission.kerala.gov.in/">Kerala Start Up Mission</a> to prepare Makers for <a href="http://fabacademy.org/">Fab Academy</a>.The training is a 4 Week intense course with an additional week for developing solutions, based on what learned during the course.I was given the opportunity to learn with an young group of makers at <a href="https://www.fablabs.io/fablabtrivandrum">Fab Lab Trivandrum </a>. Pre Fab programme was mentored by Franscisco and Luciano.</p>
 								</div>
 							</section>
 
 						<!-- Two -->
 							<section id="two">
 								<div class="container">
-									<h3>Things I Do</h3>
-									<p>Some techy stuff which I am well into</p>
+									<h3>What we tried</h3>
+									<p>Equipments on which we were trained.</p>
 									<ul class="feature-icons">
-										<li class="fa-code">Write code. Assembly suits me well</li>
-										<li class="fa-cubes">Open Hardware Developer </li>
-										<li class="fa-book">Consultant for FOSS and IoT </li>
-										<li class="fa-coffee">Techy evening talks</li>
-										<li class="fa-bolt">Innovator in Light Speed</li>
-										<li class="fa-users">Public Speaker</li>
+										<li class=""><a href="http://www.shopbottools.com/mproducts/prsalpha.htm">ShopBot CNC</a></li>
+										<li class=""><a href="https://ultimaker.com/en/products/ultimaker-2">UltiMaker 2</a> </li>
+										<li class=""><a href="http://www.rolanddg.com/product/3d/3d/mdx-20_15/mdx-20_15.html">Roland Modella</a> </li>
+										<li class=""><a href="http://www.rolanddg.com/product/cutting/gx-24/gx-24.html">Rolland GX-24</a></li>
+										<li class=""><a href="http://www.troteclaser.com/en-US/Laser-Machines/Pages/laser-engraving-machines-speedy.aspx">Trotec Laser</a></li>
+										<li class="">Molding and Casting</li>
 									</ul>
 								</div>
 							</section>
@@ -78,28 +78,35 @@
 						<!-- Three -->
 							<section id="three">
 								<div class="container">
-									<h3>My Code HUB</h3>
-									<p>Resources on things I do</p>
+									<h3>Stages</h3>
+									<p>The 4 Week Schedule</p>
 									<div class="features">
 										<article>
-											<a href="#" class="image"><img src="images/pic01.jpg" alt="" /></a>
+											<a href="#" class="image"><img src="images/settingup_week1.png" alt="" /></a>
 											<div class="inner">
-												<h4>Pre Fab Kerala</h4>
-												<p>Contains details of the 5 week intense course on Fab Lab tools and equipment.</p>
+												<h4>Week 1</h4>
+												<p>Date </p>
 											</div>
 										</article>
 										<article>
-											<a href="#" class="image"><img src="images/pic02.jpg" alt="" /></a>
+											<a href="#" class="image"><img src="images/machines_week2.jpg" alt="" /></a>
 											<div class="inner">
-												<h4>Internet of Things</h4>
-												<p>Resources on the IoT Lab initiative.</p>
+												<h4>Week 2</h4>
+												<p>Machines :Roland GX-24, Roland Modella , Ultimaker 2 , and Trotec Laser</p>
+											</div>
+										</article>
+										<article>
+											<a href="#" class="image"><img src="images/ep_week3.jpg" alt="" /></a>
+											<div class="inner">
+												<h4>Week 3</h4>
+												<p>Electronics Production</p>
 											</div>
 										</article>
 										<article>
 											<a href="#" class="image"><img src="images/pic03.jpg" alt="" /></a>
 											<div class="inner">
-												<h4>My Open ROV</h4>
-												<p>My efforts to realize an underwater remote operated vehicle using a Raspberry Pi and Arduino</p>
+												<h4>Week 4</h4>
+												<p>Design for Machines</p>
 											</div>
 										</article>
 									</div>
@@ -107,32 +114,7 @@
 							</section>
 
 						<!-- Four -->
-							<section id="four">
-								<div class="container">
-									<h3>Contact Me</h3>
-									<p>You may contact me via email akshai(dot)kannan(at)gmail(dot)com or else make a query here</p>
-									<form method="post" action="#">
-										<div class="row uniform">
-											<div class="6u 12u(xsmall)"><input type="text" name="name" id="name" placeholder="Name" /></div>
-											<div class="6u 12u(xsmall)"><input type="email" name="email" id="email" placeholder="Email" /></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u"><input type="text" name="subject" id="subject" placeholder="Subject" /></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u"><textarea name="message" id="message" placeholder="Message" rows="6"></textarea></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u">
-												<ul class="actions">
-													<li><input type="submit" class="special" value="Send Message" /></li>
-													<li><input type="reset" value="Reset Form" /></li>
-												</ul>
-											</div>
-										</div>
-									</form>
-								</div>
-							</section>
+							
 
 						<!-- Five -->
 						<!--
