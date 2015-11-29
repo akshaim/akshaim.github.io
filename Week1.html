@@ -195,12 +195,14 @@ git push -u origin master #pushing data to the branch master , authentication is
 </pre>
 
 <h4>Creating and adding SSH Key </h4>
-<p>SSH Keys help in identifying machines holding local repo and hence help in skipping the prompt to enter account credentials"</p>
+<p>SSH Keys help in identifying machines holding local repo and hence help in skipping the prompt to enter account credentials".Go to the <a href="https://help.github.com/articles/generating-ssh-keys/"> link </a> for help.</p>
 <pre>
-sudo apt-get install xclip
-xclip -sel clip < ~/.ssh/id_rsa.pub #Key is now copied
+ssh-keygen -t rsa -b 4096 -C "akshai.kannan@gmail.com" #generate new ssh key, click enter and then a passphrase.
+eval "$(ssh-agent -s)"  #start ssh agent
+ssh-add ~/.ssh/id_rsa   #add key to agent , authentication required.
+sudo nano ~/.ssh/id_rsa.pub #use an editpr and copy the entire contents. 
 </pre>
-<p> In the GitHub account settings , the copied key is to be added in the "Key" field in the Add SSH Key prompt</p>
+<p>In the GitHub account settings , the copied key is to be added in the "Key" field in the Add SSH Key option</p>
 
 <h4> General Guidelines to Documentation</h4>
 <p>
