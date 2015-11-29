@@ -96,13 +96,13 @@
 <h3>Installing dependancies.Compiling and Installing Fab Modules.</h3>
 <p> Installing standard libraries </p>
 <pre>
-sudo apt-get install python python-wxgtk2.8 python-dev python-pip gcc g++ libpng12-dev libgif-dev make bash okular libboost-thread-dev libboost-system-dev cmake
+	sudo apt-get install python python-wxgtk2.8 python-dev python-pip gcc g++ libpng12-dev libgif-dev make bash okular libboost-thread-dev 		libboost-system-dev cmake
 </pre>
 <p>Installation.</br>
 Download the Fab Modules.Unzip and cd to the downloaded directory and run.</p>
 <pre>
-make fab 
-sudo make install
+	make fab 
+	sudo make install
 </pre>
 <p> For help visit <a href="http://kokompe.cba.mit.edu/downloads.html"> link </a> </p>
 
@@ -110,42 +110,42 @@ sudo make install
 <p>Kokopelli is a 2D tool , used to develop circuit boards </br>
 Download the tool and run.</p>
 <pre>
-make fab
-make install
+	make fab
+	make install
 </pre>
 <p>Navigate to bin and execute kokopelli in retro mode</p>
 <pre>
-cd bin
-./kokopelli -r
+	cd bin
+	./kokopelli -r
 </pre>
 <p>For help visit <a href="https://github.com/mkeeter/kokopelli/blob/master/README.md"> link</a> </p>
 <h3> Installing Antimony.</h3>
 <p>This is quite a long process, lets start </br>
 <li>Download and Install QT from <a href="http://www.qt.io/download-open-source/"> here.</a>Run the following code</li>
-<pre> chmod a+x filename
-./filename
+<pre>	chmod a+x filename
+	./filename
 </pre>
 <li>Install the following packages</li>
 <pre>
-sudo apt-get install build-essential libpng-dev python3-dev libboost-all-dev libgl1-mesa-dev lemon flex
+	sudo apt-get install build-essential libpng-dev python3-dev libboost-all-dev libgl1-mesa-dev lemon flex
 </pre>
 <p> Updating GCC (if on Ubuntu 14.04)</p>
 <pre>
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-sudo apt-get update
-sudo apt-get install gcc-4.9 g++-4.9
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
+	sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+	sudo apt-get update
+	sudo apt-get install gcc-4.9 g++-4.9
+	sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
 </pre>
 <p> Clone Git and Make </p>
 <pre>
-git clone https://github.com/mkeeter/antimony 
-cd antimony
-mkdir build
-cd build
-~/Qt/5.5/gcc_64/bin/qmake ../sb.pro
-make -j8
-sudo make install 
-./app/antimony
+	git clone https://github.com/mkeeter/antimony 
+	cd antimony
+	mkdir build
+	cd build
+	~/Qt/5.5/gcc_64/bin/qmake ../sb.pro
+	make -j8
+	sudo make install 
+	./app/antimony
 </pre>
 <p>For help visit <a href="https://github.com/mkeeter/antimony/blob/develop/BUILDING.md"> here.</a><p>
 <h4> Additional Package Installations</h4>
@@ -179,28 +179,29 @@ sudo make install
 </br>
 <h4>Documenting Via Git(HUB)</h4>
 <p>Installing and configuring Git , for a first time user.</p>
-<pre>sudo apt-get install git 
-git config --global user.name "akshaim"
-git config --global user.email akshai.kannan@gmail.com
+<pre>
+	sudo apt-get install git 
+	git config --global user.name "akshaim"
+	git config --global user.email akshai.kannan@gmail.com
 </pre>
 <p>I had created akshai.github.io repo , so for creating this page. One can create only one page and it should be in the format username.gihub.io</p>
 <pre>
-git clone https://github.com/akshaim/akshaim.github.io
+	git clone https://github.com/akshaim/akshaim.github.io
 </pre>
 <p> Any changes made in the local repo has to be pushed to the online repo. So if its the addition of readme file<p>
 <pre>
-git add --all #an easy way to add files to the header.
-git commit -m -q #-q represent a quiet commit , the summary is skipped.
-git push -u origin master #pushing data to the branch master , authentication is required.
+	git add --all #an easy way to add files to the header.
+	git commit -m -q #-q represent a quiet commit , the summary is skipped.
+	git push -u origin master #pushing data to the branch master , authentication is required.
 </pre>
 
 <h4>Creating and adding SSH Key </h4>
 <p>SSH Keys help in identifying machines holding local repo and hence help in skipping the prompt to enter account credentials".Go to the <a href="https://help.github.com/articles/generating-ssh-keys/"> link </a> for help.</p>
 <pre>
-ssh-keygen -t rsa -b 4096 -C "akshai.kannan@gmail.com" #generate new ssh key, click enter and then a passphrase.
-eval "$(ssh-agent -s)"  #start ssh agent
-ssh-add ~/.ssh/id_rsa   #add key to agent , authentication required.
-sudo nano ~/.ssh/id_rsa.pub #use an editpr and copy the entire contents. 
+	ssh-keygen -t rsa -b 4096 -C "akshai.kannan@gmail.com" #generate new ssh key, click enter and then a passphrase.
+	eval "$(ssh-agent -s)"  #start ssh agent
+	ssh-add ~/.ssh/id_rsa   #add key to agent , authentication required.
+	sudo nano ~/.ssh/id_rsa.pub #use an editpr and copy the entire contents. 
 </pre>
 <p>In the GitHub account settings , the copied key is to be added in the "Key" field in the Add SSH Key option</p>
 
