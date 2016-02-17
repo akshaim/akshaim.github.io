@@ -24,8 +24,8 @@
 				<nav id="nav">
 					<ul>
 						<li><a href="#one" class="active">About</a></li>
-						<li><a href="#two">Sensors in IoT Lab</a></li>
-						<li><a href="#three">General Guidelines</a></li>
+						<li><a href="#two">Working</a></li>
+						<li><a href="#three">Interfacing With Arduino</a></li>
 						
 					</ul>
 				</nav>
@@ -50,42 +50,47 @@
 							<section id="one">
 								<div class="container">
 									<header class="major">
-										<h2>IoT Lab - Electronics 101 </h2>
-										<p>Sensors<br />
+										<h2>LDR </h2>
+										<p>Light Dependant Resistor<br />
 </p>
 									</header>
-									<p> A Sensor converts the physical parameter (for example:  temperature, blood pressure, humidity, speed, etc.) into a signal which can be measured electrically.Based on the output the sensors may be classified as Digital and Analog Sensors.</p>
-<br>
-<h2>How do you choose a sensor</h2>
+									<p>A Light Dependent Resistor (LDR) or a photo resistor is a device whose resistivity is a function of the incident electromagnetic radiation.<br><br> <img src="images/LDR/ldr.jpg" alt="ldr" /><br> The light dependent resistor, LDR, is known by many names including the photoresistor, photo resistor, photoconductor, photoconductive cell, or simply the photocell.</p>
 
-<ul>
-<li>Accuracy</li>
-<li>Environmental Condition</li>
-<li>Range</li>
-<li>Calibration</li>	
-<li>Resolution</li>
-<li>Cost</li>
-<li>Precision</li>
 
-</ul>
 								</div>
 							</section>
 
 						<!-- Two -->
 							<section id="two">
 								<div class="container">
-									<h3>Sensors in IoT Lab</h3>
-									<p>Sensors for tinkering. You may click on each to know more</p>
-									<ul class="feature-icons">
-										<li <a  href="https://akshaim.github.io/LDR.html" class="fa-sun-o"></a><a href="https://akshaim.github.io/LDR.html">LDR </a> </li>
-										<li class="fa-volume-up">Ultra Sonic Sensor - HC-SR04 </li>
-										<li class="fa-undo">Accelerometer - ADXL345 </li>
-										<li class="fa-cloud">Gas Sensor Kit - MQ Series (2,3,4,5,6,7,135)</li>
-										<li class="fa-bolt">Current Sensor - ACS715</li>
-										<li class="fa-users">PIR Sensor - HC-SR501</li>
-<li class="fa-tint">Humidity & Temperature Sensor <br>- DHT11</li>
-<li class="fa-fire">Temperature Sensor - LM35</li>
-									</ul>
+									<h3>Working</h3>
+									<p>LDR offers variation in resistance as a function of light intensity.When the light intensity increases the semiconductor layer gets excited leading to the generation of charge carries hence better conduction ie lower resistance. <br> <br> <img src="images/LDR/ldr.gif" alt="ldr" /> <br> <br> An N type semiconductor is layered on top of a ceramic base.Metal contacts are then used to pull connections from the high doped end points, which offer low contact resistance. The aread between the contacts are mostly made in Zig Zag fashion which helps with maximising the exposed area and increase gain by reducing spurious resistance.<br> <br> <img src="images/LDR/ldr_structure.jpg" alt="ldr" /> </p>
+									
+								</div>
+							</section>
+						<!-- Three -->
+							<section id="Three">
+								<div class="container">
+									<h3>Interfacing with Arduino</h3>
+									<p>LDR , being an analog sensor, can easily be interfaced with Arduino using Analog Pins A0-A5 as shown in image.<br> <br> <img src="images/LDR/ldrarduino.jpg" alt="ldr" /> </p>
+<h5>Arduino Code</h5>
+<pre>
+int ldr = 0;             //analog pin to which LDR is connected
+int ldr_value = 0;        //variable to store LDR values
+
+void setup()
+{
+  Serial.begin(9600);   //start te serial monitor
+}
+
+void loop()
+{
+  ldr_value = analogRead(ldr);          //reads the LDR values
+  Serial.println(ldr_value);                 //prints the LDR values to serial monitor
+  delay(50);                  //wait
+}
+</pre>
+									
 								</div>
 							</section>
 
