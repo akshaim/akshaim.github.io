@@ -7,8 +7,8 @@
 		<title>Akshai M - Things that I do</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="../assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="../assets/css/main.css" />
+		<!--[if lte IE 8]><script src="../../assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../../assets/css/main.css" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	</head>
 	<body>
@@ -78,7 +78,7 @@
 									<p>Sensors for tinkering. You may click on each to know more</p>
 									<ul class="feature-icons">
 										<li class="fa-sun-o"><a href="https://akshaim.github.io/IoT/Sensors/LDR.html">LDR</a></li>
-										<li class="fa-volume-up">Ultra Sonic Sensor - HC-SR04 </li>
+										<li class="fa-volume-up"><a href="https://akshaim.github.io/IoT/Sensors/Ultrasonic.html">Ultra Sonic Sensor - HC-SR04 </a></li>
 										<li class="fa-undo">Accelerometer - ADXL345 </li>
 										<li class="fa-cloud">Gas Sensor Kit - MQ Series (2,3,4,5,6,7,135)</li>
 										<li class="fa-bolt">Current Sensor - ACS715</li>
