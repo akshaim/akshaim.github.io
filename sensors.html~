@@ -24,9 +24,9 @@
 				<nav id="nav">
 					<ul>
 						<li><a href="#one" class="active">About</a></li>
-						<li><a href="#two">Things I Do</a></li>
-						<li><a href="#three">My Code HUB</a></li>
-						<li><a href="#four">Contact</a></li>
+						<li><a href="#two">Sensors in IoT Lan</a></li>
+						<li><a href="#three">General Guidelines</a></li>
+						
 					</ul>
 				</nav>
 				<footer>
@@ -75,7 +75,7 @@
 							<section id="two">
 								<div class="container">
 									<h3>Sensors in IoT Lab</h3>
-									<p>Sensors for tinkering</p>
+									<p>Sensors for tinkering. You may click on each to know more</p>
 									<ul class="feature-icons">
 										<li class="fa-sun-o">LDR</li>
 										<li class="fa-volume-up">Ultra Sonic Sensor - HC-SR04 </li>
@@ -90,7 +90,7 @@
 							</section>
 
 						<!-- Three -->
-
+<!--
 						
 							<section id="three">
 								<div class="container">
