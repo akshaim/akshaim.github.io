@@ -50,89 +50,15 @@
 							<section id="one">
 								<div class="container">
 									<header class="major">
-										<h2>Life as a Hacker</h2>
-										<p>How did it start<br />
+										<h2>Mail Sent !</h2>
+										<p>Hang on will get back to you :)<br />
 </p>
 									</header>
-									<p>Toys, thats where it all started. Hacking the DC motor and LED's to do things of relevance to me. That did suffice my neighbours recommendations to represent myself as a hardware hacker till my 8th Grade , then it happened. I blew up my father's old Optonica- Sharp TV and then I was famous. And then I made a mosquito killer using HV transformer. A massive overkill for the purpose but one which did serve well.Then it happened, I got qualified as a Maker.</p>
+									
 								</div>
 							</section>
 
-						<!-- Two -->
-							<section id="two">
-								<div class="container">
-									<h3>Things I Do</h3>
-									<p>Some techy stuff which I am well into</p>
-									<ul class="feature-icons">
-										<li class="fa-code">Write code. Assembly suits me well</li>
-										<li class="fa-cubes">Open Hardware Developer </li>
-										<li class="fa-book">Consultant for FOSS and IoT </li>
-										<li class="fa-coffee">Techy evening talks</li>
-										<li class="fa-bolt">Innovator in Light Speed</li>
-										<li class="fa-users">Public Speaker</li>
-									</ul>
-								</div>
-							</section>
-
-						<!-- Three -->
-							<section id="three">
-								<div class="container">
-									<h3>My Code HUB</h3>
-									<p>Resources on things I do</p>
-									<div class="features">
-										<article>
-											<a href="https://akshaim.github.io/Week_Intro.html" class="image"><img src="images/pic01.jpg" alt="" /></a>
-											<div class="inner">
-												<h4> <a href="https://akshaim.github.io/Week_Intro.html"> Pre Fab Kerala </a></h4>
-												<p>Contains details of the 4 week intense course on Fab Lab tools and equipment.</p>
-											</div>
-										</article>
-										<article>
-											<a href="https://akshaim.github.io/iot.html" class="image"><img src="images/pic02.jpg" alt="" /></a>
-											<div class="inner">
-												<h4><a href="https://akshaim.github.io/iot.html">Internet of Things</a></h4>
-												<p>Resources on the IoT Lab initiative.</p>
-											</div>
-										</article>
-										<article>
-											<a href="https://github.com/akshaim/myopenROV" class="image"><img src="images/pic03.jpg" alt="" /></a>
-											<div class="inner">
-												<h4><a href="https://github.com/akshaim/myopenROV">My Open ROV</a></h4>
-												<p>My efforts to realize an underwater remote operated vehicle using a Raspberry Pi and Arduino</p>
-											</div>
-										</article>
-									</div>
-								</div>
-							</section>
-
-						<!-- Four -->
-							<section id="four">
-								<div class="container">
-									<h3>Contact Me</h3>
-									<p>You may contact me via email akshai(dot)kannan(at)gmail(dot)com or else make a query here</p>
-									<form method="post" action="http://www.graphenelive.in/akshai.php">
-										<div class="row uniform">
-											<div class="6u 12u(xsmall)"><input type="text" name="name" id="name" placeholder="Name" /></div>
-											<div class="6u 12u(xsmall)"><input type="email" name="email" id="email" placeholder="Email" /></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u"><input type="text" name="subject" id="subject" placeholder="Subject" /></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u"><textarea name="message" id="message" placeholder="Message" rows="6"></textarea></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u">
-												<ul class="actions">
-													<li><input type="submit" class="special" value="Send Message" /></li>
-													<li><input type="reset" value="Reset Form" /></li>
-												</ul>
-											</div>
-										</div>
-									</form>
-								</div>
-							</section>
-
+						
 						<!-- Five -->
 						<!--
 							<section id="five">
