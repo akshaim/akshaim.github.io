@@ -74,7 +74,7 @@
 									<h3>Interfacing with Arduino</h3>
 									<p>LDR , being an analog sensor, can easily be interfaced with Arduino using Analog Pins A0-A5 as shown in image.<br> <br> <img src="images/LDR/ldrarduino.jpg" alt="ldrarduino" /> 
 Image source : http://cdn.instructables.com/FYN/JJOX/IBAMNQHP/FYNJJOXIBAMNQHP.MEDIUM.jpg</p>
-<h5>Arduino Code</h5>
+<h4>Arduino Code</h4>
 <pre>
 const int ldr = 0;    //A0 assigned as LDR pin.
 int value = 0;        //Store values from LDR.
