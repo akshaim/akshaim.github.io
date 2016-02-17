@@ -9,7 +9,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="../../assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="../../assets/css/main.css" />
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="../../assets/css/ie8.css" /><![endif]-->
 	</head>
 	<body>
 
@@ -50,11 +50,17 @@
 							<section id="one">
 								<div class="container">
 									<header class="major">
-										<h2>LDR </h2>
-										<p>Light Dependant Resistor<br />
+										<h2>Ultrasonic Sensor</h2>
+										<p> Distance measurement using HC-SR04<br />
 </p>
 									</header>
-									<p>A Light Dependent Resistor (LDR) or a photo resistor is a device whose resistivity is a function of the incident electromagnetic radiation.<br><br> <img src="images/LDR/ldr.jpg" alt="ldr" /><br> The light dependent resistor, LDR, is known by many names including the photoresistor, photo resistor, photoconductor, photoconductive cell, or simply the photocell.</p>
+									<p>The HC-SR04 ultrasonic sensor uses sonar to determine distance between the sensor itself and an object(s) in the front. <br> <br> <img src="images/Ultrasonic/sensor.png" alt="sensor" /> <br> Image source :  http://i2.wp.com/randomnerdtutorials.com/wp-content/uploads/2013/11/ultra.png?w=330 <br><br> The sensor has the following pins</p> 
+                     			<ul><li> Vcc (+5V) </li>
+					  <li> Trig(Trigger) </li>
+					  <li> Echo</li>
+					  <li> GND </li>
+					</ul> 
+<p> HC-SR04 works on 5V DC and takes 15mA current.It can be used to measure distance between 2cm and 400 cm and works on a frequency of 40Hz</p>
 
 
 								</div>
@@ -64,32 +70,54 @@
 							<section id="two">
 								<div class="container">
 									<h3>Working</h3>
-									<p>LDR offers variation in resistance as a function of light intensity.When the light intensity increases the semiconductor layer gets excited leading to the generation of charge carries hence better conduction ie lower resistance. <br> <br> <img src="images/LDR/ldr.gif" alt="ldrgif" /> <br>Image source : http://www.technologystudent.com/elec1/ldr1.htm<br> <br> An N type semiconductor is layered on top of a ceramic base.Metal contacts are then used to pull connections from the high doped end points, which offer low contact resistance. The aread between the contacts are mostly made in Zig Zag fashion which helps with maximising the exposed area and increase gain by reducing spurious resistance.<br> <br> <img src="images/LDR/ldr_structure.jpg" alt="ldrstructure" /> <br>Image source : https://bhavanajagat.files.wordpress.com/2013/09/wholedesigner-photochemistry-photo-resistor.jpg </p>
+									<p>The device works by sending an ultrasonic pulse and measuring the pulse (time) width of the echo signal <br> <br> <img src="images/Ultrasonic/working.png" alt="working" /> <br>Image source : arduinosensors.com/wp-content/uploads/2014/05/Ultrasonic_4.png<br> <br> Actual working of the sensor is a bit more complicated.<br> <br> <img src="images/Ultrasonic/timing.jpg" alt="timing" /> <br>Image source : HC-SR04 Datasheet <br><br><ul><li>The trigger pin is made high (5V) for 10 microseconds to trigger the sensor </li> 
+<li> The sensor will hence transmit an ultrasonic signal ,an 8 cycle burst of ultrasound at 40 kHz </li>
+<li> The sensor makes the echo pin high on arrival of echo</li>
+<li> Distance is proportional to the time for which the echo pin is made high by the sensor</li>
+<li>The distance can be calculated easily as distance = speed x time.The speed of sound is 340 metres per second or 29 MicroSeconds per centimeter.Also the actual distance is half of what mentioned previously.</li> </ul><br>
+<br><img src="images/Ultrasonic/angle.png" alt="angle" /> <br> It is also worth noting that the sensors works best when the subject is within a plane angle of 30 degrees , as observed from the performance chart given above.</p>
+
+
 									
 								</div>
 							</section>
 						<!-- Three -->
-							<section id="Three">
+							<section id="three">
 								<div class="container">
 									<h3>Interfacing with Arduino</h3>
-									<p>LDR , being an analog sensor, can easily be interfaced with Arduino using Analog Pins A0-A5 as shown in image.<br> <br> <img src="images/LDR/ldrarduino.jpg" alt="ldrarduino" /> <br>
-Image source : http://cdn.instructables.com/FYN/JJOX/IBAMNQHP/FYNJJOXIBAMNQHP.MEDIUM.jpg</p>
+									<p>The sensor may be connected as follows<br> <br> <img src="images/Ultrasonic/connection.png" alt="connection" /> <br>
+Image source : http://i0.wp.com/randomnerdtutorials.com/wp-content/uploads/2013/11/schematics.png</p>
 <h4>Arduino Code</h4>
 <pre>
-const int ldr = 0;    //A0 assigned as LDR pin.
-int value = 0;        //Store values from LDR.
+    #define trigPin1 11
+    #define echoPin1 12
 
-void setup()
-{
-  Serial.begin(9600);   //Fix serial baud rate at 9600bps
-}
+    long duration, distance, UltraSensor;
 
-void loop()
-{
-  value = analogRead(ldr);    //Read the analog values from LDR.
-  Serial.println(value);      //Print to serial monitor.
-  delay(250);                 //Delay of 250 milliseconds (1/4th of a second).
-}
+    void setup()
+    {
+    Serial.begin (9600);
+    pinMode(trigPin1, OUTPUT);
+    pinMode(echoPin1, INPUT);
+    }
+
+    void loop() {
+    SonarSensor(trigPin1, echoPin1);
+    UltraSensor = distance;
+    Serial.println(UltraSensor);
+    }
+
+    void SonarSensor(int trigPin,int echoPin)
+    {
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+    duration = pulseIn(echoPin, HIGH);
+    distance = (duration/2) / 29.1;
+    delay(100);
+    }
 </pre>
 									
 								</div>
@@ -490,13 +518,13 @@ void loop()
 			</div>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollzer.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
+			<script src="../../assets/js/jquery.min.js"></script>
+			<script src="../../assets/js/jquery.scrollzer.min.js"></script>
+			<script src="../../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../../assets/js/skel.min.js"></script>
+			<script src="../../assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
+			<script src="../../assets/js/main.js"></script>
 
 	</body>
 </html>
