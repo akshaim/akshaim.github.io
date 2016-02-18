@@ -88,9 +88,9 @@
 											</div>
 										</article>
 										<article>
-											<a href="https://akshaim.github.io/iot.html" class="image"><img src="images/pic02.jpg" alt="" /></a>
+											<a href="https://akshaim.github.io/IoT/iot.html" class="image"><img src="images/pic02.jpg" alt="" /></a>
 											<div class="inner">
-												<h4><a href="https://akshaim.github.io/iot.html">Internet of Things</a></h4>
+												<h4><a href="https://akshaim.github.io/IoT/iot.html">Internet of Things</a></h4>
 												<p>Resources on the IoT Lab initiative.</p>
 											</div>
 										</article>
@@ -110,7 +110,7 @@
 								<div class="container">
 									<h3>Contact Me</h3>
 									<p>You may contact me via email akshai(dot)kannan(at)gmail(dot)com or else make a query here</p>
-									<form method="post" action="#">
+									<form method="post" action="http://www.graphenelive.in/akshai.php">
 										<div class="row uniform">
 											<div class="6u 12u(xsmall)"><input type="text" name="name" id="name" placeholder="Name" /></div>
 											<div class="6u 12u(xsmall)"><input type="email" name="email" id="email" placeholder="Email" /></div>
