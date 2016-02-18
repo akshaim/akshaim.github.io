@@ -75,16 +75,16 @@
 											</div>
 										</article>
 									<article>
-											<a href="http://akshaim.github.io/IoT/Sensors/sensors.html" class="image"><img src="images/sensors.png" alt="" /></a>
+											<a href="http://akshaim.github.io/IoT/Sensors/sensors.html" class="image"><img src="images/sensors.png" width = "140px" height = "200px" alt="sensor" /></a>
 											<div class="inner">
 												<h4> <a href="http://akshaim.github.io/IoT/Sensors/sensors.html"> Electronics 101 - Sensors</a></h4>
 												<p>An introduction to sensors included in the IoT Lab initiative.</p>
 											</div>
 										</article>
 					<article>
-											<a href="http://akshaim.github.io/IoT/Wireless/wireless.html" class="image"><img src="images/wireless_icon.png" alt="" /></a>
+											<a href="http://akshaim.github.io/IoT/Wireless/wireless.html" class="image"><img src="images/wireless_icon.png" width = "90px" height = "140px" alt="wireless icon" /></a>
 											<div class="inner">
-												<h4> <a href="http://akshaim.github.io/IoT/Wireless/wireless.html"> IoT Lab - Electronics 102</a></h4>
+												<h4> <a href="http://akshaim.github.io/IoT/Wireless/wireless.html">Electronics 102 - Wireless Communication</a></h4>
 												<p>A basic introduction to wireless communication.</p>
 											</div>
 										</article>
