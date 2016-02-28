@@ -40,7 +40,7 @@
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
-				<section>
+				<section data-transition="slide" data-background="#88843a">
 					<h1>Microcontrollers !!</h1>
 					<h3>Blinking an LED , the hard way</h3>
 					<p>
@@ -48,7 +48,7 @@
 					</p>
 				</section>
 
-				<section>
+				<section data-transition="slide" data-background="#9cc56d">
 					<h2>MicroHOPE</h2>
 					<p>
 						Microcontrollers for Hobby Projects and Education
@@ -57,7 +57,7 @@
 							<img width="600" height="400" data-src="images/microhope-photo-horiz.jpg" alt="microhope">
 						</a>
 				</section>
-				<section>
+				<section data-transition="slide" data-background="#cdce6f">
 					<h2>A bit of history , usual say</h2>
 					<ul>
 					<li> <a href="http://www.iuac.res.in/%7Eelab/phoenix/">PHOENIX Project</a> from <a href="http://www.iuac.res.in/%7Eelab/phoenix/">IUAC </a></li>
@@ -68,11 +68,11 @@
 							<img width="500" height="400" data-src="images/expeyes.jpg" alt="expeyes">
 						</a>
 				</section>
-				<section>
+				<section data-transition="slide" data-background="#b46350">
 					<h2>Why MicroHOPE</h2>
 					<p> Yet another controller board ? </p>
 				</section>
-				<section>
+				<section data-transition="slide" data-background="#4d6d97">
 					<section>
 					<h2>Into the board</h2>
 					
@@ -101,7 +101,7 @@
 					</section>
 				
 				</section>
-				<section>
+				<section data-transition="slide" data-background="#509b88">
 					<h2>3 Keys</h2>
 					<ul>
 					<li>DDRX  - Data Direction Register</li>
@@ -111,7 +111,7 @@
 				
 				</section>
 				
-				<section>
+				<section data-transition="slide" data-background="#b46350">
 					<h2>Code Code !! Code to copy</h2>
 					<pre><code class="code" data-trim contenteditable>
 #include <avr/io.h>
@@ -126,8 +126,8 @@ int main (void)
     PORTB = PINA;
 }				</code></pre>
 					
-				</section>
-				<section>
+				</section >
+				<section data-transition="slide" data-background="#3b8c41">
 					<h2>Macros for bit Manipulation</h2>
 					<ul>
 					<li>BITVAL(bit position)</li>
@@ -137,7 +137,7 @@ int main (void)
 					</ul>
 				
 				</section>
-				<section>
+				<section data-transition="slide" data-background="#d48148">
 					<h2>Macros in code</h2>
 					<pre><code class="code" data-trim contenteditable>
 #include "mh-digital.c"
@@ -161,8 +161,8 @@ int main (void)
 </code></pre>
 					<p>Explore mh-digital.c from Library</p>
 				</section>
-				</section>
-<section>
+				
+<section data-transition="slide" data-background="#b46350">
 					<h2>Alternatives</h2>
 					<pre><code class="code" data-trim contenteditable>
 #include<avr/io.h>   // Include file for I/O operations
@@ -191,7 +191,7 @@ for(;;)
 					</p>
 					
 				</section>
-				<section>
+				<section  data-transition="slide" data-background="#519237">
 					<h2>PC - MicroHOPE</h2>
 					<p>
 						Code >> Compile >> Upload
@@ -199,7 +199,7 @@ for(;;)
 					
 					
 				</section>
-				<section>
+				<section data-transition="slide" data-background="#b46350">
 					<h2>AVR GCC & AVR DUDE</h2>
 					<pre><code class="code" data-trim contenteditable>
 
@@ -209,7 +209,7 @@ $ avrdude -b 19200 -P /dev/ttyACM0 -pm32 -c stk500v1 -U flash:w:code.hex
 </code></pre>
 					
 				</section>
-				<section>
+				<section data-transition="slide" data-background="#b79255">
 				<section>
 					<h2>Schematics</h2>
 					<p>
@@ -232,12 +232,37 @@ $ avrdude -b 19200 -P /dev/ttyACM0 -pm32 -c stk500v1 -U flash:w:code.hex
 				</section>
 			
 				</section>
+				<section data-transition="slide" data-background="#b46350">
 				<section>
 					<h2>Time to blink</h2>
 				</section>
+				<section>
+					<h2>Blink :) </h2>
+					<pre><code class="code" data-trim contenteditable>
+
+#include "mh-utils.c"
+
+
+int main (void)
+  {
+  DDRB = 255;		// Data Direction Register for port B
+
+  for(;;)
+    {
+    PORTB = 1;	
+    delay_ms(50);
+    PORTB = 0;
+    delay_ms(50);
+  }
+return 0;
+}
+</code></pre>
+					
+				</section>
+				</section>
 
 				<section style="text-align: left;">
-					<h1>Thats It</h1>
+					<h1>Thats It !!</h1>
 					<p>
 						<a href="http://akshaim.in">Akshai M</a> <br>
 						<a href="https://github.com/akshaim">Email : akshai.m@ieee.org</a>
