@@ -24,8 +24,8 @@
 				<nav id="nav">
 					<ul>
 						<li><a href="#one" class="active">About</a></li>
-						<li><a href="#two">Sensors in IoT Lab</a></li>
-						<li><a href="#three">General Guidelines</a></li>
+						<li><a href="#two">Working</a></li>
+						<li><a href="#three">Interfacing With Arduino</a></li>
 						
 					</ul>
 				</nav>
@@ -50,42 +50,77 @@
 							<section id="one">
 								<div class="container">
 									<header class="major">
-										<h2>IoT Lab - Electronics 101 </h2>
-										<p>Sensors<br />
+										<h2>LM35 </h2>
+										<p>Temperature Sensor<br />
 </p>
 									</header>
-									<p> A Sensor converts the physical parameter (for example:  temperature, blood pressure, humidity, speed, etc.) into a signal which can be measured electrically.Based on the output the sensors may be classified as Digital and Analog Sensors.</p>
-<br>
-<h2>How do you choose a sensor</h2>
+									<p>LM35 is an analog, linear temperature sensor whose output voltage varies linearly with change in temperature. LM35 is three terminal linear temperature sensor from National semiconductors. It can measure temperature from-55 degree celsius to +150 degree celsius. The voltage output of the LM35 increases 10mV per degree Celsius rise in temperature. LM35 can be operated from a 5V supply and the stand by current is less than 60uA. The pin out of  LM35 is shown in the figure below.<br><br> <img src="images/LM35/LM35.jpg" alt="LM35" /><br></p>
 
-<ul>
-<li>Accuracy</li>
-<li>Environmental Condition</li>
-<li>Range</li>
-<li>Calibration</li>	
-<li>Resolution</li>
-<li>Cost</li>
-<li>Precision</li>
 
-</ul>
 								</div>
 							</section>
 
 						<!-- Two -->
 							<section id="two">
 								<div class="container">
-									<h3>Sensors in IoT Lab</h3>
-									<p>Sensors for tinkering. You may click on each to know more</p>
-									<ul class="feature-icons">
-										<li class="fa-sun-o"><a href="https://akshaim.github.io/IoT/Sensors/LDR.html">Light Sensor - LDR</a></li>
-										<li class="fa-volume-up"><a href="https://akshaim.github.io/IoT/Sensors/Ultrasonic.html">Ultra Sonic Sensor - HC-SR04 </a></li>
-										<li class="fa-undo">Accelerometer - ADXL345 </li>
-										<li class="fa-cloud">Gas Sensor Kit - MQ Series (2,3,4,5,6,7,135)</li>
-										<li class="fa-bolt">Current Sensor - ACS715</li>
-										<li class="fa-users">PIR Sensor - HC-SR501</li>
-<li class="fa-tint">Humidity & Temperature Sensor <br>- DHT11</li>
-<li class="fa-fire"><a href="https://akshaim.github.io/IoT/Sensors/LM35.html">Temperature Sensor - LM35</a></li>
-									</ul>
+									<h3>Working</h3>
+									<p>LM35 sensor uses the basic principle of a diode ,where as the temperature increases, the voltage across a diode increases at a known rate.By precisely amplifying the voltage change, it is easy to generate an analog signal that is directly proportional to temperature.  <br><br>Consider the circuit shown below: <br> <br> <img src="images/LM35/Circuit.jpeg" alt="circuit" /> <br> <br> There are two transistors in the center of the circuit. One has ten times the emitter area of the other. This means it has one tenth of the current density, since the same current is going through both transistors. This causes a voltage across the resistor R1 that is proportional to the absolute temperature, and is almost linear across the range we care about. The "almost" part is taken care of by a special circuit that straightens out the slightly curved graph of voltage versus temperature. <br>
+The amplifier at the top ensures that the voltage at the base of the left transistor (Q1) is proportional to absolute temperature (PTAT) by comparing the output of the two transistors.
+<br>
+The amplifer at the right converts absolute temperature (measured in Kelvin) into either Fahrenheit or Celsius, depending on the part (LM34 or LM35). The little circle with the "i" in it is a constant current source circuit.
+<br>
+The two resistors are calibrated in the factory to produce a highly accurate temperature sensor.
+<br>
+The integrated circuit has many transistors in it - two in the middle, some in each amplifier, some in the constant current source, and some in the curvature compensation circuit. All of that is fit into the tiny package with three leads <br> Source : https://www.quora.com/How-does-LM35-work?share=1 </p>
+									
+								</div>
+							</section>
+						<!-- Three -->
+							<section id="three">
+								<div class="container">
+									<h3>Interfacing with Arduino</h3>
+									<p>LM35 , being an analog sensor, can easily be interfaced with Arduino using Analog Pin A0 as shown in image.<br> <br> <img src="images/LM35/connection.gif" alt="arduino connection" /> <br>
+Image source : http://www.ladyada.net/images/sensors/tmp36fritz.gif</p>
+<h4>Arduino Code</h4>
+<pre>
+int sensorPin = 0; //the analog pin the TMP36's Vout (sense) pin is connected to
+                        //the resolution is 10 mV / degree centigrade with a
+                        //500 mV offset to allow for negative temperatures
+
+/*
+ * setup() - this function runs once when you turn your Arduino on
+ * We initialize the serial connection with the computer
+ */
+void setup()
+{
+  Serial.begin(9600);  //Start the serial connection with the computer
+                       //to view the result open the serial monitor 
+}
+ 
+void loop()                     // run over and over again
+{
+ //getting the voltage reading from the temperature sensor
+ int reading = analogRead(sensorPin);  
+
+ // converting that reading to voltage, for 3.3v arduino use 3.3
+ float voltage = reading * 5.0 / 1024; 
+ 
+ // print out the voltage
+ Serial.print(voltage); Serial.println(" volts");
+ 
+ // now print out the temperature
+ float temperatureC = (voltage - 0.5) * 100 ;  //converting from 10 mv per degree wit 500 mV offset
+                                               //to degrees ((volatge - 500mV) times 100)
+ Serial.print(temperatureC); Serial.println(" degress C");
+ 
+ // now convert to Fahrenheight
+ float temperatureF = (temperatureC * 9 / 5) + 32;
+ Serial.print(temperatureF); Serial.println(" degress F");
+ 
+ delay(1000);                                     //waiting a second
+}
+</pre>
+									
 								</div>
 							</section>
 
