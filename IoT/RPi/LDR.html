@@ -7,8 +7,8 @@
 		<title>Akshai M - Things that I do</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><script src="../../assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../../assets/css/main.css" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	</head>
 	<body>
@@ -24,9 +24,9 @@
 				<nav id="nav">
 					<ul>
 						<li><a href="#one" class="active">About</a></li>
-						<li><a href="#two">Things I Do</a></li>
-						<li><a href="#three">My Code HUB</a></li>
-						<li><a href="#four">Contact</a></li>
+						<li><a href="#two">Working</a></li>
+						<li><a href="#three">Interfacing With Arduino</a></li>
+						
 					</ul>
 				</nav>
 				<footer>
@@ -50,31 +50,54 @@
 							<section id="one">
 								<div class="container">
 									<header class="major">
-										<h2>Life as a Hacker</h2>
-										<p>How did it start<br />
+										<h2>LDR </h2>
+										<p>Light Dependant Resistor<br />
 </p>
 									</header>
-									<p>Toys, thats where it all started. Hacking the DC motor and LED's to do things of relevance to me. That did suffice my neighbours recommendations to represent myself as a hardware hacker till my 8th Grade , then it happened. I blew up my father's old Optonica- Sharp TV and then I was famous. And then I made a mosquito killer using HV transformer. A massive overkill for the purpose but one which did serve well.Then it happened, I got qualified as a Maker.</p>
+									<p>A Light Dependent Resistor (LDR) or a photo resistor is a device whose resistivity is a function of the incident electromagnetic radiation.<br><br> <img src="images/LDR/ldr.jpg" alt="ldr" /><br> The light dependent resistor, LDR, is known by many names including the photoresistor, photo resistor, photoconductor, photoconductive cell, or simply the photocell.</p>
+
+
 								</div>
 							</section>
 
 						<!-- Two -->
 							<section id="two">
 								<div class="container">
-									<h3>Things I Do</h3>
-									<p>Some techy stuff which I am well into</p>
-									<ul class="feature-icons">
-										<li class="fa-code">Write code. Assembly suits me well</li>
-										<li class="fa-cubes">Open Hardware Developer </li>
-										<li class="fa-book">Consultant for FOSS and IoT </li>
-										<li class="fa-coffee">Techy evening talks</li>
-										<li class="fa-bolt">Innovator in Light Speed</li>
-										<li class="fa-users">Public Speaker</li>
-									</ul>
+									<h3>Working</h3>
+									<p>LDR offers variation in resistance as a function of light intensity.When the light intensity increases the semiconductor layer gets excited leading to the generation of charge carries hence better conduction ie lower resistance. <br> <br> <img src="images/LDR/ldr.gif" alt="ldrgif" /> <br>Image source : http://www.technologystudent.com/elec1/ldr1.htm<br> <br> An N type semiconductor is layered on top of a ceramic base.Metal contacts are then used to pull connections from the high doped end points, which offer low contact resistance. The aread between the contacts are mostly made in Zig Zag fashion which helps with maximising the exposed area and increase gain by reducing spurious resistance.<br> <br> <img src="images/LDR/ldr_structure.jpg" alt="ldrstructure" /> <br>Image source : https://bhavanajagat.files.wordpress.com/2013/09/wholedesigner-photochemistry-photo-resistor.jpg </p>
+									
+								</div>
+							</section>
+						<!-- Three -->
+							<section id="three">
+								<div class="container">
+									<h3>Interfacing with Arduino</h3>
+									<p>LDR , being an analog sensor, can easily be interfaced with Arduino using Analog Pins A0-A5 as shown in image.<br> <br> <img src="images/LDR/ldrarduino.jpg" alt="ldrarduino" /> <br>
+Image source : http://cdn.instructables.com/FYN/JJOX/IBAMNQHP/FYNJJOXIBAMNQHP.MEDIUM.jpg</p>
+<h4>Arduino Code</h4>
+<pre>
+const int ldr = 0;    //A0 assigned as LDR pin.
+int value = 0;        //Store values from LDR.
+
+void setup()
+{
+  Serial.begin(9600);   //Fix serial baud rate at 9600bps
+}
+
+void loop()
+{
+  value = analogRead(ldr);    //Read the analog values from LDR.
+  Serial.println(value);      //Print to serial monitor.
+  delay(250);                 //Delay of 250 milliseconds (1/4th of a second).
+}
+</pre>
+									
 								</div>
 							</section>
 
 						<!-- Three -->
+<!--
+						
 							<section id="three">
 								<div class="container">
 									<h3>My Code HUB</h3>
@@ -88,50 +111,23 @@
 											</div>
 										</article>
 										<article>
-											<a href="https://akshaim.github.io/IoT/iot.html" class="image"><img src="images/pic02.jpg" alt="" /></a>
+											<a href="https://akshaim.github.io/iot.html" class="image"><img src="images/pic02.jpg" alt="" /></a>
 											<div class="inner">
-												<h4><a href="https://akshaim.github.io/IoT/iot.html">Internet of Things (IoT) Lab </a></h4>
-												<p>Documentation on  IoT Lab initiative.Startup guides Arduino , Raspberry Pi and NodeMCU </p>
+												<h4><a href="https://akshaim.github.io/iot.html">Internet of Things</a></h4>
+												<p>Resources on the IoT Lab initiative.</p>
 											</div>
 										</article>
 										<article>
 											<a href="https://github.com/akshaim/myopenROV" class="image"><img src="images/pic03.jpg" alt="" /></a>
 											<div class="inner">
 												<h4><a href="https://github.com/akshaim/myopenROV">My Open ROV</a></h4>
-												<p>An underwater remote operated vehicle using a Raspberry Pi and Arduino</p>
+												<p>My efforts to realize an underwater remote operated vehicle using a Raspberry Pi and Arduino</p>
 											</div>
 										</article>
 									</div>
 								</div>
 							</section>
 
-						<!-- Four -->
-							<section id="four">
-								<div class="container">
-									<h3>Contact Me</h3>
-									<p>You may contact me via email akshai(dot)kannan(at)gmail(dot)com or else make a query here</p>
-									<form method="post" action="http://www.graphenelive.in/akshai.php">
-										<div class="row uniform">
-											<div class="6u 12u(xsmall)"><input type="text" name="name" id="name" placeholder="Name" /></div>
-											<div class="6u 12u(xsmall)"><input type="email" name="email" id="email" placeholder="Email" /></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u"><input type="text" name="subject" id="subject" placeholder="Subject" /></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u"><textarea name="message" id="message" placeholder="Message" rows="6"></textarea></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u">
-												<ul class="actions">
-													<li><input type="submit" class="special" value="Send Message" /></li>
-													<li><input type="reset" value="Reset Form" /></li>
-												</ul>
-											</div>
-										</div>
-									</form>
-								</div>
-							</section>
 
 						<!-- Five -->
 						<!--
