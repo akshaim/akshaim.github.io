@@ -24,8 +24,8 @@
 				<nav id="nav">
 					<ul>
 						<li><a href="#one" class="active">About</a></li>
-						<li><a href="#two">Working</a></li>
-						<li><a href="#three">Interfacing With Arduino</a></li>
+						<li><a href="#two">More</a></li>
+						<li><a href="#three"> More</a></li>
 						
 					</ul>
 				</nav>
@@ -50,11 +50,11 @@
 							<section id="one">
 								<div class="container">
 									<header class="major">
-										<h2>LDR </h2>
-										<p>Light Dependant Resistor<br />
+										<h2>NodeMCU </h2>
+										<p>Node.js strip down for ESP8266 
 </p>
 									</header>
-									<p>A Light Dependent Resistor (LDR) or a photo resistor is a device whose resistivity is a function of the incident electromagnetic radiation.<br><br> <img src="images/LDR/ldr.jpg" alt="ldr" /><br> The light dependent resistor, LDR, is known by many names including the photoresistor, photo resistor, photoconductor, photoconductive cell, or simply the photocell.</p>
+									<p>This tutorial features topics on How to get started on NodeMCU firmware for NodeMCU Dev Kit <a href="https://github.com/nodemcu/nodemcu-devkit-v1.0 ">(Version 1.0 /V2) </a>on a Linux PC.<br><br> <img src="images/NodeMCU_DEVKIT_1.0.jpg" alt="NodeMCU" /><br> NodeMCU can be considered as a very light weight OS with capabilities of handling the file system and run LUA scripts, a cross platform programming languge for embedded hardware.Its quite an easy one.</p>
 
 
 								</div>
@@ -63,33 +63,22 @@
 						<!-- Two -->
 							<section id="two">
 								<div class="container">
-									<h3>Working</h3>
-									<p>LDR offers variation in resistance as a function of light intensity.When the light intensity increases the semiconductor layer gets excited leading to the generation of charge carries hence better conduction ie lower resistance. <br> <br> <img src="images/LDR/ldr.gif" alt="ldrgif" /> <br>Image source : http://www.technologystudent.com/elec1/ldr1.htm<br> <br> An N type semiconductor is layered on top of a ceramic base.Metal contacts are then used to pull connections from the high doped end points, which offer low contact resistance. The aread between the contacts are mostly made in Zig Zag fashion which helps with maximising the exposed area and increase gain by reducing spurious resistance.<br> <br> <img src="images/LDR/ldr_structure.jpg" alt="ldrstructure" /> <br>Image source : https://bhavanajagat.files.wordpress.com/2013/09/wholedesigner-photochemistry-photo-resistor.jpg </p>
+									<h3>Flashing the firmware</h3>
+									<p>Flashing the firmware helps in making sure that you have the latest one.
+<ul> Download the latest version of NodeMCU , a bin file of 0.9.6-dev_20150704 ,from <a href="https://github.com/nodemcu/nodemcu-firmware/releases/">here Link.</a></ul> <ul>knkak</ul></p>
 									
 								</div>
 							</section>
 						<!-- Three -->
 							<section id="three">
 								<div class="container">
-									<h3>Interfacing with Arduino</h3>
+									<!--<h3>Interfacing with Arduino</h3>
 									<p>LDR , being an analog sensor, can easily be interfaced with Arduino using Analog Pins A0-A5 as shown in image.<br> <br> <img src="images/LDR/ldrarduino.jpg" alt="ldrarduino" /> <br>
 Image source : http://cdn.instructables.com/FYN/JJOX/IBAMNQHP/FYNJJOXIBAMNQHP.MEDIUM.jpg</p>
-<h4>Arduino Code</h4>
+-->
+<h4>Blink LED</h4>
 <pre>
-const int ldr = 0;    //A0 assigned as LDR pin.
-int value = 0;        //Store values from LDR.
-
-void setup()
-{
-  Serial.begin(9600);   //Fix serial baud rate at 9600bps
-}
-
-void loop()
-{
-  value = analogRead(ldr);    //Read the analog values from LDR.
-  Serial.println(value);      //Print to serial monitor.
-  delay(250);                 //Delay of 250 milliseconds (1/4th of a second).
-}
+   
 </pre>
 									
 								</div>
