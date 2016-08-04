@@ -24,8 +24,8 @@
 				<nav id="nav">
 					<ul>
 						<li><a href="#one" class="active">About</a></li>
-						<li><a href="#two">Chapters</a></li>
-						<li><a href="#three"> </a></li>
+						<li><a href="#two">Setting Up Esplorer</a></li>
+						<li><a href="#three">Init.lua</a></li>
 						
 					</ul>
 				</nav>
@@ -51,46 +51,50 @@
 								<div class="container">
 									<header class="major">
 										<h2>NodeMCU </h2>
-										<p>Node.js strip down for ESP8266 
+										<p>Node MCU - Introduction to Hardware
 </p>
 									</header>
-									<p>The course contains chapters on developing and IoT application on NodeMCU Dev Kit <a href="https://github.com/nodemcu/nodemcu-devkit-v1.0 ">(Version 1.0 /V2) </a>on a Linux PC.<br><br> <img src="images/NodeMCU_DEVKIT_1.0.jpg" width = "370px" height = "250px"  alt="NodeMCU" /><br>  </a>Node MCU is an open source firmware for ESP8266 SOC based on eLua , a derivative of Lua for embedded hardware.The firmware will work on all ESP - X's ,limited only in terms of breakout for the SOC .It is an ultra low cost module with versions starting at around 3 Dollars (~220 Rs in India) and goes to 8 Dollars (~700 RS) for NodeMCU Dev Kit. The dev kit helps for starters as it has an onboard USB-UART (CP2102) and 3.3v Regulator.<blockquote>NodeMCU can be considered as a very light weight OS with capabilities of handling the file system and run LUA scripts, a cross platform programming languge for embedded hardware.More details can be found from official Documentation <a href = "https://nodemcu.readthedocs.io/en/dev/en/"><font color = "red">Page</font></a></blockquote></p>
+									<p>NodeMCU Dev Kit V2 Pinout <img src="images/nodemcu_pins.png"  alt="NodeMCU" /><br> The device comes with GPIO's, similar to arduino. Not all GPIOs are available at the same time. Please refer to  <a href= "http://blog.circuits4you.com/2016/03/understanding-esp8266-io-pins.html"> <font color="red">Circuits4You Post </font> </a> to know more on GPIO's and its usage  </p>
 
 
 								</div>
 							</section>
 
-						<section id="two">
+						<!-- Two -->
+							<section id="two">
 								<div class="container">
-									<h3>Chapters</h3>
-						
-									<div class="features">
-										<article>
-											<a href="NodeMCU-101.html" class="image"><img src="images/nodemcu_light.jpg" alt="NodeMCU_Light" /></a>
-											<div class="inner">
-												<h4> <a href="NodeMCU-101.html"> Setting Up Node MCU </a></h4>
-												<p>Details on Flashing the lastest firmware and lighting up an LED.</p>
-											</div>
-										</article>
-										<article>
-											<a href="NodeMCU-102.html " class="image"><img src="images/NodeMCU_DEVKIT_1.0.jpg" alt="" /></a>
-											<div class="inner">
-												<h4><a href="NodeMCU-102.html">Hardware Introduction </a></h4>
-												<p> </p>
-											</div>
-										</article>
-										<article>
-											<a href="NodeMCU-103.html " class="image"><img src="images/NodeMCU_DEVKIT_1.0.jpg" alt="" /></a>
-											<div class="inner">
-												<h4><a href="NodeMCU-103.html"> Simple Web Server </a></h4>
-												<p> </p>
-											</div>
-										</article>
-										
-									</div>
+									<h3>Setting up Esplorer</h3>
+									<p>We will be using Esplorer , an IDE for ESP8266, for programming the chip.The software is written in Java and is compatible with machines running Java SE or later</p>
+<ol><li>Install Java.<pre>sudo add-apt-repository ppa:webupd8team/java -y
+sudo apt-get update
+sudo apt-get install oracle-java8-installer</pre></li> 
+
+<li>Download Esplorer from <a href = "http://esp8266.ru/esplorer/" ><font color="red">here and extract it.</font></a></li>
+<li>Launch Esplorer <pre>sudo java -jar ESPlorer.jar</pre></li>
+
+
+
+</ol>
+								</div>
+							</section>
+						<!-- Three -->
+							<section id="three">
+								<div class="container">
+									<h3>Init.Lua</h3>
+									<p>
+
+<pre>
+
+</pre>
+
+
+</p>
+
+									
 								</div>
 							</section>
 
+					</div>
 
 				<!-- Footer -->
 					<section id="footer">
