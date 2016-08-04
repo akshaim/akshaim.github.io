@@ -64,12 +64,12 @@
 							<section id="two">
 								<div class="container">
 									<h3>Setting up Esplorer</h3>
-									<p>We will be using Esplorer , an IDE for ESP8266, for programming the chip.The software is written in Java and is compatible with machines running Java SE or later</p>
+									<p>We will be using Esplorer IDE for programming the chip since it offers far more features than ESPtool.The software is written in Java and is compatible with machines running Java SE or later</p>
 <ol><li>Install Java.<pre>sudo add-apt-repository ppa:webupd8team/java -y
 sudo apt-get update
 sudo apt-get install oracle-java8-installer</pre></li> 
 
-<li>Download Esplorer from <a href = "http://esp8266.ru/esplorer/" ><font color="red">here and extract it.</font></a></li>
+<li>Download Esplorer from <a href = "http://esp8266.ru/esplorer/" ><font color="red">here </font></a> and extract it.</li>
 <li>Launch Esplorer <pre>sudo java -jar ESPlorer.jar</pre></li>
 
 
@@ -80,8 +80,9 @@ sudo apt-get install oracle-java8-installer</pre></li>
 						<!-- Three -->
 							<section id="three">
 								<div class="container">
-									<h3>Init.Lua</h3>
-									<p>
+									<h3>init.lua</h3>
+									<p>For a code to be executed upon reboot it should be saved as init.lua script in ESP8266. It should considered as a application gateway with the condition ; if no code - ignore butif yes code execute. 
+<p>
 
 <pre>
 
