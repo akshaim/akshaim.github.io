@@ -66,7 +66,7 @@
 							<section id="two">
 								<div class="container">
 									<h3>Interfacing with Arduino</h3>
-									<p>The sketch given below simply turns on a LED on the receiver when a button on the transmitter is pressed. The transmitter transmits the code "111." The receiver receives the code "111" and turns on the LED. <br> <br>Ensure the RF24 library is installed , else download it (as zip) from <a href="https://github.com/maniacbug/RF24"> here </a>. You can install the library in Arduino IDE using Sketch-> Import library-> Add library. Another way is to extract the zip file to your Arduino home directory: Arduino/libraries on Linux <br><br><h4> Connection </h4>
+									<p>The sketch given below simply turns on a LED on the receiver when a button on the transmitter is pressed. The transmitter transmits the code "111." The receiver receives the code "111" and turns on the LED. <br> <br>Ensure the RF24 library is installed , else download it (as zip) from <a href="https://github.com/maniacbug/RF24"><font color="red">here</font> </a>. You can install the library in Arduino IDE using Sketch-> Import library-> Add library. Another way is to extract the zip file to your Arduino home directory: Arduino/libraries on Linux <br><br><h4> Connection </h4>
 <ul><li>Pin 9 - CE</li>
 <li>Pin 10 - CS(N) </li>
 <li>Pin 11 - MOSI</li>
@@ -77,55 +77,10 @@
  On the Transmitter:
    <li>Pin 7 - Button</li>
 </p>
-<h4>Arduino Code - Transmitter</h4>
-<pre>
-	#include <SPI.h>
-	#include "nRF24L01.h"
-	#include "RF24.h"
-	int msg[1];
-	RF24 radio(9,10);
-	const uint64_t pipe = 0xE8E8F0F0E1LL;
-	int SW1 = 7;
+<h4>Arduino Code - Transmitter/Receiver</h4>
 
-	void setup(void){
- 		Serial.begin(9600);
- 		radio.begin();
- 		radio.openWritingPipe(pipe);}
-
-	void loop(void){
- 		if (digitalRead(SW1) == HIGH){
- 		msg[0] = 111;
- 		radio.write(msg, 1);}}
-</pre>
-									
-<h4>Arduino Code - Receiver</h4>
-<pre>
-	#include <SPI.h>
-	#include "nRF24L01.h"
-	#include "RF24.h"
-	int msg[1];
-	RF24 radio(9,10);
-	const uint64_t pipe = 0xE8E8F0F0E1LL;
-	int LED1 = 3;
-
-	void setup(void){
- 		Serial.begin(9600);
- 		radio.begin();
- 		radio.openReadingPipe(1,pipe);
- 		radio.startListening();
- 		pinMode(LED1, OUTPUT);}
-
-	void loop(void){
- 		if (radio.available()){
-  			 bool done = false;    
-  		while (!done){
-     			done = radio.read(msg, 1);      
-     			Serial.println(msg[0]);
-     			if (msg[0] == 111){delay(10);digitalWrite(LED1, HIGH);}
-     		else {digitalWrite(LED1, LOW);}
-     		delay(10);}}
- 		else{Serial.println("No radio available");}}
-</pre>								</div>
+<p>You may clone the NRF24L01 repo using <pre> git clone https://github.com/akshaim/NRF24l01</pre> </p>									
+							</div>
 							</section>
 
 						<!-- Three -->
