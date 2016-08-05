@@ -70,10 +70,14 @@ sudo apt-get update
 sudo apt-get install oracle-java8-installer</pre></li> 
 
 <li>Download Esplorer from <a href = "http://esp8266.ru/esplorer/" ><font color="red">here </font></a> and extract it.</li>
-<li>Launch Esplorer <pre>sudo java -jar ESPlorer.jar</pre></li>
+<li>Launch Esplorer <pre>sudo java -jar ESPlorer.jar</pre><img src="images/ESPlorer.png" width="800px" height="600px" alt="Esplorer"/></li>
 
-
-
+<br>
+<li>Select the device address (ttyUSB0 in my case) and click on Open.After establishing connection , you may then press reset on dev kit.<img src="images/ESPlorer_connected.png" width="800px" height="600px" alt="ESPlorer_connected"/> </li>
+<blockquote>" lua: cannot open init.lua ". The error is normal and expected.</blockquote>
+<br>
+<li>On the left pane (Editor), you may enter the script. <img src="images/ESPlorer_hello.png" width="800px" height="600px" alt="ESPlorer_hello"/> </li> <br>
+<li>Click on Send to ESP button in the bottom left and observe the results on right pane(serial monitor). <img src="images/ESPlorer_hello_print.png" width="800px" height="600px" alt="ESPlorer_hello_print"/> </li>
 </ol>
 								</div>
 							</section>
@@ -81,15 +85,17 @@ sudo apt-get install oracle-java8-installer</pre></li>
 							<section id="three">
 								<div class="container">
 									<h3>init.lua</h3>
-									<p>For a code to be executed upon reboot it should be saved as init.lua script in ESP8266. It should considered as a application gateway with the condition ; if no code - ignore butif yes code execute. 
-<p>
+									<p>For a code to be executed upon reboot it should be saved as init.lua script in ESP8266. It should considered as a application gateway with the condition ; if no code - ignore but if yes execute code. 
+<ul> <li>Hello World<br> Save the following file as init.lua<br>
 
 <pre>
-
+print("Hello World")
 </pre>
+<br> Now upon each reboot Hello World will be printed on the serial monitor
 
-
-</p>
+<blockquote>When you save changes to an init.lua in the editor it is automatically uploaded to the chip.</blockquote>
+</li>
+</ul>
 
 									
 								</div>
