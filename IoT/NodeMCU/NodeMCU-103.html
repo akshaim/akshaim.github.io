@@ -24,8 +24,8 @@
 				<nav id="nav">
 					<ul>
 						<li><a href="#one" class="active">About</a></li>
-						<li><a href="#two">Chapters</a></li>
-						<li><a href="#three"> </a></li>
+						<li><a href="#two">Code</a></li>
+						
 						
 					</ul>
 				</nav>
@@ -51,46 +51,36 @@
 								<div class="container">
 									<header class="major">
 										<h2>NodeMCU </h2>
-										<p>Node.js strip down for ESP8266 
+										<p>Node MCU - Building a simple Webserver
 </p>
 									</header>
-									<p>The course contains chapters on developing and IoT application on NodeMCU Dev Kit <a href="https://github.com/nodemcu/nodemcu-devkit-v1.0 ">(Version 1.0 /V2) </a>on a Linux PC.<br><br> <img src="images/NodeMCU_DEVKIT_1.0.jpg" width = "370px" height = "250px"  alt="NodeMCU" /><br>  </a>Node MCU is an open source firmware for ESP8266 SOC based on eLua , a derivative of Lua for embedded hardware.The firmware will work on all ESP - X's ,limited only in terms of breakout for the SOC .It is an ultra low cost module with versions starting at around 3 Dollars (~220 Rs in India) and goes to 8 Dollars (~700 RS) for NodeMCU Dev Kit. The dev kit helps for starters as it has an onboard USB-UART (CP2102) and 3.3v Regulator.<blockquote>NodeMCU can be considered as a very light weight OS with capabilities of handling the file system and run LUA scripts, a cross platform programming languge for embedded hardware.More details can be found from official Documentation <a href = "https://nodemcu.readthedocs.io/en/dev/en/"><font color = "red">Page</font></a></blockquote></p>
+									<p>NodeMCU supports multiple modes for WiFi setup such as Station , Access Point (AP) and other <a href= "https://nodemcu.readthedocs.io/en/dev/en/modules/wifi/#wifisetmode"><font color ="red">combinations.</font></a>The tutorial aims at setting up a station which connects to a local Wifi AP and create a local service in ESP8266 to control GPIO's .</a>  </p>
 
 
 								</div>
 							</section>
 
-						<section id="two">
+						<!-- Two -->
+							<section id="two">
 								<div class="container">
-									<h3>Chapters</h3>
-						
-									<div class="features">
-										<article>
-											<a href="NodeMCU-101.html" class="image"><img src="images/nodemcu_light.jpg" alt="NodeMCU_Light" /></a>
-											<div class="inner">
-												<h4> <a href="NodeMCU-101.html"> Setting Up Node MCU </a></h4>
-												<p>Details on Flashing the lastest firmware and lighting up an LED.</p>
-											</div>
-										</article>
-										<article>
-											<a href="NodeMCU-102.html " class="image"><img src="images/NodeMCU_Blink.png" alt="NodeMCU Blink" /></a>
-											<div class="inner">
-												<h4><a href="NodeMCU-102.html">Hardware Introduction </a></h4>
-												<p> NodeMCU Pinout , Setting Up ESPlorer and init.lua</p>
-											</div>
-										</article>
-										<article>
-											<a href="NodeMCU-103.html " class="image"><img src="images/NodeMCU_Server.png" alt="Node MCU Server" /></a>
-											<div class="inner">
-												<h4><a href="NodeMCU-103.html"> Simple Web Server </a></h4>
-												<p>Building a simple webserver using NodeMCU </p>
-											</div>
-										</article>
-										
-									</div>
-								</div>
-							</section>
+									<h3>Code</h3>
+									<ul><li>We have two lua scripts An init.lua to establish a connect and server.lua to run a local service (TCP Server).</li>
+<li>To download the script run 
+<pre>git clone https://github.com/akshaim/NodeMCU</pre>
+or download the scripts from <a href="https://github.com/akshaim/NodeMCU"><font color= "red">here</font></a> </li>
+<li>Open server.lua in ESPlorer and click Save to ESP </li>
+<li>Open init.lua in ESPlorer , Enter you SSID and Password in the fields.Click save to ESP</li>
+<li>Reset ESP8266</li>
+<li>The IP address of the device will be displayed in the serial monitor of ESPlorer.</li>
+<li>Open your browser and enter the IP address.</li>
+<li>Click on the buttons to observe the output <img src="images/NodeMCU_Server.png" alt="NodeMCU Server" /></li>
+<blockquote>LED 1 refers to an LED connected to D1 via 560 Ohm resistor and LED 2 refers to onboard LED on ESP12E</blockquote>
+</ul>
 
+
+								</div>
+							
+					</div>
 
 				<!-- Footer -->
 					<section id="footer">

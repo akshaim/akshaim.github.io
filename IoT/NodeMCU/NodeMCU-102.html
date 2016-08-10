@@ -95,8 +95,8 @@ print("Hello World")
 
 <blockquote>When you save changes to an init.lua in the editor it is automatically uploaded to the chip.</blockquote>
 </li>
-<li>Write value to a GPIO <pre> 
-PIN = 1
+<li>Write value to a GPIO 
+<pre>PIN = 1
 gpio.mode(PIN,gpio.OUTPUT) -- Set pin 1 as output.
 gpio.write(PIN,gpio.HIGH) -- Set D1 to high.</pre><br> save the code as init.lua and now PIN D1 will be high.<blockquote> Connect an LED to pin D1 via 560 Ohm resistance to observe the output.</li>
 
@@ -111,7 +111,6 @@ tmr.alarm(0, 1000, 1, function () --print value in 1 second interval
 end)</pre></li>
 <li> Blink LED <pre>PIN = 1
 gpio.mode(PIN,gpio.OUTPUT) -- PIN 2 as input
-
 tmr.alarm(0, 1000, 1, function () --execute loop in 1 second interval
    if status==0 then
     status=1
@@ -120,7 +119,8 @@ tmr.alarm(0, 1000, 1, function () --execute loop in 1 second interval
     status =0
     gpio.write(PIN, gpio.LOW)
    end
-end)</pre><blockquote>An infinite loop should not be used in init.lua as it will make the chip unresponsive. If that happens flash the firmware again using esptool.py.If that does not remove clear init.lua flash an <a href = "https://github.com/nodemcu/nodemcu-firmware/releases/tag/dev20150311"><font color = "red" >old firmware </font></a>and then flash a new one.</blockquote></li>
+end)</pre>
+<img src="images/NodeMCU_Blink.png"  alt="NodeMCU_Blink" /><blockquote>An infinite loop should not be used in init.lua as it will make the chip unresponsive. If that happens flash the firmware again using esptool.py.If that does not clear init.lua flash an <a href = "https://github.com/nodemcu/nodemcu-firmware/releases/tag/dev20150311"><font color = "red" >old firmware </font></a>and then flash a new one as shown in the <a href="NodeMCU-101.html"><font color="red">previous tutorial.</font></a> If absolutely necessary ,insert a delay of 5 seconds before the infinite loop so that the file.format() may be requested after reset.</blockquote></li>
 
 </ul>
 
