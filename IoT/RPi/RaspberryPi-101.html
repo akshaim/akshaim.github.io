@@ -90,13 +90,15 @@
 									<h3>SD Card Setup</h3>
 									<ul><li>Insert SD card in your machine using a card reader and find its address.Try in terminal<pre>lsblk</pre>In my case it was mmcblk0 </li>
 <li>If you have a fresh SD card,copy the the image file(.img) after extraction to the memory.Make sure that you are in the same directory as image and then try<pre>sudo dd if=2016-05-27-raspbian-jessie.img of=/dev/mmcblk0 bs=2M status=progress
-sudo sync</pre><blockquote>"status=progress" flag wont work on Ubuntu 14.04 unless you upgrade coreutils from 8.21 to 8.24. Else remove the flag and wait(~20mins) for the processs to complete in background.</blockquote></li>
-<li>If you have an old SD card or if the above process fails to provide a bootable SD card, try writing zeroes to remove partitions and repeat the previous step.<pre>sudo dd if=/dev/zero of=/dev/mmcblk0 bs=2M status=progress
+sudo sync</pre><blockquote>"status=progress" flag is used to show the Read Write status but it wont work on Ubuntu 14.04 unless you upgrade coreutils from 8.21 to 8.24. Else remove the flag and wait(~20mins) for the processs to complete in background.</blockquote></li>
+<li><font color = "red">If you have an old SD card or if the above process fails to provide a bootable SD card, try writing zeroes to remove partitions and repeat the previous step.</font><pre>sudo dd if=/dev/zero of=/dev/mmcblk0 bs=2M status=progress
 sudo sync</pre></li>
 <li>Now insert the card to Rasbperry Pi</li>
+<li>Connect the HDMI to VGA adapter (if necessary) ,USB Keyboard ,USB Mouse and ethernet cable for internet access</li>
 
 						
 								</ul>
+<blockquote>The course is based on Raspbian Jessie.You are free to use a different OS. For most Generic Applications Raspbian is fine.<br>If you looking for a Media Box you try OSMC - Open Source Media Center based on Kodi or OpenELEC, or if you are a fan of Mate then Ubuntu Mate ,or Snappy Core for Cloud applications.There is RISC OS which offers a very different experience and the list goes on!!</blockquote>
 									
 								</div>
 							</section>
