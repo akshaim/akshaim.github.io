@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<!--
+ CCA 3.0 license 
+-->
+<html>
+	<head>
+		<title>Initial Configuration - Raspberry Pi</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="../../assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../../assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<script>
+  		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  		ga('create', 'UA-82341121-1', 'auto');
+  		ga('send', 'pageview');
+		</script>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<section id="header">
+				<header>
+					<span class="image avatar"><img src="images/avatar.jpg" alt="" /></span>
+					<h1 id="logo"><a href="#">Akshai M</a></h1>
+					<p><a href="https://en.wikipedia.org/wiki/Open-source_hardware">OSHW</a> Developer  @ <a href="http://icfoss.in/"> ICFOSS</a>
+				</br>Founder <a href="http://www.microhope.org">MicroHOPE </a> Foundation </p>
+				</header>
+				<nav id="nav">
+					<ul>
+						<li><a href="#one" class="active">Initial Config</a></li>
+						<li><a href="#two">Raspi-Config</a></li>
+						<li><a href="#three">SSH</a></li>
+						
+					</ul>
+				</nav>
+				<footer>
+					<ul class="icons">
+						<li><a href="https://twitter.com/m_akshai" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="https://www.facebook.com/akshaimkurup" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+						<li><a href="https://www.instagram.com/akshaim/" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+						<li><a href="https://github.com/akshaim" class="icon fa-github"><span class="label">Github</span></a></li>
+						
+					</ul>
+				</footer>
+			</section>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- One -->
+							<section id="one">
+								<div class="container">
+									<header class="major">
+										<h2>Initial Configuration </h2>
+										<p>Setting up Raspi-Config</p>
+									</header>
+									<p>After booting Raspberry Pi you will see desktop , similar to a Linux machine.<br></p><img src="images/RPi-Desktop.jpg "  alt="Raspberry Pi Desktop" /><p>Raspbian Jessie offers an LXDE Desktop environment based on version 3 of GTK+. <blockquote>If you boot to console/terminal , ie if you run an old version of raspbian,log in with <font color = "blue">pi</font> as user name and <font color = "blue">raspberry</font> as password and then type <font color = "blue">startx</font> to go to desktop.</blockquote></p>
+
+								</div>
+							</section>
+
+						<!-- Two -->
+							<section id="two">
+								<div class="container">
+									<h3>Raspi-Config</h3>
+									<p>Raspi-config is a simple tool to configure raspberry pi.It's written in bash and can be run in a terminal. Its uses whiptail for dialog boxes and to enable interactive shell scripts.So lets configure RPi.</p>
+									<ol>
+									<li>Launch raspi-config. <pre>sudo raspi-config</pre><img src="images/raspi-config.jpg "  alt="Raspberry Pi Config" /></li>
+									<li>Click on Expand filesystem. This will ensure full utilisation of memory card.</li>
+									<li>Change Password , if you wish to change it.</li>
+									<li>Go to advanced options and enable SSH - Secure Shell <img src="images/raspi-config_adv.jpeg "  alt="raspi-config Advanced Options" /></li>
+									<li>Click Finish and RPi will reboot</li>
+									<li>To enable US Keyboard Layout edit the Keyboard file.<pre>sudo nano /etc/default/keyboard</pre>Change "gb" to "us" and save by pressing cntrl + o. Exit nano by pressing cntrl + x. </li>
+									
+									</ol>
+									</div>
+							</section>
+						<!-- Three -->
+							<section id="three">
+								<div class="container">
+									<h3>Secure Shell - SSH</h3>
+									<p>Raspberry Pi is mostly used as a headless remote device hence the relevance of SSH.SSH is a secure encrypted network protocol that enables secure client-server communication over an unsecured network.Its largely used for server administration.Also Secure Copy-SCP and SSH File Transfer Protocol- SFTP are largely used for file transfer applications.</p>
+<ul><li>Connect RPi to a network via ethernet or WiFi.</li>
+<li>Find RPi's Local IP address.On RPi's terminal type<pre>ifconfig</pre></li>
+<li>Connect your Linux Laptop or PC to the same network.</li>
+<li>On you Linux PC , type in terminal. Replace ipaddress with RPi's IP address<pre>ssh pi@ipaddress</pre></li>
+<li>Now you can observe RPi's terminal.<blockquote>SSH can be thought of as a new terminal opened in raspberry pi which is accessible only over a network, remote media.</blockquote></li>
+<li>This case works only on a local network since you have a local ip.If you need to access RPi over internet you will need global ip and setup port forward to RPi on port 22 in the router.Since most modems get their IP via DHCP the IP address can vary with time so for a reliable connection you will need to configure DDNS.<blockquote>Else try DDNS + UPnP setup can be used.With UPnP there is no need to configure the modem.More details can be found <a href = "https://pavelfatin.com/access-your-raspberry-pi-from-anywhere/"><font color = "red">here.</font></a></blockquote></li>
+
+						
+								</ul>
+									
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Footer -->
+					<section id="footer">
+						<div class="container">
+							<ul class="copyright">
+								<li>All content on this site is available under the Creative Commons Attribution-ShareAlike 3.0 Unported  <a href="https://creativecommons.org/licenses/by-sa/3.0/">(CC BY-SA 3.0)</a>license.</li>
+							</ul>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollzer.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>>
