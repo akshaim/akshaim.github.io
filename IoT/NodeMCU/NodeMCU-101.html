@@ -79,7 +79,7 @@ git clone https://github.com/themadinventor/esptool
 </pre></blockquote></li>
  <blockquote>Note : For esptool to work you need Python- Serial installed.For installation try <pre>sudo apt-get install python-serial</pre></blockquote>
 <li>Copy the firmware(.bin) file to the cloned/extracted folder.</li>
-<li>Plug in NodeMCU Dev kit and identify its address (CP210x address) using the following command. <pre> dmeg | grep tty </pre></li>
+<li>Plug in NodeMCU Dev kit and identify its address (CP210x address) using the following command. <pre> dmesg | grep tty </pre></li>
 <li> To ensure that we have the right permissions. <pre> sudo chmod 777 /dev/ttyUSB0 </pre></li>
 <li> Flash the firmware <pre> sudo python ./esptool.py --port=/dev/ttyUSB0  write_flash -fm=dio -fs=32m 0x00000 nodemcu_float_0.9.6-dev_20150704.bin</pre></li><blockquote> if you have a 512Kb Flash version change "dio" to "qio" and "32m" to "4m"</blockquote>
 <li>Reconnect the device. Identify the device and set permissions as mentioned in steps 4 & 5.</li>
