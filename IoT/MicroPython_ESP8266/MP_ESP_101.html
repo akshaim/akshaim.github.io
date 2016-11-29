@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<!--
+ CCA 3.0 license 
+-->
+<html>
+	<head>
+		<title>Building MicroPython for ESP8266</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="../../assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../../assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<script>
+  		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  		ga('create', 'UA-82341121-1', 'auto');
+  		ga('send', 'pageview');
+		</script>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<section id="header">
+				<header>
+					<span class="image avatar"><img src="images/avatar.jpg" alt="" /></span>
+					<h1 id="logo"><a href="#">Akshai M</a></h1>
+					<p><a href="https://en.wikipedia.org/wiki/Open-source_hardware" target="_blank">OSHW</a> Developer  @ <a href="http://icfoss.in/"> ICFOSS</a>
+				</br>Founder <a href="http://www.microhope.org" target="_blank">MicroHOPE </a> Foundation </p>
+				</header>
+				<nav id="nav">
+					<ul>
+						<li><a href="#one" class="active">About</a></li>
+						<li><a href="#two">Setting Up ESP SDK</a></li>
+						<li><a href="#three">Building and Uploading firmware</a></li>
+						
+						
+					</ul>
+				</nav>
+				<footer>
+					<ul class="icons">
+						<li><a href="https://twitter.com/m_akshai" target="_blank" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="https://www.facebook.com/akshaimkurup" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+						<li><a href="https://www.instagram.com/akshaim/" target="_blank" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+						<li><a href="https://github.com/akshaim" target="_blank" class="icon fa-github"><span class="label">Github</span></a></li>
+						
+					</ul>
+				</footer>
+			</section>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- One -->
+							<section id="one">
+								<div class="container">
+									<header class="major">
+										<h2>About</h2>
+										<p>MicroPython on ESP8266
+</p>
+									</header>
+									<p>This tutorial features topics on How to get started on MicroPython. We will use the same NodeMCU Dev Board from AMICA for the tutorial since it helps in easy deployment of code. Previous tutorial <a href="http://akshaim.in/IoT/NodeMCU/NodeMCU.html" target="_blank"><font color="red">link.</font></a><br>Being a new technology,it is always reccommended to build the micropython firmware for the latest update. If you need an old firmware you may go to this link <a href="http://micropython.org/download#esp8266" target="_blank"><font color="red">link</font></a></p><br><img src="images/mp_esp12.jpg" width = "370px" height = "250px" alt="MP ESP12" /><br>Image Source : https://i.ytimg.com/vi/mq0nRgQIxj0/maxresdefault.jpg</p>
+
+
+								</div>
+							</section>
+
+						<!-- Two -->
+							<section id="two">
+								<div class="container">
+									<h3>Setting Up SDK</h3>
+									<p>We will need OpenSource ESP SDK tool chain to build the binaries.You can find more about the SDK from <a href = "https://github.com/pfalcon/esp-open-sdk"><font color="red"> here.</font></a>
+<ol>
+<li>To ensure that the depedencies are installed.<br><pre>sudo apt-get install make unrar-free autoconf automake libtool gcc g++ gperf flex bison texinfo gawk ncurses-dev libexpat-dev python-dev python python-serial sed git unzip bash help2man wget bzip2 libtool-bin</pre> </li>
+<li>Clone the source <br> <pre>git clone --recursive https://github.com/pfalcon/esp-open-sdk.git</pre></li>
+<li>Move to cloned directory. <pre>cd esp-open-sdk</pre></li>
+<li>Build the SDK.<pre>make</pre><blockquote>The process will take several minutes. It took me 30 minutes so please wait for the process to complete</blockquote></li>
+<li>Add path for the bourne shell to find the program<pre>export PATH=/home/akshaim/Documents/ESP8266/esp-open-sdk/xtensa-lx106-elf/bin:$PATH</pre><blockquote>The program is located in  xtensa-lx106-elf/bin hence please make sure that you give location as in your system</blockquote></li>
+</ol>
+									
+								</div>
+							</section>
+						<!-- Three -->
+							<section id="three">
+								<div class="container">
+									<h3>Building and Uploading Firmware</h3>
+
+<ol>									<p>We will now try to build/crosscompile the binaries from source.You can find more about micropython source from <a href= "https://github.com/micropython/micropython/tree/master/esp8266"><font color="red">here</font></a>. Before proceeding ensure that your working directory is esp-open-sdk.
+<li>Clone the Micropython repository<pre>git clone --recursive https://github.com/micropython/micropython.git</pre><blockquote>Now you will have micropython folder created inside esp-open-sdk folder.</blockquote></li>
+<li>Change Directory <pre>cd micropython</pre></li>
+<li>To add external dependencies<pre>git submodule update --init</pre></li>
+<li>Build the cross compiler<pre>make -C mpy-cross</pre></li>
+<li>Change directory<pre>cd esp8266</pre></li>
+<li>Make <pre>make axtls</pre></li>
+<li>Make the bin <pre>make</pre><blockquote>The output will be a file named firmware-combined.bin located in esp8266/build </blockquote></li>
+<li>Change Directory <pre>cd build</pre></li>
+<li>Upload the code<pre>esptool.py --port=/dev/ttyUSB0  write_flash -fm=dio -fs=32m 0x00000 firmware-combined.bin</pre><blockquote>For more details on using ESPtool please refer my previous <a href= "http://akshaim.in/IoT/NodeMCU/NodeMCU-101.html"><font color="red">tutorial</font></a></blockquote></li>
+</ol>
+</p>
+
+									
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Footer -->
+					<section id="footer">
+						<div class="container">
+							<ul class="copyright">
+								<li>All content on this site is available under the Creative Commons Attribution-ShareAlike 3.0 Unported  <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">(CC BY-SA 3.0)</a>license.</li>
+							</ul>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollzer.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>>
