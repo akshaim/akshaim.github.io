@@ -78,10 +78,11 @@
 git clone https://github.com/themadinventor/esptool
 </pre></blockquote></li>
  <blockquote>Note : For esptool to work you need Python- Serial installed.For installation try <pre>sudo apt-get install python-serial</pre></blockquote>
-<li>Copy the firmware(.bin) file to the cloned/extracted folder.</li>
+<li>Change directory <pre>cd esptool</pre></li>
+<li>Install the tool<pre>sudo python setup.py install</pre><blockquote>You can also install the stable version via pip using <pre>python setup.py install</pre></blockquote></li>
 <li>Plug in NodeMCU Dev kit and identify its address (CP210x address) using the following command. <pre> dmesg | grep tty </pre></li>
 <li> To ensure that we have the right permissions. <pre> sudo chmod 777 /dev/ttyUSB0 </pre></li>
-<li> Flash the firmware <pre> sudo python ./esptool.py --port=/dev/ttyUSB0  write_flash -fm=dio -fs=32m 0x00000 nodemcu_float_0.9.6-dev_20150704.bin</pre></li><blockquote> if you have a 512Kb Flash version change "dio" to "qio" and "32m" to "4m"</blockquote>
+<li> Flash the firmware <pre> esptool.py --port=/dev/ttyUSB0 --baud 460800  write_flash -fm=dio -fs=32m 0x00000 nodemcu_float_0.9.6-dev_20150704.bin</pre></li><blockquote> if you have a 512Kb Flash version change "dio" to "qio" and "32m" to "4m". Try reducing the baud to 115200 if error occurs.You can also refer to <a href = "https://docs.micropython.org/en/latest/esp8266/esp8266/tutorial/intro.html#troubleshooting-installation-problems" target="_blank"><font color="red">offical documentation</font></a> for troubleshooting</blockquote>
 <li>Reconnect the device. Identify the device and set permissions as mentioned in steps 4 & 5.</li>
 <li>To communicate with the device you can use minicom, screen or gtkterm. I will be using the later since others are quite buggy. Installing GTKterm <pre> sudo apt-get install gtkterm </pre></li>
 <li> To run the app <pre>sudo gtkterm </pre> Alternatively you may search for Serial Port Terminal in the launcher.</li>
