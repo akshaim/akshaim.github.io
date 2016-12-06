@@ -99,7 +99,7 @@
 <li>Make <pre>make axtls</pre></li>
 <li>Make the bin <pre>make</pre><blockquote>The output will be a file named firmware-combined.bin located in esp8266/build </blockquote></li>
 <li>Change Directory <pre>cd build</pre></li>
-<li>Upload the code<pre>esptool.py --port=/dev/ttyUSB0  write_flash -fm=dio -fs=32m 0x00000 firmware-combined.bin</pre><blockquote>For more details on using ESPtool please refer my previous <a href= "http://akshaim.in/IoT/NodeMCU/NodeMCU-101.html" target="_blank"><font color="red">tutorial</font></a></blockquote></li>
+<li>Upload the code<pre>esptool.py --port=/dev/ttyUSB0 --baud 460800 write_flash -fm=dio -fs=32m 0x00000 firmware-combined.bin</pre><blockquote>For more details on using ESPtool please refer my previous <a href= "http://akshaim.in/IoT/NodeMCU/NodeMCU-101.html" target="_blank"><font color="red">tutorial</font></a></blockquote></li>
 </ol>
 </p>
 
