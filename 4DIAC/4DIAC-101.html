@@ -64,7 +64,7 @@
 										<p>Setting up 4DIAC-IDE on Linux Machine
 </p>
 									</header>
-									<ul><p>Setting up 4DIAC on a Linux machine is a straightforward task.Latest IDE is available in 4DIAC <a href= "http://www.eclipse.org/4diac/en_dow.php" target="_blank"><font color="red">Downloads page.</font></a></p><li>Extract the tarball<pre>tar -xzvf filename</pre></li><li> Go to extracted folder and execute the IDE <pre>./4DIAC</pre></li><ul>
+									<ul><p>Setting up 4DIAC on a Linux machine is a straightforward task.Latest IDE is available in 4DIAC <a href= "http://www.eclipse.org/4diac/en_dow.php" target="_blank"><font color="red">Downloads page.</font></a></p><li>Extract the tarball<pre>tar -xzvf filename</pre></li><li> Go to extracted folder and you may execute the IDE <pre>./4DIAC</pre></li><ul>
 
 
 								</div>
@@ -75,29 +75,34 @@
 						<section id="two">
 								<div class="container">
 									<h3>Forte on Raspberry Pi</h3>
-									<p>Forte is a runtime enviroment for apps developed in 4DIAC. Forte can be run on embedded resources such as Raspberry Pi, Beagle Bone or any Linux Board. For installing Forte RT on RPi, you can try the <a href = "https://eclipse.org/4diac/documentation/html/installation/raspi.html" ><font color = "red">official documentation.</font> </a>Procedures for compiling and cross compiling Forte are mentioned in the page.Compiling should work in all Rpi Boards but it takes over 45 Minutes on a Pi Zero board hence its advised to do a cross compilation and upload the file via SFTP using Filezilla. For cross compilation you may follow the following procedure.
+									<p>Forte is a runtime enviroment for apps developed in 4DIAC. Forte can be run on embedded resources such as Raspberry Pi, Beagle Bone or any Linux Board. For installing Forte RT on RPi, you can try the <a href = "https://eclipse.org/4diac/documentation/html/installation/raspi.html" ><font color = "red">official documentation.</font> </a>Procedures for compiling and cross compiling Forte are mentioned in the page.Compiling should work in all Rpi Boards but it takes over 45 Minutes on a Pi Zero board hence its advised to do a <a href="https://en.wikipedia.org/wiki/Cross_compiler" target="_blank"> <font color="red">cross compilation</font></a> and upload the executable files to RPi via SFTP/SCP/FISH. For cross compilation you may follow the following procedure since the one mentioned in official documentation did not work on Pi Zero.I have tested the executable on Pi Zero and Pi 3, it should work.
 <li>Clone the repo</li>
 <pre>git clone https://git.eclipse.org/r/4diac/org.eclipse.4diac.forte</pre>
 <li>Open CMake. If you dont have it installed , try.</li>
 <pre>sudo apt-get install cmake</pre>
-<li>Point the <font color = "orange">source code</font> field to cloned directory and <font color = "orange">build binaries</font> to your preferred folder and then press <font color="orange">configure</font> </li> <blockquote>Make sure that name of directories in the path does not contain blank spaces.</blockquote>
+<li>Point the <font color = "orange">source code</font> field to cloned directory and <font color = "orange">build binaries</font> to your preferred folder and then do <font color="orange">configure</font> </li> <blockquote>Make sure that name of directories in the path does not contain blank spaces.</blockquote>
 <a class="CMake" href="images/CMake_1.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_1.png" width = "700px" height = "400px" alt="CMake" /></a><br><br>
 <li>Select options as shown below.</li>
 <a class="CMake" href="images/CMake_2.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_2.png" width = "450px" height = "370px" alt="CMake" /></a><br><br>
 <li>Give a name for the build , I named it RPi. Select toolchain files for C and C++ compilers and finish.</li>
 
-<a class="CMake" href="images/CMake_3.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_3.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br><blockquote>I had used official toolchain from RPi foundation.You may clone the same.<pre>git clone https://github.com/raspberrypi/tools</pre>In the cloned folder select arm-linux-gnueabihf-gcc and arm-linux-gnueabihf-g++ for C and C++ respectively which are located in tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/. Target root should be arm-rpi-4.9.3-linux-gnueabihf folder. </blockquote><br>
-<li>Now an error should pop up.Selected the right system(forte) architecture should solve the error.</li>
+<a class="CMake" href="images/CMake_3.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_3.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br><blockquote>I had used official toolchain from RPi foundation.You may clone the same.<pre>git clone https://github.com/raspberrypi/tools</pre>In the cloned folder select arm-linux-gnueabihf-gcc and arm-linux-gnueabihf-g++ for C and C++ respectively which are located in tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/. Target root may be pointed to arm-rpi-4.9.3-linux-gnueabihf folder. </blockquote><br>
+<li>Now an error might pop up.Selected the right system(forte) architecture should solve the error.</li>
 <a class="CMake" href="images/CMake_4.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_4.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br>
 <li>Select "Posix" as Forte Architecture</li>
 <a class="CMake" href="images/CMake_5.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_5.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br>
-<li>Also select SysFs since it enable GPIO access in RPi. You can also select other modules if required.</li>
+<li>Also select SysFs to enable GPIO access for forte in RPi. You can also select other modules if required.</li>
 <a class="CMake" href="images/CMake_6.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_6.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br>
-<li>Click <font color = "orange">Configure</font> and <font color = "orange">Generate</font>.CMake will then generate configuration files to cross compile forte</li>
-<li>To compile go to target directory for binary which you selected in CMake, which is "build" in my case and run</li><pre>make</pre>
+<li><font color = "orange">Configure</font> and <font color = "orange">Generate</font>.CMake will then generate configuration files to cross compile forte</li>
+<blockquote>If you made an inappropriate selection in any of the above procedures listed above, delete cache,configure and repeat the process.</blockquote>
+<li>To compile, go to target build directory for binaries, which is "build" in my case and run</li><pre>make</pre>
 <li>After compilation copy the entire folder, build in my case, to Raspberry Pi.Try</li>
-<pre>scp -r build pi@local_ip_address:~</pre>Then enter password.This will copy build folder recursively  to home folder of machine(Rpi) with "local_ip_address".
-<blockquote>Alternatively you may use Filezilla, give IP address, username, password of Pi and 22 (SFTP) as port number.</blockquote></li>
+<pre>scp -r build pi@local_ip_address:~</pre>Then enter password.This will copy build folder recursively  to home folder(~) of machine(RPi) with "local_ip_address".
+<blockquote>You can also use Filezilla, give IP address, username, password of Pi and 22 (SFTP) as port number.</blockquote></li>
+<li>Forte is located in src. To execute, launch terminal in RPi and try.</li>
+<pre>cd src
+sudo ./forte</pre>
+<blockquote> Forte will start and wait for 4DIAC to upload application.If no message is shown in terminal, it means forte is up and working properly.<br>You may refer <a href = "IoT/RPi/RaspberryPi-102.html" target="_blank"><font color="red"> SSH tutorial </font></a>to access RPi shell remotely on a network.</blockquote>
 </p>
 
 									
@@ -119,7 +124,8 @@
 <a class="4DIAC_Resources" href="images/4DIAC_Resources.png" data-lightbox="4DIAC_Resources" data-title="4DIAC_Resources"><img class="4DIAC_Resources" src="images/4DIAC_Resources.png" width = "700px" height = "400px" alt="4DIAC_Resources" /></a> <br><br>
 <li>System Perspective - Provides a system view with system explorer, system configuration and application</li>
 <a class="4DIAC_System" href="images/4DIAC_System.png" data-lightbox="4DIAC_System" data-title="4DIAC_System"><img class="4DIAC_System" src="images/4DIAC_System.png" width = "700px" height = "400px" alt="4DIAC_System" /></a> <br><br>
-<li>Type Management Perspective - View and manage Function Block types </li> <a class="4DIAC_Type" href="images/4DIAC_Type.png" data-lightbox="4DIAC_Type" data-title="4DIAC_Type"><img class="4DIAC_Type" src="images/4DIAC_Type.png" width = "700px" height = "400px" alt="4DIAC_Type" /></a>
+<li>Type Management Perspective - View and manage Function Block types </li> <a class="4DIAC_Type" href="images/4DIAC_Type.png" data-lightbox="4DIAC_Type" data-title="4DIAC_Type"><img class="4DIAC_Type" src="images/4DIAC_Type.png" width = "700px" height = "400px" alt="4DIAC_Type" /></a> <br>
+We will learn more on 4DIAC perspectives and IDE usage in next chapter</p>
 
 									
 								</div>
