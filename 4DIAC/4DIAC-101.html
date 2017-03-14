@@ -75,7 +75,7 @@
 						<section id="two">
 								<div class="container">
 									<h3>Forte on Raspberry Pi</h3>
-									<p>Forte is a runtime enviroment for apps developed in 4DIAC. Forte can be run on embedded resources such as Raspberry Pi, Beagle Bone or any Linux Board. For installing Forte RT on RPi, you can try the <a href = "https://eclipse.org/4diac/documentation/html/installation/raspi.html" ><font color = "red">official documentation.</font> </a>Procedures for compiling and cross compiling Forte are mentioned in the page.Compiling should work in all Rpi Boards but it takes over 45 Minutes on a Pi Zero board hence its advised to do a <a href="https://en.wikipedia.org/wiki/Cross_compiler" target="_blank"> <font color="red">cross compilation</font></a> and upload the executable files to RPi via SFTP/SCP/FISH. For cross compilation you may follow the following procedure since the one mentioned in official documentation did not work on Pi Zero.I have tested the executable on Pi Zero and Pi 3, it should work.
+									<p>Forte is a runtime enviroment for apps developed in 4DIAC. Forte can be run on embedded resources such as Raspberry Pi, Beagle Bone or any Linux Board. For installing Forte RT on RPi, you can try the <a href = "https://eclipse.org/4diac/documentation/html/installation/raspi.html" ><font color = "red">official documentation.</font> </a>Procedures for compiling and cross compiling Forte are mentioned in the page.Compiling should work in all Rpi Boards but it takes over 45 Minutes on a Pi Zero board hence its advised to do a <a href="https://en.wikipedia.org/wiki/Cross_compiler" target="_blank"> <font color="red">cross compilation</font></a> and download the executable files to RPi via SFTP/SCP/FISH. For cross compilation you may follow the following procedure since the one mentioned in official documentation did not work on Pi Zero.I have tested the executable on Pi Zero and Pi 3, it should work.
 <li>Clone the repo</li>
 <pre>git clone https://git.eclipse.org/r/4diac/org.eclipse.4diac.forte</pre>
 <li>Open CMake. If you dont have it installed , try.</li>
@@ -102,7 +102,7 @@
 <li>Forte is located in src. To execute, launch terminal in RPi and try.</li>
 <pre>cd src
 sudo ./forte</pre>
-<blockquote> Forte will start and wait for 4DIAC to upload application.If no message is shown in terminal, it means forte is up and working properly.<br>You may refer <a href = "IoT/RPi/RaspberryPi-102.html" target="_blank"><font color="red"> SSH tutorial </font></a>to access RPi shell remotely on a network.</blockquote>
+<blockquote> Forte will start and wait for 4DIAC to download application to it.If no message is shown in terminal, it means forte is up and working properly.<br>You may refer <a href = "IoT/RPi/RaspberryPi-102.html" target="_blank"><font color="red"> SSH tutorial </font></a>to access RPi shell remotely on a network.</blockquote>
 </p>
 
 									
