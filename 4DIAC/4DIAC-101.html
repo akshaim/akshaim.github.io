@@ -1,160 +1,161 @@
 <!DOCTYPE HTML>
 <!--
- CCA 3.0 license 
--->
+   CCA 3.0 license 
+   -->
 <html>
-	<head>
-		<title>Setting up environment</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-		<link href="assets/css/lightbox.css" rel="stylesheet">
-		<script>
-  		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  		ga('create', 'UA-82341121-1', 'auto');
-  		ga('send', 'pageview');
-		</script>
-	</head>
-	<body>
-
-		<!-- Header -->
-			<section id="header">
-				<header>
-					<span class="image avatar"><img src="images/avatar.jpg" alt="" /></span>
-					<h1 id="logo"><a href="#">Akshai M</a></h1>
-					<p>Research Assistant @ <a href="http://fossee.in/">FOSSEE, IIT Bombay</a>
-				</br>Founder <a href="http://www.microhope.org" target="_blank">MicroHOPE </a> Foundation </p>
-				</header>
-				<nav id="nav">
-					<ul>
-						<li><a href="#one" class="active">4DIAC-IDE Installation</a></li>
-						<li><a href="#two">Forte on Raspberry Pi</a></li>
-						<li><a href="#three">4DIAC IDE</a></li>
-						
-					</ul>
-				</nav>
-				<footer>
-					<ul class="icons">
-						<li><a href="https://twitter.com/m_akshai" target="_blank" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="https://www.facebook.com/akshai.m.ettadayil" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-						<li><a href="https://www.instagram.com/akshaim/" target="_blank" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="https://github.com/akshaim" target="_blank" class="icon fa-github"><span class="label">Github</span></a></li>
-						
-					</ul>
-				</footer>
-			</section>
-
-		<!-- Wrapper -->
-			<div id="wrapper">
-
-				<!-- Main -->
-					<div id="main">
-
-						<!-- One -->
-							<section id="one">
-								<div class="container">
-									<header class="major">
-										<h2>Setting up environment</h2>
-										<p>Setting up 4DIAC-IDE on Linux Machine
-</p>
-									</header>
-									<ul><p>Setting up 4DIAC on a Linux machine is a straightforward task.Latest IDE is available in 4DIAC <a href= "http://www.eclipse.org/4diac/en_dow.php" target="_blank"><font color="red">Downloads page.</font></a></p><li>Extract the tarball<pre>tar -xzvf filename</pre></li><li> Go to extracted folder and you may execute the IDE <pre>./4DIAC-IDE</pre></li><ul>
-
-
-								</div>
-							</section>
-
-						<!-- Two -->
-
-						<section id="two">
-								<div class="container">
-									<h3>Forte on Raspberry Pi</h3>
-									<p>Forte is a real time capable Runtime Environment for IEC 61499 compliant applications.We will use Forte RTE to run applications on an Embedded resource for applications developed on 4DIAC.Forte can be run on embedded resources such as Raspberry Pi, Beagle Bone and other Linux SBC. For installing Forte RT on RPi, you can try the <a href = "https://eclipse.org/4diac/documentation/html/installation/raspi.html" ><font color = "red">official documentation.</font> </a>Procedures for compiling and cross compiling Forte are mentioned in the page.Compiling should work in all Rpi Boards but it takes over 45 Minutes on a Pi Zero board hence its advised to do a <a href="https://en.wikipedia.org/wiki/Cross_compiler" target="_blank"> <font color="red">cross compilation</font></a> and download the executable files to RPi via SFTP/SCP/FISH. For cross compilation you may follow the following procedure since the one mentioned in official documentation did not work on Pi Zero.I have tested the executable on Pi Zero and Pi 3, it should work.
-<li>Clone the repo</li>
-<pre>git clone https://git.eclipse.org/r/4diac/org.eclipse.4diac.forte</pre>
-<li>Open CMake. If you dont have it installed , try.</li>
-<pre>sudo apt-get install cmake</pre>
-<li>Point the <font color = "orange">source code</font> field to cloned directory and <font color = "orange">build binaries</font> to your preferred folder and then do <font color="orange">configure</font> </li> <blockquote>Make sure that name of directories in the path does not contain blank spaces.</blockquote>
-<a class="CMake" href="images/CMake_1.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_1.png" width = "700px" height = "400px" alt="CMake" /></a><br><br>
-<li>Select options as shown below.</li>
-<a class="CMake" href="images/CMake_2.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_2.png" width = "450px" height = "370px" alt="CMake" /></a><br><br>
-<li>Give a name for the build , I named it RPi. Select toolchain files for C and C++ compilers and finish.</li>
-
-<a class="CMake" href="images/CMake_3.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_3.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br><blockquote>I had used official toolchain from RPi foundation.You may clone the same.<pre>git clone https://github.com/raspberrypi/tools</pre>In the cloned folder select arm-linux-gnueabihf-gcc and arm-linux-gnueabihf-g++ for C and C++ respectively which are located in tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/. Target root may be pointed to arm-rpi-4.9.3-linux-gnueabihf folder. </blockquote><br>
-<li>Now an error might pop up.Selected the right system(forte) architecture should solve the error.</li>
-<a class="CMake" href="images/CMake_4.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_4.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br>
-<li>Select "Posix" as Forte Architecture</li>
-<a class="CMake" href="images/CMake_5.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_5.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br>
-<li>Also select SysFs to enable GPIO access for forte in RPi. You can also select other modules if required.</li>
-<a class="CMake" href="images/CMake_6.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_6.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br>
-<li><font color = "orange">Configure</font> and <font color = "orange">Generate</font>.CMake will then generate configuration files to cross compile forte</li>
-<blockquote>If you made an inappropriate selection in any of the above procedures listed above, delete cache,configure and repeat the process.</blockquote>
-<li>To compile, go to target build directory for binaries, which is "build" in my case and run</li><pre>make</pre>
-<li>After compilation copy the entire folder, build in my case, to Raspberry Pi.Try</li>
-<pre>scp -r build pi@local_ip_address:~</pre>Then enter password.This will copy build folder recursively  to home folder(~) of machine(RPi) with "local_ip_address".
-<blockquote>You can also use Filezilla, give IP address, username, password of Pi and 22 (SFTP) as port number.</blockquote></li>
-<li>Forte is located in src. To execute, launch terminal in RPi and try.</li>
-<pre>cd src
+   <head>
+      <title>Setting up environment</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+      <link rel="stylesheet" href="assets/css/main.css" />
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" href="assets/css/ie8.css" />
+      <![endif]-->
+      <link href="assets/css/lightbox.css" rel="stylesheet">
+      <script>
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+         
+         ga('create', 'UA-82341121-1', 'auto');
+         ga('send', 'pageview');
+      </script>
+   </head>
+   <body>
+      <!-- Header -->
+      <section id="header">
+         <header>
+            <span class="image avatar"><img src="images/avatar.jpg" alt="" /></span>
+            <h1 id="logo"><a href="#">Akshai M</a></h1>
+            <p>Research Assistant @ <a href="http://fossee.in/">FOSSEE, IIT Bombay</a>
+               </br>Founder <a href="http://www.microhope.org" target="_blank">MicroHOPE </a> Foundation 
+            </p>
+         </header>
+         <nav id="nav">
+            <ul>
+               <li><a href="#one" class="active">4DIAC-IDE Installation</a></li>
+               <li><a href="#two">Forte on Raspberry Pi</a></li>
+               <li><a href="#three">4DIAC IDE</a></li>
+            </ul>
+         </nav>
+         <footer>
+            <ul class="icons">
+               <li><a href="https://twitter.com/m_akshai" target="_blank" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+               <li><a href="https://www.facebook.com/akshai.m.ettadayil" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+               <li><a href="https://www.instagram.com/akshaim/" target="_blank" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+               <li><a href="https://github.com/akshaim" target="_blank" class="icon fa-github"><span class="label">Github</span></a></li>
+            </ul>
+         </footer>
+      </section>
+      <!-- Wrapper -->
+      <div id="wrapper">
+         <!-- Main -->
+         <div id="main">
+            <!-- One -->
+            <section id="one">
+               <div class="container">
+                  <header class="major">
+                     <h2>Setting up environment</h2>
+                     <p>Setting up 4DIAC-IDE on Linux Machine</p>
+                  </header>
+                  <ul>
+                  <p>Setting up 4DIAC on a Linux machine is a straightforward task.Latest IDE is available in 4DIAC <a href= "http://www.eclipse.org/4diac/en_dow.php" target="_blank"><font color="red">Downloads page.</font></a></p>
+                  <li>
+                     Extract the tarball
+                     <pre>tar -xzvf filename</pre>
+                  </li>
+                  <li>
+                     Go to extracted folder and you may execute the IDE 
+                     <pre>./4DIAC-IDE</pre>
+                  </li>
+                  <ul>
+               </div>
+            </section>
+            <!-- Two -->
+            <section id="two">
+               <div class="container">
+                  <h3>Forte on Raspberry Pi</h3>
+                  <p>Forte is a real time capable Runtime Environment for IEC 61499 compliant applications.We will use Forte RTE to run applications on an Embedded resource for applications developed on 4DIAC.Forte can be run on embedded resources such as Raspberry Pi, Beagle Bone and other Linux SBC. For installing Forte RT on RPi, you can try the <a href = "https://eclipse.org/4diac/documentation/html/installation/raspi.html" ><font color = "red">official documentation.</font> </a>Procedures for compiling and cross compiling Forte are mentioned in the page.Compiling should work in all Rpi Boards but it takes over 45 Minutes on a Pi Zero board hence its advised to do a <a href="https://en.wikipedia.org/wiki/Cross_compiler" target="_blank"> <font color="red">cross compilation</font></a> and download the executable files to RPi via SFTP/SCP/FISH. For cross compilation you may follow the following procedure since the one mentioned in official documentation did not work on Pi Zero.I have tested the executable on Pi Zero and Pi 3, it should work.
+                  <li>Clone the repo</li>
+                  <pre>git clone https://git.eclipse.org/r/4diac/org.eclipse.4diac.forte</pre>
+                  <li>Open CMake. If you dont have it installed , try.</li>
+                  <pre>sudo apt-get install cmake</pre>
+                  <li>Point the <font color = "orange">source code</font> field to cloned directory and <font color = "orange">build binaries</font> to your preferred folder and then do <font color="orange">configure</font> </li>
+                  <blockquote>Make sure that name of directories in the path does not contain blank spaces.</blockquote>
+                  <a class="CMake" href="images/CMake_1.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_1.png" width = "700px" height = "400px" alt="CMake" /></a><br><br>
+                  <li>Select options as shown below.</li>
+                  <a class="CMake" href="images/CMake_2.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_2.png" width = "450px" height = "370px" alt="CMake" /></a><br><br>
+                  <li>Give a name for the build , I named it RPi. Select toolchain files for C and C++ compilers and finish.</li>
+                  <a class="CMake" href="images/CMake_3.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_3.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br>
+                  <blockquote>
+                     I had used official toolchain from RPi foundation.You may clone the same.
+                     <pre>git clone https://github.com/raspberrypi/tools</pre>
+                     In the cloned folder select arm-linux-gnueabihf-gcc and arm-linux-gnueabihf-g++ for C and C++ respectively which are located in tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/. Target root may be pointed to arm-rpi-4.9.3-linux-gnueabihf folder. 
+                  </blockquote>
+                  <br>
+                  <li>Now an error might pop up.Selected the right system(forte) architecture should solve the error.</li>
+                  <a class="CMake" href="images/CMake_4.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_4.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br>
+                  <li>Select "Posix" as Forte Architecture</li>
+                  <a class="CMake" href="images/CMake_5.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_5.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br>
+                  <li>Also select SysFs to enable GPIO access for forte in RPi. You can also select other modules if required.</li>
+                  <a class="CMake" href="images/CMake_6.png" data-lightbox="CMake" data-title="CMake Window "><img class="CMake" src="images/CMake_6.png" width = "700px" height = "400px" alt="CMake" /></a> <br><br>
+                  <li><font color = "orange">Configure</font> and <font color = "orange">Generate</font>.CMake will then generate configuration files to cross compile forte</li>
+                  <blockquote>If you made an inappropriate selection in any of the above procedures listed above, delete cache,configure and repeat the process.</blockquote>
+                  <li>To compile, go to target build directory for binaries, which is "build" in my case and run</li>
+                  <pre>make</pre>
+                  <li>After compilation copy the entire folder, build in my case, to Raspberry Pi.Try</li>
+                  <pre>scp -r build pi@local_ip_address:~</pre>
+                  Then enter password.This will copy build folder recursively  to home folder(~) of machine(RPi) with "local_ip_address".
+                  <blockquote>You can also use Filezilla, give IP address, username, password of Pi and 22 (SFTP) as port number.</blockquote>
+                  </li>
+                  <li>Forte is located in src. To execute, launch terminal in RPi and try.</li>
+                  <pre>cd src
 sudo ./forte</pre>
-<blockquote> Forte will start and wait for 4DIAC to download application to it.If no message is shown in terminal, it means forte is up and working properly.<br>You may refer <a href = "IoT/RPi/RaspberryPi-102.html" target="_blank"><font color="red"> SSH tutorial </font></a>to access RPi shell remotely on a network.</blockquote>
-</p>
-
-									
-								</div>
-							</section>
-						<!-- Three -->
-							<section id="three">
-								<div class="container">
-									<h3>4DIAC IDE</h3>
-									<p>
-4DIAC-IDE offers five different perspectives.To view each you may click on the open perspectives. <br><br>
-<a class="4DIAC_Perspectives" href="images/4DIAC_Perspectives.png" data-lightbox="4DIAC_Perspectives" data-title="4DIAC_Perspectives "><img class="4DIAC_Perspectives" src="images/4DIAC_Perspectives.png" width = "700px" height = "400px" alt="4DIAC_Perspectives" /></a>
-<blockquote>Ensure that workspace is set to default workspace in 4DIAC application folder to view existing examples.</blockquote>
-<li>Debug Perspective - Used to visualise realtime data and event flow</li>
-<a class="4DIAC_Debug" href="images/4DIAC_Debug.png" data-lightbox="4DIAC_Debug" data-title="4DIAC_Debug"><img class="4DIAC_Debug" src="images/4DIAC_Debug.png" width = "700px" height = "400px" alt="4DIAC_Debug" /></a> <br><br>
-<li>Deployment Perspective - Used to deploy/test application to an embedded resource and/or host system.</li>
-<a class="4DIAC_Deployment" href="images/4DIAC_Deployment.png" data-lightbox="4DIAC_Deployment" data-title="4DIAC_Deployment"><img class="4DIAC_Deployment" src="images/4DIAC_Deployment.png" width = "700px" height = "400px" alt="4DIAC_Deployment" /></a> <br><br>
-<li>Resources Perspective - Lists all the resources associated with projects in the workspace</li>
-<a class="4DIAC_Resources" href="images/4DIAC_Resources.png" data-lightbox="4DIAC_Resources" data-title="4DIAC_Resources"><img class="4DIAC_Resources" src="images/4DIAC_Resources.png" width = "700px" height = "400px" alt="4DIAC_Resources" /></a> <br><br>
-<li>System Perspective - Provides a system view with system explorer, system configuration and application</li>
-<a class="4DIAC_System" href="images/4DIAC_System.png" data-lightbox="4DIAC_System" data-title="4DIAC_System"><img class="4DIAC_System" src="images/4DIAC_System.png" width = "700px" height = "400px" alt="4DIAC_System" /></a> <br><br>
-<li>Type Management Perspective - View and manage Function Block types </li> <a class="4DIAC_Type" href="images/4DIAC_Type.png" data-lightbox="4DIAC_Type" data-title="4DIAC_Type"><img class="4DIAC_Type" src="images/4DIAC_Type.png" width = "700px" height = "400px" alt="4DIAC_Type" /></a> <br>
-We will learn more on 4DIAC perspectives and IDE usage in next chapter</p>
-
-									
-								</div>
-							</section>
-						
-							
-
-					</div>
-
-				<!-- Footer -->
-					<section id="footer">
-						<div class="container">
-							<ul class="copyright">
-								<li>All content on this site is available under the Creative Commons Attribution-ShareAlike 3.0 Unported  <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">(CC BY-SA 3.0)</a>license.</li>
-							</ul>
-						</div>
-					</section>
-
-			</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/lightbox-plus-jquery.js"></script>
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollzer.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
-
-	</body>
-</html>>
+                  <blockquote> Forte will start and wait for 4DIAC to download application to it.If no message is shown in terminal, it means forte is up and working properly.<br>You may refer <a href = "IoT/RPi/RaspberryPi-102.html" target="_blank"><font color="red"> SSH tutorial </font></a>to access RPi shell remotely on a network.</blockquote>
+                  </p>
+               </div>
+            </section>
+            <!-- Three -->
+            <section id="three">
+               <div class="container">
+                  <h3>4DIAC IDE</h3>
+                  <p>
+                     4DIAC-IDE offers five different perspectives.To view each you may click on the open perspectives. <br><br>
+                     <a class="4DIAC_Perspectives" href="images/4DIAC_Perspectives.png" data-lightbox="4DIAC_Perspectives" data-title="4DIAC_Perspectives "><img class="4DIAC_Perspectives" src="images/4DIAC_Perspectives.png" width = "700px" height = "400px" alt="4DIAC_Perspectives" /></a>
+                  <blockquote>Ensure that workspace is set to default workspace in 4DIAC application folder to view existing examples.</blockquote>
+                  <li>Debug Perspective - Used to visualise realtime data and event flow</li>
+                  <a class="4DIAC_Debug" href="images/4DIAC_Debug.png" data-lightbox="4DIAC_Debug" data-title="4DIAC_Debug"><img class="4DIAC_Debug" src="images/4DIAC_Debug.png" width = "700px" height = "400px" alt="4DIAC_Debug" /></a> <br><br>
+                  <li>Deployment Perspective - Used to deploy/test application to an embedded resource and/or host system.</li>
+                  <a class="4DIAC_Deployment" href="images/4DIAC_Deployment.png" data-lightbox="4DIAC_Deployment" data-title="4DIAC_Deployment"><img class="4DIAC_Deployment" src="images/4DIAC_Deployment.png" width = "700px" height = "400px" alt="4DIAC_Deployment" /></a> <br><br>
+                  <li>Resources Perspective - Lists all the resources associated with projects in the workspace</li>
+                  <a class="4DIAC_Resources" href="images/4DIAC_Resources.png" data-lightbox="4DIAC_Resources" data-title="4DIAC_Resources"><img class="4DIAC_Resources" src="images/4DIAC_Resources.png" width = "700px" height = "400px" alt="4DIAC_Resources" /></a> <br><br>
+                  <li>System Perspective - Provides a system view with system explorer, system configuration and application</li>
+                  <a class="4DIAC_System" href="images/4DIAC_System.png" data-lightbox="4DIAC_System" data-title="4DIAC_System"><img class="4DIAC_System" src="images/4DIAC_System.png" width = "700px" height = "400px" alt="4DIAC_System" /></a> <br><br>
+                  <li>Type Management Perspective - View and manage Function Block types </li>
+                  <a class="4DIAC_Type" href="images/4DIAC_Type.png" data-lightbox="4DIAC_Type" data-title="4DIAC_Type"><img class="4DIAC_Type" src="images/4DIAC_Type.png" width = "700px" height = "400px" alt="4DIAC_Type" /></a> <br>
+                  We will learn more on 4DIAC perspectives and IDE usage in next chapter</p>
+               </div>
+            </section>
+         </div>
+         <!-- Footer -->
+         <section id="footer">
+            <div class="container">
+               <ul class="copyright">
+                  <li>All content on this site is available under the Creative Commons Attribution-ShareAlike 3.0 Unported  <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">(CC BY-SA 3.0)</a>license.</li>
+               </ul>
+            </div>
+         </section>
+      </div>
+      <!-- Scripts -->
+      <script src="assets/js/lightbox-plus-jquery.js"></script>
+      <script src="assets/js/jquery.min.js"></script>
+      <script src="assets/js/jquery.scrollzer.min.js"></script>
+      <script src="assets/js/jquery.scrolly.min.js"></script>
+      <script src="assets/js/skel.min.js"></script>
+      <script src="assets/js/util.js"></script>
+      <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+      <script src="assets/js/main.js"></script>
+   </body>
+</html>
