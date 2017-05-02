@@ -1,201 +1,202 @@
 <!DOCTYPE HTML>
 <!--
- CCA 3.0 license 
--->
+   CCA 3.0 license 
+   -->
 <html>
-	<head>
-		<title>Function Blocks and HW Interface</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-		<link href="assets/css/lightbox.css" rel="stylesheet">
-		<script>
-  		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  		ga('create', 'UA-82341121-1', 'auto');
-  		ga('send', 'pageview');
-		</script>
-	</head>
-	<body>
-
-		<!-- Header -->
-			<section id="header">
-				<header>
-					<span class="image avatar"><img src="images/avatar.jpg" alt="" /></span>
-					<h1 id="logo"><a href="#">Akshai M</a></h1>
-					<p>Research Assistant @ <a href="http://fossee.in/">FOSSEE, IIT Bombay</a>
-				</br>Founder <a href="http://www.microhope.org" target="_blank">MicroHOPE </a> Foundation </p>
-				</header>
-				<nav id="nav">
-					<ul>
-						<li><a href="#one" class="active">Function Blocks</a></li>
-						<li><a href="#two">App for Blinking LED </a></li>
-						<li><a href="#three">Downloading App to RPi</a></li>
-						
-					</ul>
-				</nav>
-				<footer>
-					<ul class="icons">
-						<li><a href="https://twitter.com/m_akshai" target="_blank" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="https://www.facebook.com/akshai.m.ettadayil" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-						<li><a href="https://www.instagram.com/akshaim/" target="_blank" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="https://github.com/akshaim" target="_blank" class="icon fa-github"><span class="label">Github</span></a></li>
-						
-					</ul>
-				</footer>
-			</section>
-
-		<!-- Wrapper -->
-			<div id="wrapper">
-
-				<!-- Main -->
-					<div id="main">
-
-						<!-- One -->
-							<section id="one">
-								<div class="container">
-									<header class="major">
-										<h2>Function Blocks</h2>
-										<p>Introduction to Function blocks and H/W interfaces.</p>
-									</header>
-									<p>Function blocks are similar to a class in Object Oriented Programming. Class help us bring abstraction to encapsulate a functionality and promote reuse of functionality, the same applies to function blocks.The following figure represents a function block</p>
-
-<a class="FB" href="images/Chapter_3/Function_Block.png" data-lightbox="FB" data-title="Function Block"><img class="FB" src="images/Chapter_3/Function_Block.png"  width = "350px" height = "230px" alt="Function_Block.png" /></a>
-
-</br></br>
-<p>A function block in IEC61499 is a passive element. It waits for a event to trigger its functionality.The event and data flow in a function block is shown below</p>
-
-<iframe src="images/Chapter_3/Function_Block_Flow.html" height="100" width="850"></iframe>
-
-<blockquote>To learn more about Function Blocks, Application Model and System Model in IEC61499 please watch this <a href = "https://youtu.be/1z3pxDngQG8?t=10m15s" target = "_blank"><font color = "red">video</font></a></blockquote>
-
-
-
-								</div>
-							</section>
-
-						<!-- Two -->
-
-						<section id="two">
-								<div class="container">
-									<h3>Blinking an LED</h3>
-									<p>We will now do a sample application to blink an LED connected to a GPIO in Raspberry Pi. The plan is to build an application in 4DIAC and then download it to Forte RTE running on RPi. To proceed further we need the following.
-<ol>
-<li>PC running 4DIAC</li>
-<li>Raspberry Pi with Forte</li>
-<li>LED</li>
-<li>220E Resistor (or equivalent)</li>
-<li>Breadboard</li>
-<li>Some wires/Jumpers</li>
-</ol>
-<h4>Building Application</h4>
-<li>Launch 4DIAC and select your workspace</li>
-<li>Create a new system and an application as shown below</li>
-<video width="720" height="480" controls>
-  <source src="videos/Create_System_App.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video></br>
-<li>We need to implement a logic to toggle states.We will need </li>
-<ol><li>A flip Flop</li><li>Event Generator</li></ol>
-<li>Select the function blocks as shown below </li>
-<video width="720" height="480" controls>
-  <source src="videos/App_1.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video></br>
-<li>The E_SR Flip Flop requires two event inputs but E_CYCLE generates only one event output. Hence we will need a switch.The selection and connections are shown below</li>
-<video width="720" height="480" controls>
-  <source src="videos/App_2.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video></br>
-<li>The E_CYCLE generate events in an interval provided by DT hence the value needs to be assigned.</li>
-<video width="720" height="480" controls>
-  <source src="videos/App_3.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video></br>
-<blockquoute>Quick Tip: Move the mouse over to event or data I/O to more about each.</blockquote></br>
-<li>Now we will need to interface a hardware for which we will use QX (Output) block.</li>
-<video width="720" height="480" controls>
-  <source src="videos/App_4.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video></br>
-<blockquote>PARAMS in QX block take the Output Pin (GPIO) Number.Forte uses SysFS which again uses BCM Pin Mapping. You learn about the Pinout from this <a href = "images/pi_gpio.png" target="_blank"><font color="red">image</font></a> or using the command in RPi.<pre>gpio readall </pre> </blockquote>
-<li>Now system configuration should be defined.</li>
-<video width="720" height="480" controls>
-  <source src="videos/App_5.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video></br>
-<blockquote>The target machine(Embedded resource) is Raspberry Pi and is connected via ethernet (RJ45/WiFi).Make sure that a local IP address is assigned to Pi for downloading application.Global IP addresses will only work with port forwarding/DDNS.</blockquote>
-<li>Map the hardware to the Embedded Resource</li>
-<video width="720" height="480" controls>
-  <source src="videos/App_6.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video></br>
-<li>Configure the embedded resource.</li>
-<video width="720" height="480" controls>
-  <source src="videos/App_7.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video></br>
-<li>Ensure that RPi Device is defined as a HOLOBLOC.</li>
-<video width="720" height="480" controls>
-  <source src="videos/App_8.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video></br> </br>
-Before proceeding any further
-<h3>Make sure that the work is saved !!</h3>
-									
-								</div>
-							</section>
-						<!-- Three -->
-							<section id="three">
-								<div class="container">
-									<h3>Downloading Application to RPi</h3>
-<li>Connect LED to GPIO3 (Pin 5) of RPi as shown below</li>
-<a class="RPi" href="images/Chapter_3/Pi_LED_Conn.png" data-lightbox="RPi" data-title="RPi LED Connection"><img class="RPi" src="images/Chapter_3/Pi_LED_Conn.png"  width = "350px" height = "230px" alt="Pi_LED_Conn.png" /></a> </br></br>
-<li> Gain terminal access on Pi or use SSH to login remotely.<blockquote>More details on Secure Shell (SSH) can be found in my previous RPi <a href="../IoT/RPi/RaspberryPi-102.html#three" target="_blank" ><font color="red">tutorial </font></a></blockquote>
-</li>
-<li>Start FORTE service as root.</li>
-<video width="720" height="480" controls>
-  <source src="videos/App_9.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video></br>
-<li>Launch Deployment Console in 4DIAC and Download the application</li>
-<video width="720" height="480" controls>
-  <source src="videos/App_9.webm" type="video/webm">
-  Your browser does not support the video tag.
-</video></br></br>
-<li>The LED connected to RPi should now start Blinking.</li>							
-<a class="RPi" href="images/Chapter_3/Pi_Blink.gif" data-lightbox="RPi" data-title="RPi LED Connection"><img class="RPi" src="images/Chapter_3/Pi_Blink.gif"  width = "350px" height = "300px" alt="Pi_Blink.gif" /></a> </br></br>							</div>
-							</section>
-						
-							
-
-					</div>
-
-				<!-- Footer -->
-					<section id="footer">
-						<div class="container">
-							<ul class="copyright">
-								<li>All content on this site is available under the Creative Commons Attribution-ShareAlike 3.0 Unported  <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">(CC BY-SA 3.0)</a>license.</li>
-							</ul>
-						</div>
-					</section>
-
-			</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/lightbox-plus-jquery.js"></script>
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollzer.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
-
-	</body>
-</html>>
+   <head>
+      <title>Function Blocks and HW Interface</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+      <link rel="stylesheet" href="assets/css/main.css" />
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" href="assets/css/ie8.css" />
+      <![endif]-->
+      <link href="assets/css/lightbox.css" rel="stylesheet">
+      <script>
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+         
+         ga('create', 'UA-82341121-1', 'auto');
+         ga('send', 'pageview');
+      </script>
+   </head>
+   <body>
+      <!-- Header -->
+      <section id="header">
+         <header>
+            <span class="image avatar"><img src="images/avatar.jpg" alt="" /></span>
+            <h1 id="logo"><a href="#">Akshai M</a></h1>
+            <p>Research Assistant @ <a href="http://fossee.in/">FOSSEE, IIT Bombay</a>
+               </br>Founder <a href="http://www.microhope.org" target="_blank">MicroHOPE </a> Foundation 
+            </p>
+         </header>
+         <nav id="nav">
+            <ul>
+               <li><a href="#one" class="active">Function Blocks</a></li>
+               <li><a href="#two">App for Blinking LED </a></li>
+               <li><a href="#three">Downloading App to RPi</a></li>
+            </ul>
+         </nav>
+         <footer>
+            <ul class="icons">
+               <li><a href="https://twitter.com/m_akshai" target="_blank" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+               <li><a href="https://www.facebook.com/akshai.m.ettadayil" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+               <li><a href="https://www.instagram.com/akshaim/" target="_blank" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+               <li><a href="https://github.com/akshaim" target="_blank" class="icon fa-github"><span class="label">Github</span></a></li>
+            </ul>
+         </footer>
+      </section>
+      <!-- Wrapper -->
+      <div id="wrapper">
+         <!-- Main -->
+         <div id="main">
+            <!-- One -->
+            <section id="one">
+               <div class="container">
+                  <header class="major">
+                     <h2>Function Blocks</h2>
+                     <p>Introduction to Function blocks and H/W interfaces.</p>
+                  </header>
+                  <p>Function blocks are similar to a class in Object Oriented Programming. Class help us bring abstraction to encapsulate a functionality and promote reuse of functionality, the same applies to function blocks.The following figure represents a function block</p>
+                  <a class="FB" href="images/Chapter_3/Function_Block.png" data-lightbox="FB" data-title="Function Block"><img class="FB" src="images/Chapter_3/Function_Block.png"  width = "350px" height = "230px" alt="Function_Block.png" /></a>
+                  </br></br>
+                  <p>A function block in IEC61499 is a passive element. It waits for a event to trigger its functionality.The event and data flow in a function block is shown below</p>
+                  <iframe src="images/Chapter_3/Function_Block_Flow.html" height="100" width="850"></iframe>
+                  <blockquote>To learn more about Function Blocks, Application Model and System Model in IEC61499 please watch this <a href = "https://youtu.be/1z3pxDngQG8?t=10m15s" target = "_blank"><font color = "red">video</font></a></blockquote>
+               </div>
+            </section>
+            <!-- Two -->
+            <section id="two">
+               <div class="container">
+                  <h3>Blinking an LED</h3>
+                  <p>We will now do a sample application to blink an LED connected to a GPIO in Raspberry Pi. The plan is to build an application in 4DIAC and then download it to Forte RTE running on RPi. To proceed further we need the following.
+                  <ol>
+                     <li>PC running 4DIAC</li>
+                     <li>Raspberry Pi with Forte</li>
+                     <li>LED</li>
+                     <li>220E Resistor (or equivalent)</li>
+                     <li>Breadboard</li>
+                     <li>Some wires/Jumpers</li>
+                  </ol>
+                  <h4>Building Application</h4>
+                  <li>Launch 4DIAC and select your workspace</li>
+                  <li>Create a new system and an application as shown below</li>
+                  <video width="720" height="480" controls>
+                     <source src="videos/Create_System_App.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video>
+                  </br>
+                  <li>We need to implement a logic to toggle states.We will need </li>
+                  <ol>
+                     <li>A flip Flop</li>
+                     <li>Event Generator</li>
+                  </ol>
+                  <li>Select the function blocks as shown below </li>
+                  <video width="720" height="480" controls>
+                     <source src="videos/App_1.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video>
+                  </br>
+                  <li>The E_SR Flip Flop requires two event inputs but E_CYCLE generates only one event output. Hence we will need a switch.The selection and connections are shown below</li>
+                  <video width="720" height="480" controls>
+                     <source src="videos/App_2.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video>
+                  </br>
+                  <li>The E_CYCLE generate events in an interval provided by DT hence the value needs to be assigned.</li>
+                  <video width="720" height="480" controls>
+                     <source src="videos/App_3.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video>
+                  </br>
+                  <blockquoute>
+                  Quick Tip: Move the mouse over to event or data I/O to more about each.</blockquote></br>
+                  <li>Now we will need to interface a hardware for which we will use QX (Output) block.</li>
+                  <video width="720" height="480" controls>
+                     <source src="videos/App_4.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video>
+                  </br>
+                  <blockquote>
+                     PARAMS in QX block take the Output Pin (GPIO) Number.Forte uses SysFS which again uses BCM Pin Mapping. You learn about the Pinout from this <a href = "images/pi_gpio.png" target="_blank"><font color="red">image</font></a> or using the command in RPi.
+                     <pre>gpio readall </pre>
+                  </blockquote>
+                  <li>Now system configuration should be defined.</li>
+                  <video width="720" height="480" controls>
+                     <source src="videos/App_5.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video>
+                  </br>
+                  <blockquote>The target machine(Embedded resource) is Raspberry Pi and is connected via ethernet (RJ45/WiFi).Make sure that a local IP address is assigned to Pi for downloading application.Global IP addresses will only work with port forwarding/DDNS.</blockquote>
+                  <li>Map the hardware to the Embedded Resource</li>
+                  <video width="720" height="480" controls>
+                     <source src="videos/App_6.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video>
+                  </br>
+                  <li>Configure the embedded resource.</li>
+                  <video width="720" height="480" controls>
+                     <source src="videos/App_7.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video>
+                  </br>
+                  <li>Ensure that RPi Device is defined as a HOLOBLOC.</li>
+                  <video width="720" height="480" controls>
+                     <source src="videos/App_8.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video>
+                  </br> </br>
+                  Before proceeding any further
+                  <h3>Make sure that the work is saved !!</h3>
+               </div>
+            </section>
+            <!-- Three -->
+            <section id="three">
+               <div class="container">
+                  <h3>Downloading Application to RPi</h3>
+                  <li>Connect LED to GPIO3 (Pin 5) of RPi as shown below</li>
+                  <a class="RPi" href="images/Chapter_3/Pi_LED_Conn.png" data-lightbox="RPi" data-title="RPi LED Connection"><img class="RPi" src="images/Chapter_3/Pi_LED_Conn.png"  width = "350px" height = "230px" alt="Pi_LED_Conn.png" /></a> </br></br>
+                  <li>
+                     Gain terminal access on Pi or use SSH to login remotely.
+                     <blockquote>More details on Secure Shell (SSH) can be found in my previous RPi <a href="../IoT/RPi/RaspberryPi-102.html#three" target="_blank" ><font color="red">tutorial </font></a></blockquote>
+                  </li>
+                  <li>Start FORTE service as root.</li>
+                  <video width="720" height="480" controls>
+                     <source src="videos/App_9.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video>
+                  </br>
+                  <li>Launch Deployment Console in 4DIAC and Download the application</li>
+                  <video width="720" height="480" controls>
+                     <source src="videos/App_9.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video>
+                  </br></br>
+                  <li>The LED connected to RPi should now start Blinking.</li>
+                  <a class="RPi" href="images/Chapter_3/Pi_Blink.gif" data-lightbox="RPi" data-title="RPi LED Connection"><img class="RPi" src="images/Chapter_3/Pi_Blink.gif"  width = "350px" height = "300px" alt="Pi_Blink.gif" /></a> </br></br>							
+               </div>
+            </section>
+         </div>
+         <!-- Footer -->
+         <section id="footer">
+            <div class="container">
+               <ul class="copyright">
+                  <li>All content on this site is available under the Creative Commons Attribution-ShareAlike 3.0 Unported  <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">(CC BY-SA 3.0)</a>license.</li>
+               </ul>
+            </div>
+         </section>
+      </div>
+      <!-- Scripts -->
+      <script src="assets/js/lightbox-plus-jquery.js"></script>
+      <script src="assets/js/jquery.min.js"></script>
+      <script src="assets/js/jquery.scrollzer.min.js"></script>
+      <script src="assets/js/jquery.scrolly.min.js"></script>
+      <script src="assets/js/skel.min.js"></script>
+      <script src="assets/js/util.js"></script>
+      <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+      <script src="assets/js/main.js"></script>
+   </body>
+</html>

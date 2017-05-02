@@ -1,137 +1,125 @@
 <!DOCTYPE HTML>
 <!--
- CCA 3.0 license 
--->
+   CCA 3.0 license 
+   -->
 <html>
-	<head>
-		<title>Tutorial on 4DIAC</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="../assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-		<link href="assets/css/lightbox.css" rel="stylesheet">
-		<script>
-  		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  		ga('create', 'UA-82341121-1', 'auto');
-  		ga('send', 'pageview');
-		</script>
-	</head>
-	<body>
-
-		<!-- Header -->
-			<section id="header">
-				<header>
-					<span class="image avatar"><img src="images/avatar.jpg" alt="" /></span>
-					<h1 id="logo"><a href="#">Akshai M</a></h1>
-					<p>Research Assistant  @ <a href="http://fossee.in/"> FOSSEE, IIT Bombay</a>
-				</br>Founder <a href="http://www.microhope.org" target="_blank">MicroHOPE </a> Foundation </p>
-				</header>
-				<nav id="nav">
-					<ul>
-						<li><a href="#one" class="active">About</a></li>
-						<li><a href="#two">Chapters</a></li>
-						<li><a href="#three"> </a></li>
-						
-					</ul>
-				</nav>
-				<footer>
-					<ul class="icons">
-						<li><a href="https://twitter.com/m_akshai" target="_blank" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="https://www.facebook.com/akshai.m.ettadayil" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-						<li><a href="https://www.instagram.com/akshaim/" target="_blank" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="https://github.com/akshaim" target="_blank" class="icon fa-github"><span class="label">Github</span></a></li>
-						
-					</ul>
-				</footer>
-			</section>
-
-		<!-- Wrapper -->
-			<div id="wrapper">
-
-				<!-- Main -->
-					<div id="main">
-
-						<!-- One -->
-							<section id="one">
-								<div class="container">
-									<header class="major">
-										<h2>4DIAC</h2>
-										<p>Open Source software framework for Distributed automation and control.
-</p>
-									</header>
-									<p>The tutorial contains chapters on setting up <a href="https://eclipse.org/4diac/" target ="_blank"><font color ="red"> 4DIAC </font> </a>environment on a Linux PC, developing industrial applications, deploying applications, debugging instructions and few projects that FOSSEE is working on.<br><br> <img src="https://eclipse.org/4diac/img/4diac.png" width = "370px" height = "100px"  alt="4DIAC" /><br> Image Source : https://eclipse.org/4diac/img/4diac.png <br><br>  </a>4DIAC is an open source framework to develop, deploy and visualize industrial applications for distributed automation and control.It is based on a new standard from <a href="https://en.wikipedia.org/wiki/International_Electrotechnical_Commission" target="_blank"><font color = red> IEC</font></a> for Distributed systems called <a href="https://en.wikipedia.org/wiki/IEC_61499" target="_blank"><font color="red"> IEC61499.</font></a><blockquote>IEC61499, a standard evolved from IED61131, focuses on applying function blocks in the design of distributed industrial process measurement and control systems. IEC 61499 includes advanced software technologies, such as the encapsulation of functionality, component-based design, event-driven execution, and distribution.</blockquote>
-<br> An IEC61499 system is proposed to have the following advantages over IEC61131 : <li>Component-oriented building blocks called Function Blocks</li><li>Separation of data and event flow</li> <li>Graphical intuitive way of modeling control algorithms through the connection of FBs</li> <li>Direct support for distribution, interaction between devices of different vendors</li><li>Support for reconfiguration</li><br>The following flow diagram shows how an application is developed, deployed and visualized using 4DIAC Framework.</br> </br>
-
-<iframe src="images/4DIAC_Flow.html" height="720" width="850"></iframe>
-
-The 4DIAC framework consists of 4DIAC IDE and Forte Runtime. We will discuss it in more detail in chapter 1.</p>
-
-
-
-
-								</div>
-							</section>
-
-						<section id="two">
-								<div class="container">
-									<h3>Chapters</h3>
-						
-									<div class="features">
-										<article>
-											<a href="4DIAC-101.html" class="image"><img src="images/CMake_5.png" alt="4DIAC_Setup" /></a>
-											<div class="inner">
-												<h4> <a href="4DIAC-101.html"> Setting Up environment </a></h4>
-												<p>Details on setting up 4DIAC on a Linux Machine and Forte on an Embedded resource</p>
-											</div>
-										</article>
-										<article>
-											<a href="4DIAC-102.html " class="image"><img src="images/Chapter_3/Pi_LED_Conn.png" alt="4DIAC_RPI_Blink" /></a>
-											<div class="inner">
-												<h4><a href="4DIAC-102.html">Functional Blocks and HW interface </a></h4>
-												<p>Basic application to demonstrate usage of FB's and interface GPIO's in Raspberry Pi</p>
-											</div>
-										</article>
-										<article>
-											<a href="NodeMCU-103.html " class="image"><img src="images/NodeMCU_Server.png" alt="HMI_FBRT" /></a>
-											<div class="inner">
-												<h4><a href="4DIAC-103.html"> HMI using FBRT </a></h4>
-												<p>An application to demonstrate HMI in a Panel Resource.</p>
-											</div>
-</br></br><p>Thanks to Milan Vathoopan and Dr. Alois Zoitl of Fortiss for providing technical support to make this documentation. </p>
-										</article>
-										
-									</div>
-								</div>
-
-
-							</section>
-
-
-				<!-- Footer -->
-					<section id="footer">
-						<div class="container">
-							<ul class="copyright">
-								<li>All content on this site is available under the Creative Commons Attribution-ShareAlike 3.0 Unported  <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">(CC BY-SA 3.0)</a>license.</li>
-							</ul>
-						</div>
-					</section>
-
-			</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/lightbox-plus-jquery.js"></script>
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollzer.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
-
-	</body>
-</html>>
+   <head>
+      <title>Tutorial on 4DIAC</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <!--[if lte IE 8]><script src="../assets/js/ie/html5shiv.js"></script><![endif]-->
+      <link rel="stylesheet" href="assets/css/main.css" />
+      <!--[if lte IE 8]>
+      <link rel="stylesheet" href="assets/css/ie8.css" />
+      <![endif]-->
+      <link href="assets/css/lightbox.css" rel="stylesheet">
+      <script>
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+         
+         ga('create', 'UA-82341121-1', 'auto');
+         ga('send', 'pageview');
+      </script>
+   </head>
+   <body>
+      <!-- Header -->
+      <section id="header">
+         <header>
+            <span class="image avatar"><img src="images/avatar.jpg" alt="" /></span>
+            <h1 id="logo"><a href="#">Akshai M</a></h1>
+            <p>Research Assistant  @ <a href="http://fossee.in/"> FOSSEE, IIT Bombay</a>
+               </br>Founder <a href="http://www.microhope.org" target="_blank">MicroHOPE </a> Foundation 
+            </p>
+         </header>
+         <nav id="nav">
+            <ul>
+               <li><a href="#one" class="active">About</a></li>
+               <li><a href="#two">Chapters</a></li>
+               <li><a href="#three"> </a></li>
+            </ul>
+         </nav>
+         <footer>
+            <ul class="icons">
+               <li><a href="https://twitter.com/m_akshai" target="_blank" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+               <li><a href="https://www.facebook.com/akshai.m.ettadayil" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+               <li><a href="https://www.instagram.com/akshaim/" target="_blank" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+               <li><a href="https://github.com/akshaim" target="_blank" class="icon fa-github"><span class="label">Github</span></a></li>
+            </ul>
+         </footer>
+      </section>
+      <!-- Wrapper -->
+      <div id="wrapper">
+      <!-- Main -->
+      <div id="main">
+         <!-- One -->
+         <section id="one">
+            <div class="container">
+               <header class="major">
+                  <h2>4DIAC</h2>
+                  <p>Open Source software framework for Distributed automation and control.</p>
+               </header>
+               <p>The tutorial contains chapters on setting up <a href="https://eclipse.org/4diac/" target ="_blank"><font color ="red"> 4DIAC </font> </a>environment on a Linux PC, developing industrial applications, deploying applications, debugging instructions and few projects that FOSSEE is working on.<br><br> <img src="https://eclipse.org/4diac/img/4diac.png" width = "370px" height = "100px"  alt="4DIAC" /><br> Image Source : https://eclipse.org/4diac/img/4diac.png <br><br>  </a>4DIAC is an open source framework to develop, deploy and visualize industrial applications for distributed automation and control.It is based on a new standard from <a href="https://en.wikipedia.org/wiki/International_Electrotechnical_Commission" target="_blank"><font color = red> IEC</font></a> for Distributed systems called <a href="https://en.wikipedia.org/wiki/IEC_61499" target="_blank"><font color="red"> IEC61499.</font></a>
+               <blockquote>IEC61499, a standard evolved from IED61131, focuses on applying function blocks in the design of distributed industrial process measurement and control systems. IEC 61499 includes advanced software technologies, such as the encapsulation of functionality, component-based design, event-driven execution, and distribution.</blockquote>
+               <br> An IEC61499 system is proposed to have the following advantages over IEC61131 : 
+               <li>Component-oriented building blocks called Function Blocks</li>
+               <li>Separation of data and event flow</li>
+               <li>Graphical intuitive way of modeling control algorithms through the connection of FBs</li>
+               <li>Direct support for distribution, interaction between devices of different vendors</li>
+               <li>Support for reconfiguration</li>
+               <br>The following flow diagram shows how an application is developed, deployed and visualized using 4DIAC Framework.</br> </br>
+               <iframe src="images/4DIAC_Flow.html" height="720" width="850"></iframe>
+               The 4DIAC framework consists of 4DIAC IDE and Forte Runtime. We will discuss it in more detail in chapter 1.</p>
+            </div>
+         </section>
+         <section id="two">
+            <div class="container">
+               <h3>Chapters</h3>
+               <div class="features">
+                  <article>
+                     <a href="4DIAC-101.html" class="image"><img src="images/CMake_5.png" alt="4DIAC_Setup" /></a>
+                     <div class="inner">
+                        <h4> <a href="4DIAC-101.html"> Setting Up environment </a></h4>
+                        <p>Details on setting up 4DIAC on a Linux Machine and Forte on an Embedded resource</p>
+                     </div>
+                  </article>
+                  <article>
+                     <a href="4DIAC-102.html " class="image"><img src="images/Chapter_3/Pi_LED_Conn.png" alt="Pi_LED_Connection" /></a>
+                     <div class="inner">
+                        <h4><a href="4DIAC-102.html">Functional Blocks and HW interface </a></h4>
+                        <p>Basic application to demonstrate usage of FB's and interface GPIO's in Raspberry Pi</p>
+                     </div>
+                  </article>
+                  <article>
+                     <a href="NodeMCU-103.html " class="image"><img src="images/NodeMCU_Server.png" alt="HMI_FBRT" /></a>
+                     <div class="inner">
+                        <h4><a href="4DIAC-103.html"> Debugging </a></h4>
+                        <p>Debugging Perspective on 4DIAC.</p>
+                     </div>
+                     </br></br>
+                     <p>Thanks to Milan Vathoopan and Dr. Alois Zoitl of Fortiss for providing technical support to make this documentation. </p>
+                  </article>
+               </div>
+            </div>
+         </section>
+         <!-- Footer -->
+         <section id="footer">
+            <div class="container">
+               <ul class="copyright">
+                  <li>All content on this site is available under the Creative Commons Attribution-ShareAlike 3.0 Unported  <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">(CC BY-SA 3.0)</a>license.</li>
+               </ul>
+            </div>
+         </section>
+      </div>
+      <!-- Scripts -->
+      <script src="assets/js/lightbox-plus-jquery.js"></script>
+      <script src="assets/js/jquery.min.js"></script>
+      <script src="assets/js/jquery.scrollzer.min.js"></script>
+      <script src="assets/js/jquery.scrolly.min.js"></script>
+      <script src="assets/js/skel.min.js"></script>
+      <script src="assets/js/util.js"></script>
+      <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+      <script src="assets/js/main.js"></script>
+   </body>
+</html>
