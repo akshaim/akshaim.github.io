@@ -34,15 +34,15 @@
 				<nav id="nav">
 					<ul>
 						<li><a href="#one" class="active">Function Blocks</a></li>
-						<li><a href="#two">Blinking an LED</a></li>
-						<li><a href="#three">Debugging</a></li>
+						<li><a href="#two">App for Blinking LED </a></li>
+						<li><a href="#three">Downloading App to RPi</a></li>
 						
 					</ul>
 				</nav>
 				<footer>
 					<ul class="icons">
 						<li><a href="https://twitter.com/m_akshai" target="_blank" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="https://www.facebook.com/akshaimkurup" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+						<li><a href="https://www.facebook.com/akshai.m.ettadayil" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
 						<li><a href="https://www.instagram.com/akshaim/" target="_blank" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
 						<li><a href="https://github.com/akshaim" target="_blank" class="icon fa-github"><span class="label">Github</span></a></li>
 						
@@ -65,7 +65,7 @@
 									</header>
 									<p>Function blocks are similar to a class in Object Oriented Programming. Class help us bring abstraction to encapsulate a functionality and promote reuse of functionality, the same applies to function blocks.The following figure represents a function block</p>
 
-<a class="FB" href="images/Chapter_3/Function_Block.png" data-lightbox="FB" data-title="Function Block"><img class="CMake" src="images/Chapter_3/Function_Block.png"  width = "350px" height = "230px" alt="Function_Block.png" /></a>
+<a class="FB" href="images/Chapter_3/Function_Block.png" data-lightbox="FB" data-title="Function Block"><img class="FB" src="images/Chapter_3/Function_Block.png"  width = "350px" height = "230px" alt="Function_Block.png" /></a>
 
 </br></br>
 <p>A function block in IEC61499 is a passive element. It waits for a event to trigger its functionality.The event and data flow in a function block is shown below</p>
@@ -84,7 +84,16 @@
 						<section id="two">
 								<div class="container">
 									<h3>Blinking an LED</h3>
-									<p>We will now do a sample application to blink an LED connected to a GPIO in Raspberry Pi. The plan is to build an application in 4DIAC and then download it to Forte RTE running on RPi.
+									<p>We will now do a sample application to blink an LED connected to a GPIO in Raspberry Pi. The plan is to build an application in 4DIAC and then download it to Forte RTE running on RPi. To proceed further we need the following.
+<ol>
+<li>PC running 4DIAC</li>
+<li>Raspberry Pi with Forte</li>
+<li>LED</li>
+<li>220E Resistor (or equivalent)</li>
+<li>Breadboard</li>
+<li>Some wires/Jumpers</li>
+</ol>
+<h4>Building Application</h4>
 <li>Launch 4DIAC and select your workspace</li>
 <li>Create a new system and an application as shown below</li>
 <video width="720" height="480" controls>
@@ -109,25 +118,58 @@
   Your browser does not support the video tag.
 </video></br>
 <blockquoute>Quick Tip: Move the mouse over to event or data I/O to more about each.</blockquote></br>
-<li>Now we will need to interface a hardware for which we will use Qx (Output) block.</li>
+<li>Now we will need to interface a hardware for which we will use QX (Output) block.</li>
 <video width="720" height="480" controls>
   <source src="videos/App_4.webm" type="video/webm">
   Your browser does not support the video tag.
 </video></br>
-<blockquote>The QX block needs</blockquote>
-
-
+<blockquote>PARAMS in QX block take the Output Pin (GPIO) Number.Forte uses SysFS which again uses BCM Pin Mapping. You learn about the Pinout from this <a href = "images/pi_gpio.png" target="_blank"><font color="red">image</font></a> or using the command in RPi.<pre>gpio readall </pre> </blockquote>
+<li>Now system configuration should be defined.</li>
+<video width="720" height="480" controls>
+  <source src="videos/App_5.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video></br>
+<blockquote>The target machine(Embedded resource) is Raspberry Pi and is connected via ethernet (RJ45/WiFi).Make sure that a local IP address is assigned to Pi for downloading application.Global IP addresses will only work with port forwarding/DDNS.</blockquote>
+<li>Map the hardware to the Embedded Resource</li>
+<video width="720" height="480" controls>
+  <source src="videos/App_6.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video></br>
+<li>Configure the embedded resource.</li>
+<video width="720" height="480" controls>
+  <source src="videos/App_7.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video></br>
+<li>Ensure that RPi Device is defined as a HOLOBLOC.</li>
+<video width="720" height="480" controls>
+  <source src="videos/App_8.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video></br> </br>
+Before proceeding any further
+<h3>Make sure that the work is saved !!</h3>
 									
 								</div>
 							</section>
 						<!-- Three -->
 							<section id="three">
 								<div class="container">
-									<h3>Debugging</h3>
-									<p></p>
-
-									
-								</div>
+									<h3>Downloading Application to RPi</h3>
+<li>Connect LED to GPIO3 (Pin 5) of RPi as shown below</li>
+<a class="RPi" href="images/Chapter_3/Pi_LED_Conn.png" data-lightbox="RPi" data-title="RPi LED Connection"><img class="RPi" src="images/Chapter_3/Pi_LED_Conn.png"  width = "350px" height = "230px" alt="Pi_LED_Conn.png" /></a> </br></br>
+<li> Gain terminal access on Pi or use SSH to login remotely.<blockquote>More details on Secure Shell (SSH) can be found in my previous RPi <a href="../IoT/RPi/RaspberryPi-102.html#three" target="_blank" ><font color="red">tutorial </font></a></blockquote>
+</li>
+<li>Start FORTE service as root.</li>
+<video width="720" height="480" controls>
+  <source src="videos/App_9.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video></br>
+<li>Launch Deployment Console in 4DIAC and Download the application</li>
+<video width="720" height="480" controls>
+  <source src="videos/App_9.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video></br></br>
+<li>The LED connected to RPi should now start Blinking.</li>							
+<a class="RPi" href="images/Chapter_3/Pi_Blink.gif" data-lightbox="RPi" data-title="RPi LED Connection"><img class="RPi" src="images/Chapter_3/Pi_Blink.gif"  width = "350px" height = "300px" alt="Pi_Blink.gif" /></a> </br></br>							</div>
 							</section>
 						
 							
