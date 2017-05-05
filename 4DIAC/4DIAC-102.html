@@ -101,40 +101,43 @@
                      <source src="videos/App_2.webm" type="video/webm">
                      Your browser does not support the video tag.
                   </video>
-                  </br>
+                  </br></br>
+		  <blockquoute> Quick Tip: Move the mouse over to event or data I/O to more about each Function block inputs and outputs.</blockquote></br></br>
 		  <li>Now we will need to interface an output block. We will use QX FB which will serve as a Service Interface Block for the hardware</li>
-                  <video width="720" height="480" controls>
-                     <source src="videos/App_4.webm" type="video/webm">
-                     Your browser does not support the video tag.
-                  </video>
-                  </br>
-		   <blockquote>
-                     Generally parameters are defined only after defining the system since we are not usually aware of the target PLC/Hardware.The approach helps us run same application on different PLC's.</br>PARAMS in QX block take the Output Pin (GPIO) Number.Forte uses SysFS which again uses BCM Pin Mapping. You can learn about the Pinout from this <a href = "images/pi_gpio.png" target="_blank"><font color="red">image</font></a> or using the command in RPi.
-                     <pre>gpio readall </pre>
-                  </blockquote>
-                  <li>The E_CYCLE generate events in an interval provided by DT hence the value needs to be assigned.</li>
                   <video width="720" height="480" controls>
                      <source src="videos/App_3.webm" type="video/webm">
                      Your browser does not support the video tag.
                   </video>
                   </br>
-                  <blockquoute>
-                  Quick Tip: Move the mouse over to event or data I/O to more about each.</blockquote></br>
-                  
-                 
-                  <li>Now system configuration should be defined.</li>
+		   <blockquote>
+                     Note: While creating applications we are not usually aware of the target PLC/Hardware.The parameters are assigned after defining system configuration.The approach helps us run same application on different PLC's.
+                  </blockquote>               
+                                  
+                  <li>Define System Configuration.</li>
                   <video width="720" height="480" controls>
-                     <source src="videos/App_5.webm" type="video/webm">
+                     <source src="videos/App_4.webm" type="video/webm">
                      Your browser does not support the video tag.
                   </video>
                   </br>
                   <blockquote>The target machine(Embedded resource) is Raspberry Pi and is connected via ethernet (RJ45/WiFi).Make sure that a local IP address is assigned to Pi for downloading application.Global IP addresses will only work with port forwarding/DDNS.</blockquote>
                   <li>Map the hardware to the Embedded Resource</li>
                   <video width="720" height="480" controls>
+                     <source src="videos/App_5.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video>
+                  </br>
+		
+                  <li>Assign parameters to the Function Blocks.</li>
+                  <video width="720" height="480" controls>
                      <source src="videos/App_6.webm" type="video/webm">
                      Your browser does not support the video tag.
                   </video>
                   </br>
+		   <blockquote>
+                  <ol><li>DT is assigned a value of 1000ms.E_CYCLE would hence generate events for every 1000ms/1s.</li><li>Event input qualifier (QI) is made true.</li><li>PARAMS in QX block take the Output Pin (GPIO) Number.In this case its the GPIO of Raspberry Pi.Forte uses SysFS which use BCM Pin Mapping. You can learn about the Pinout from this <a href = "images/pi_gpio.png" target="_blank"><font color="red">image</font></a> or using the command in RPi.</li>
+                     <pre>gpio readall </pre>
+                  </blockquote>
+
                   <li>Configure the embedded resource.</li>
                   <video width="720" height="480" controls>
                      <source src="videos/App_7.webm" type="video/webm">
@@ -173,9 +176,19 @@
                      Your browser does not support the video tag.
                   </video>
                   </br></br>
-                  <li>The LED connected to RPi should now start Blinking.</li>
+                  <li>The LED connected to RPi should now start Blinking.The blink rate should be 1000ms/1s, as defined in the application.</li>
                   <a class="RPi" href="images/Chapter_3/Pi_Blink.gif" data-lightbox="RPi" data-title="RPi LED Connection"><img class="RPi" src="images/Chapter_3/Pi_Blink.gif"  width = "350px" height = "300px" alt="Pi_Blink.gif" /></a></br></br>
-<blockquote>Note: Clean device in Deployment perspective to deploy a new application. </blockquote>							
+<blockquote>Note: Clean device in Deployment perspective to deploy a new application. 
+		  <video width="720" height="480" controls>
+                     <source src="videos/Clean.webm" type="video/webm">
+                     Your browser does not support the video tag.
+                  </video></blockquote>	
+		  <h4>Assignments for Practice.</h4>	
+		  <ol>
+		  <li>Change the blink rate.</li>
+		  <li>Change duty cycle of the blink</li>
+		  <li>Multiple LED configuration.</li>
+		  </ol>					
                </div>
             </section>
          </div>
