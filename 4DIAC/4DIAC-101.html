@@ -108,12 +108,12 @@ sudo apt install oracle-java8-installer</pre><br>Accept EULA and install.To know
                   <blockquote>If you made an inappropriate selection in any of the above procedures listed above, delete cache,configure and repeat the process.</blockquote>
                   <li>To compile, go to target build directory for binaries, which is "build" in my case and run</li>
                   <pre>make</pre>
-                  <li>After compilation copy the binaries, bin folder in my case, to Raspberry Pi.Try</li>
-                  <pre>scp -r bin pi@local_ip_address:~</pre>
-                  Then enter password.This will copy build folder recursively  to home folder(~) of machine(RPi) with "local_ip_address".
+                  <li>After compilation copy forte executable from build ,its located in src in my case, to Raspberry Pi.Try</li>
+                  <pre>scp forte pi@local_ip_address:~</pre>
+                  Then enter password.This will copy forte to home folder(~) of machine(RPi) with "local_ip_address".
                   <blockquote>You can also use Filezilla, give IP address, username, password of Pi and 22 (SFTP) as port number.</blockquote>
                   </li>
-                  <li>Forte is located in src. To execute, launch terminal in RPi and try.</li>
+                  <li>To launch forte in RPi , in RPi terminal try.</li>
                   <pre>cd src
 sudo ./forte</pre>
                   <blockquote> Forte will start and wait for 4DIAC to download application to it.If no message is shown in terminal, it means forte is up and working properly.<br>You may refer <a href = "IoT/RPi/RaspberryPi-102.html" target="_blank"><font color="red"> SSH tutorial </font></a>to access RPi shell remotely on a network.</blockquote>
