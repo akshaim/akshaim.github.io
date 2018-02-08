@@ -1,0 +1,51 @@
+x[t] = Read(data)
+size = sizeof(x)
+x[t] = clean(x[t]) //filter to clean electrical noise.
+A,D = dwt(x[],wavlet) //level 1 dyadic tranform using 4th degree spline proto wavelet. approximation(A) and coefficient[D] 
+A2,D2 = dwt(A[],wavlet) // /level 2 dyadic tranform
+int i=0;
+void zerocross()
+{
+	for (int i, pr_sign=sign(D); i<size-1; i++) 
+	{
+	if(int current = sign(D[i])) 
+		{
+	        if(sign(previous * current) == -1) // zero cross detection
+	           	{
+			i=qrsdetect(i);			
+			}
+	        previous = current;
+		}
+	}
+}
+int qrsdetect( int j)
+{
+	MMP= detect_mod_maxima_pair(D[j]) //detect adjacent modulus maxima pair
+	Amp = amplitude_calc(MMP) //amplitude of mm pair
+	for (int k=j,k<=j+250,k++) // define window for 250 samples
+	{
+	 if(int current = sign(D[k]))
+		{
+		
+	        if(sign(previous * current) == -1) // zero cross detection
+	           	{
+			MMP= detect_mod_maxima_pair(D[k]) 
+			New_Amp = amplitude_calc(MMP)  			
+			if (New_Amp >Amp)
+				exit() // reset timer			
+			}
+		else if (k=j+250)
+			return detected; // QRS detected
+			
+		
+			
+	        previous = current;
+		
+		}
+	
+		append(detected) = d[k]
+	}
+}
+
+
+
