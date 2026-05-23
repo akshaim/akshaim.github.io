@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>German Buy vs Rent — Long-Term Wealth Calculator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:        #15803d;
+      --green-dark:   #14532d;
+      --green-light:  #dcfce7;
+      --blue:         #1d4ed8;
+      --blue-dark:    #1e3a8a;
+      --blue-light:   #dbeafe;
+      --purple:       #7c3aed;
+      --purple-light: #ede9fe;
+      --amber:        #b45309;
+      --amber-light:  #fef3c7;
+      --teal:         #0f766e;
+      --teal-light:   #ccfbf1;
+      --red:          #dc2626;
+      --red-light:    #fee2e2;
+      --bg:           #f1f5f9;
+      --card:         #ffffff;
+      --border:       #e2e8f0;
+      --text:         #0f172a;
+      --muted:        #64748b;
+      --auto-bg:      #eff6ff;
+      --custom-bg:    #fffbeb;
+      --custom-bdr:   #f59e0b;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+      color: #fff;
+      padding: 18px 24px;
+    }
+    header h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
+    header p  { font-size: 0.82rem; opacity: 0.75; margin-top: 3px; }
+
+    /* ── Scenario bar ── */
+    .scenario-bar {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .scenario-bar label { font-size: .75rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+    .scenario-bar input[type="text"] {
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 4px 9px;
+      font-size: .8rem;
+      background: var(--bg);
+      color: var(--text);
+      width: 200px;
+    }
+    .scen-btn {
+      font-size: .78rem; font-weight: 600; padding: 5px 14px; border-radius: 6px;
+      border: 1px solid var(--border); cursor: pointer; display: inline-flex;
+      align-items: center; gap: 5px; background: var(--card); color: var(--text); transition: background .15s;
+    }
+    .scen-btn:hover { background: var(--bg); }
+    .scen-btn.save { border-color: var(--green); color: var(--green); }
+    .scen-btn.load { border-color: var(--blue); color: var(--blue); }
+    #scenario-loaded { font-size:.72rem; color:var(--green); display:none; font-weight:600; }
+
+    /* ── Layout ── */
+    .page {
+      max-width: 1180px; margin: 0 auto; padding: 20px 16px 60px;
+      display: grid; grid-template-columns: 1fr 340px; gap: 18px; align-items: start;
+    }
+    @media (max-width: 860px) { .page { grid-template-columns: 1fr; } }
+    .col-main { display: flex; flex-direction: column; gap: 16px; }
+
+    /* ── Cards ── */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+    .card-head {
+      padding: 12px 18px; font-weight: 600; font-size: 0.88rem;
+      color: #fff; display: flex; align-items: center; gap: 8px; letter-spacing: .01em;
+    }
+    .card-head.green  { background: var(--green); }
+    .card-head.blue   { background: var(--blue); }
+    .card-head.purple { background: var(--purple); }
+    .card-head.amber  { background: var(--amber); }
+    .card-head.teal   { background: var(--teal); }
+    .card-body { padding: 16px 18px; }
+
+    /* ── Form grid ── */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 560px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field.span2 { grid-column: 1 / -1; }
+    .field.span3 { grid-column: 1 / -1; }
+
+    /* ── Labels ── */
+    .lbl {
+      font-size: 0.72rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .05em;
+      display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
+    }
+    .badge {
+      font-size: 0.62rem; padding: 1px 6px; border-radius: 4px;
+      font-weight: 700; line-height: 1.6; white-space: nowrap;
+    }
+    .badge-auto   { background: var(--blue-light);  color: var(--blue); }
+    .badge-custom { background: var(--amber-light); color: var(--amber); }
+    .reset-btn {
+      font-size: 0.68rem; color: var(--blue); cursor: pointer; border: none;
+      background: none; padding: 0; text-decoration: underline; font-family: inherit;
+    }
+    .reset-btn:hover { color: var(--blue-dark); }
+
+    /* ── Inputs ── */
+    .input-wrap { position: relative; display: flex; align-items: center; }
+    .input-wrap .sym { position: absolute; left: 10px; color: var(--muted); font-size: 0.85rem; pointer-events: none; z-index: 1; }
+    .input-wrap .unit { position: absolute; right: 10px; color: var(--muted); font-size: 0.8rem; pointer-events: none; }
+
+    input[type="number"], input[type="range"] {
+      width: 100%; border: 1.5px solid var(--border); border-radius: 7px;
+      padding: 9px 12px; font-size: 0.9rem; color: var(--text);
+      background: #fff; transition: border-color .15s, box-shadow .15s, background .15s;
+      appearance: textfield; -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    input[type="number"]:focus {
+      outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(21,128,61,.12);
+    }
+    .input-wrap.has-sym  input { padding-left: 26px; }
+    .input-wrap.has-unit input { padding-right: 40px; }
+    input.auto-val   { background: var(--auto-bg); }
+    input.custom-val { background: var(--custom-bg); border-color: var(--custom-bdr); }
+    input[readonly] { background: #f8fafc !important; cursor: default; color: var(--muted); }
+    input.result-field { font-weight: 700; font-size: 1rem; color: var(--text); text-align: right; background: #f8fafc !important; }
+
+    input[type="range"] {
+      padding: 4px 0; border: none; background: transparent; box-shadow: none;
+      accent-color: var(--green); cursor: pointer;
+    }
+    .range-wrap { display: flex; flex-direction: column; gap: 4px; }
+    .range-labels { display: flex; justify-content: space-between; font-size: .68rem; color: var(--muted); }
+    .range-value { font-size: 1.1rem; font-weight: 700; color: var(--green); text-align: center; }
+
+    /* ── Toggle switch ── */
+    .toggle-row { display: flex; align-items: center; gap: 10px; padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .toggle-row:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+    .tlbl { font-size: 0.85rem; font-weight: 500; color: var(--text); cursor: pointer; user-select: none; }
+    .tlbl small { color: var(--muted); font-weight: 400; }
+    .switch { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; inset: 0; background: #cbd5e1; border-radius: 22px; cursor: pointer; transition: .2s; }
+    .slider::before { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .2s; }
+    .switch input:checked + .slider { background: var(--green); }
+    .switch input:checked + .slider::before { transform: translateX(18px); }
+
+    /* ── Section sub-header ── */
+    .section-sub {
+      font-size: 0.7rem; font-weight: 700; color: var(--muted); text-transform: uppercase;
+      letter-spacing: .06em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-sub::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+
+    /* ── Total / EMI bars ── */
+    .total-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 11px 14px; border-radius: 8px; margin-top: 14px; color: #fff;
+    }
+    .total-bar.green  { background: var(--green); }
+    .total-bar.blue   { background: var(--blue); }
+    .total-bar.teal   { background: var(--teal); }
+    .total-bar .lbl2  { font-size: 0.82rem; font-weight: 500; }
+    .total-bar .val2  { font-size: 1.15rem; font-weight: 700; }
+
+    .emi-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-radius: 8px; margin-top: 12px; }
+    .emi-bar.purple { background: var(--purple-light); }
+    .emi-bar.purple .lbl2 { color: var(--purple); } .emi-bar.purple .val2 { color: var(--purple); }
+    .emi-bar.amber  { background: var(--amber-light); }
+    .emi-bar.amber  .lbl2 { color: var(--amber); }  .emi-bar.amber  .val2 { color: var(--amber); }
+    .emi-bar.green  { background: var(--green-light); }
+    .emi-bar.green  .lbl2 { color: var(--green); }  .emi-bar.green  .val2 { color: var(--green); }
+    .emi-bar .lbl2  { font-size: 0.82rem; font-weight: 500; }
+    .emi-bar .val2  { font-size: 1.1rem; font-weight: 700; }
+
+    /* ── Info pills ── */
+    .info-pill { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .pill {
+      display: flex; align-items: center; gap: 5px; padding: 5px 10px;
+      border-radius: 20px; font-size: 0.78rem; font-weight: 500;
+    }
+    .pill.green  { background: var(--green-light); color: var(--green); }
+    .pill.blue   { background: var(--blue-light);  color: var(--blue); }
+    .pill.amber  { background: var(--amber-light); color: var(--amber); }
+    .pill.red    { background: var(--red-light);   color: var(--red); }
+    .pill.purple { background: var(--purple-light);color: var(--purple); }
+    .pill span.pv { font-weight: 700; }
+
+    /* ── KPI tiles ── */
+    .kpi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px; }
+    .kpi-grid.g4 { grid-template-columns: repeat(4,1fr); }
+    .kpi-grid.g2 { grid-template-columns: repeat(2,1fr); }
+    @media (max-width: 620px) { .kpi-grid, .kpi-grid.g4 { grid-template-columns: 1fr 1fr; } }
+
+    .tile { border-radius: 9px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; background: #f1f5f9; }
+    .tile.green  { background: var(--green-light); }
+    .tile.blue   { background: var(--blue-light); }
+    .tile.purple { background: var(--purple-light); }
+    .tile.amber  { background: var(--amber-light); }
+    .tile.teal   { background: var(--teal-light); }
+    .tile.red    { background: var(--red-light); }
+    .tile.neutral{ background: #f8fafc; border: 1px solid var(--border); }
+    .tile-lbl { font-size: 0.7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+    .tile-val { font-size: 1.35rem; font-weight: 800; line-height: 1.15; margin: 4px 0; color: var(--text); }
+    .tile.green  .tile-val { color: var(--green); }
+    .tile.blue   .tile-val { color: var(--blue); }
+    .tile.purple .tile-val { color: var(--purple); }
+    .tile.amber  .tile-val { color: var(--amber); }
+    .tile.teal   .tile-val { color: var(--teal); }
+    .tile.red    .tile-val { color: var(--red); }
+    .tile-sub { font-size: 0.69rem; color: var(--muted); }
+
+    /* ── Waterfall rows ── */
+    .flow-table { background: var(--bg); border-radius: 8px; overflow: hidden; }
+    .flow-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 7px 13px; font-size: 0.82rem; border-bottom: 1px solid var(--border);
+    }
+    .flow-row:last-child { border-bottom: none; }
+    .flow-row.income span:first-child { color: var(--green); font-weight: 600; }
+    .flow-row.deduct span:last-child  { color: var(--red); }
+    .flow-row.sub   { font-weight: 600; background: rgba(255,255,255,.7); }
+    .flow-row.total { font-weight: 700; font-size: .86rem; background: rgba(255,255,255,.95); }
+    .flow-row.total.pos span:last-child { color: var(--green); }
+    .flow-row.total.neg span:last-child { color: var(--red); }
+    .flow-row.neutral { background: rgba(255,255,255,.4); font-style: italic; color: var(--muted); font-size: .76rem; }
+
+    /* ── Sidebar ── */
+    .sidebar { position: sticky; top: 16px; }
+    .summary-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+    .summary-head { background: var(--text); color: #fff; padding: 12px 18px; font-weight: 700; font-size: 0.88rem; }
+    .summary-body { padding: 14px 18px; }
+    .sec-lbl { font-size: .67rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 10px 0 5px; }
+    .bk-table { background: var(--bg); border-radius: 7px; overflow: hidden; margin-bottom: 10px; }
+    .bk-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 11px; border-bottom: 1px solid var(--border); font-size: .8rem; }
+    .bk-row:last-child { border-bottom: none; }
+    .bk-row .bk-l { color: var(--muted); }
+    .bk-row .bk-v { font-weight: 600; }
+    .sum-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: .83rem; }
+    .sum-row:last-child { border-bottom: none; }
+    .sum-row .sl { color: var(--muted); }
+    .sum-row .sv { font-weight: 600; }
+    .sv.green  { color: var(--green); }
+    .sv.blue   { color: var(--blue); }
+    .sv.purple { color: var(--purple); }
+    .sv.amber  { color: var(--amber); }
+    .sv.teal   { color: var(--teal); }
+    .sv.red    { color: var(--red); }
+    hr.sdiv { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+
+    .sum-total {
+      background: var(--green); color: #fff; padding: 12px 18px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin: 12px -18px -14px; border-radius: 0 0 10px 10px;
+    }
+    .sum-total .st-l { font-size: .82rem; font-weight: 500; }
+    .sum-total .st-v { font-size: 1.3rem; font-weight: 800; }
+
+    /* ── Horizon tabs ── */
+    .horizon-tabs { display: flex; gap: 4px; margin-bottom: 12px; }
+    .htab {
+      flex: 1; text-align: center; padding: 5px; font-size: .75rem; font-weight: 600;
+      border: 1.5px solid var(--border); border-radius: 6px; cursor: pointer; background: var(--bg);
+      color: var(--muted); transition: all .15s;
+    }
+    .htab.active { background: var(--green); border-color: var(--green); color: #fff; }
+
+    /* ── Verdict banner ── */
+    .verdict {
+      border-radius: 8px; padding: 12px 16px; margin-top: 14px;
+      font-size: .82rem; font-weight: 600; display: flex; align-items: flex-start; gap: 8px;
+    }
+    .verdict.buy  { background: var(--green-light); color: var(--green-dark); }
+    .verdict.rent { background: var(--blue-light); color: var(--blue-dark); }
+    .verdict.tie  { background: var(--amber-light); color: var(--amber); }
+
+    /* ── Info box ── */
+    .info-box {
+      background: var(--blue-light); border: 1px solid #bfdbfe;
+      border-radius: 7px; padding: 10px 14px;
+      font-size: .78rem; color: #1e3a8a; line-height: 1.55; margin-top: 12px;
+    }
+    .info-box.green { background: #f0fdf4; border-color: #86efac; color: #14532d; }
+    .info-box.amber { background: var(--amber-light); border-color: #fcd34d; color: #78350f; }
+
+    /* ── Table ── */
+    .data-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+    .data-table thead th {
+      text-align: right; padding: 6px 10px; background: var(--bg);
+      color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+    .data-table thead th:first-child { text-align: left; }
+    .data-table tbody td { text-align: right; padding: 5px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .data-table tbody td:first-child { text-align: left; color: var(--muted); font-weight: 600; }
+    .data-table tbody tr:nth-child(even) { background: #fafafa; }
+    .data-table tbody tr:hover { background: var(--green-light); }
+    .data-table tbody tr.highlight { background: #fef9c3; font-weight: 600; }
+    .winner-buy  { color: var(--green); font-weight: 700; }
+    .winner-rent { color: var(--blue); font-weight: 700; }
+
+    /* ── Crossover badge ── */
+    .crossover-badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px;
+      border-radius: 20px; font-size: .8rem; font-weight: 700; margin: 10px 0;
+    }
+    .crossover-badge.found { background: var(--green-light); color: var(--green-dark); }
+    .crossover-badge.none  { background: var(--blue-light); color: var(--blue-dark); }
+
+    /* ── Recommendation section ── */
+    .rec-banner {
+      padding: 18px 22px; font-size: 1rem; font-weight: 700; line-height: 1.6;
+      border-radius: 0;
+    }
+    .rec-banner.buy  { background: var(--green-light); color: var(--green-dark); border-left: 5px solid var(--green); }
+    .rec-banner.rent { background: var(--blue-light);  color: var(--blue-dark);  border-left: 5px solid var(--blue); }
+    .rec-banner.tie  { background: var(--amber-light); color: var(--amber);      border-left: 5px solid var(--amber); }
+    .rec-action { display:block; font-size:.82rem; font-weight:400; margin-top:5px; opacity:.9; }
+    .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 12px; padding: 16px 20px; background: var(--bg-alt);
+    }
+    .rec-chip {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .rc-label { font-size:.67rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px; }
+    .rc-value { font-size:1.08rem; font-weight:700; color:var(--text); }
+    .rc-value.green { color: var(--green); }
+    .rc-value.blue  { color: var(--blue); }
+    .rc-value.neg   { color: var(--red, #dc2626); }
+    .rc-value.pos   { color: var(--green); }
+    .rc-sub   { font-size:.7rem; color:var(--muted); margin-top:3px; line-height:1.4; }
+    .rc-section-label {
+      font-size:.72rem; color:var(--muted); text-transform:uppercase;
+      letter-spacing:.06em; font-weight:700; margin-bottom:10px;
+    }
+    .rec-bullets { padding: 16px 20px 8px; }
+    .rec-bullets ul { margin:0; padding-left:18px; font-size:.82rem; line-height:1.75; color:var(--text); }
+    .rec-bullets ul li + li { margin-top:4px; }
+    .rec-sensitivity {
+      margin: 4px 20px 18px; padding: 12px 16px;
+      background: var(--amber-light); border-radius: 8px;
+      border-left: 4px solid var(--amber);
+    }
+    .rec-sensitivity ul { margin:0; padding-left:16px; font-size:.8rem; line-height:1.75; color:var(--text); }
+    .rec-sensitivity ul li + li { margin-top:4px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🏠 German Buy vs Rent — Long-Term Wealth Calculator</h1>
+  <p>Compare property ownership EMI &amp; equity against ETF investing — with KFW loan support, German Nebenkosten &amp; up to 35-year wealth projection</p>
+</header>
+
+<!-- Scenario bar -->
+<div class="scenario-bar">
+  <label for="scenario-name">Scenario:</label>
+  <input type="text" id="scenario-name" value="buy-vs-rent" placeholder="buy-vs-rent" />
+  <button class="scen-btn save" onclick="saveScenario()">&#128190; Save JSON</button>
+  <label class="scen-btn load">
+    &#128194; Load JSON
+    <input type="file" accept=".json" style="display:none;" onchange="loadScenario(this.files[0]); this.value='';" />
+  </label>
+  <span id="scenario-loaded">✓ Loaded</span>
+</div>
+
+<div class="page">
+<div class="col-main">
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 1. Property Cost                                                        -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head green">📋 &nbsp;1. Property Acquisition Cost</div>
+  <div class="card-body">
+
+    <div class="section-sub">Purchase Price</div>
+    <div class="grid2">
+      <div class="field">
+        <span class="lbl">Property / Apartment Price (Kaufpreis)</span>
+        <div class="input-wrap has-sym">
+          <span class="sym">€</span>
+          <input type="number" id="purchase-price" value="400000" min="0" step="5000" oninput="onBase()" />
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">Grunderwerbsteuer Rate (by state)</span>
+        <div class="input-wrap has-unit">
+          <input type="number" id="grest-pct" value="3.5" min="0" max="10" step="0.5" oninput="recalc()" />
+          <span class="unit">%</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">BY 3.5% · BW/HH/SA 5% · BE/BR/SL/TH 6% · NW/MV/SC 6.5%</span>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="section-sub">
+      Transaction Costs (Nebenkosten)
+      <span style="text-transform:none;letter-spacing:0;font-weight:400;font-size:.7rem">— auto-calculated; click ↻ reset to restore</span>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <span class="lbl">
+          Notarkosten
+          <span id="notar-badge" class="badge badge-auto">AUTO 1.5%</span>
+          <button id="notar-reset" class="reset-btn" style="display:none" onclick="resetOv('notar')">↻ reset</button>
+        </span>
+        <div class="input-wrap has-sym">
+          <span class="sym">€</span>
+          <input type="number" id="notar" class="auto-val" min="0" step="100" oninput="setOv('notar')" />
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">
+          Grunderwerbsteuer
+          <span id="grest-badge" class="badge badge-auto">AUTO</span>
+          <button id="grest-reset" class="reset-btn" style="display:none" onclick="resetOv('grest')">↻ reset</button>
+        </span>
+        <div class="input-wrap has-sym">
+          <span class="sym">€</span>
+          <input type="number" id="grest" class="auto-val" min="0" step="100" oninput="setOv('grest')" />
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">
+          Grundbucheintrag
+          <span id="gb-badge" class="badge badge-auto">AUTO 0.5%</span>
+          <button id="gb-reset" class="reset-btn" style="display:none" onclick="resetOv('gb')">↻ reset</button>
+        </span>
+        <div class="input-wrap has-sym">
+          <span class="sym">€</span>
+          <input type="number" id="gb" class="auto-val" min="0" step="100" oninput="setOv('gb')" />
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">Makler Commission (Estate Agent)</span>
+        <div class="input-wrap has-sym">
+          <span class="sym">€</span>
+          <input type="number" id="makler" value="0" min="0" step="500" oninput="recalc()" />
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">Typical 3.57% (new builds: often 0%). Buyer's share only.</span>
+      </div>
+    </div>
+
+    <div class="total-bar green" style="margin-top:16px">
+      <span class="lbl2">Total Acquisition Cost (incl. all Nebenkosten)</span>
+      <span class="val2" id="out-total-acq">€ 0</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 2. Equity                                                               -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head blue">💰 &nbsp;2. Your Equity (Eigenkapital)</div>
+  <div class="card-body">
+    <div class="grid2">
+      <div class="field">
+        <span class="lbl">
+          Total Equity (Cash Down)
+          <span id="equity-badge" class="badge badge-auto">AUTO 25%</span>
+          <button id="equity-reset" class="reset-btn" style="display:none" onclick="resetOv('equity')">↻ reset</button>
+        </span>
+        <div class="input-wrap has-sym">
+          <span class="sym">€</span>
+          <input type="number" id="equity" class="auto-val" min="0" step="5000" oninput="setOv('equity')" />
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">Covers down payment + Nebenkosten. This is the starting ETF investment for the rental comparison.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">Equity as % of Total Acquisition</span>
+        <div class="input-wrap">
+          <input type="number" id="out-equity-pct" class="result-field" readonly style="color:var(--blue); text-align:right;" />
+        </div>
+      </div>
+    </div>
+    <div class="total-bar blue">
+      <span class="lbl2">Total Loan Required (KFW + Bank)</span>
+      <span class="val2" id="out-total-loan">€ 0</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 3. KFW Loan                                                             -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head purple">🏛️ &nbsp;3. KFW Subsidised Loan &nbsp;<span style="font-weight:400;opacity:.8;font-size:.8rem">(optional — new builds / energy-efficient properties)</span></div>
+  <div class="card-body">
+
+    <div class="toggle-row">
+      <label class="switch">
+        <input type="checkbox" id="kfw-toggle" checked onchange="toggleKfw()" />
+        <span class="slider"></span>
+      </label>
+      <span class="tlbl" onclick="document.getElementById('kfw-toggle').click()">
+        Include KFW subsidised loan
+        <small> — KFW 297/298 (Wohngebäude), KFW 300 (Wohneigentum), or KFW 40 QNG for qualifying new builds</small>
+      </span>
+    </div>
+
+    <div id="kfw-fields" class="grid2">
+      <div class="field">
+        <span class="lbl">
+          KFW Loan Amount
+          <span id="kfw-amt-badge" class="badge badge-auto">DEFAULT</span>
+          <button id="kfw-amt-reset" class="reset-btn" style="display:none" onclick="resetOv('kfw-amt')">↻ reset</button>
+        </span>
+        <div class="input-wrap has-sym">
+          <span class="sym">€</span>
+          <input type="number" id="kfw-amt" value="100000" class="auto-val" min="0" step="5000" oninput="setOv('kfw-amt')" />
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">Max €150k (KFW 297/300). New build KFW 40 QNG: max €150k per unit.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">KFW Interest Rate (Sollzins)</span>
+        <div class="input-wrap has-unit">
+          <input type="number" id="kfw-rate" value="1.5" min="0" max="15" step="0.05" oninput="recalc()" />
+          <span class="unit">%</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">Check current KFW rate at kfw.de — varies by energy class &amp; income.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">KFW Fixed-Rate Period / Term</span>
+        <div class="input-wrap has-unit">
+          <input type="number" id="kfw-term" value="10" min="1" max="35" step="1" oninput="recalc()" />
+          <span class="unit">yr</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">KFW 297/300: 5–35 yr. Standard fixed period 10 yr; full repayment term selectable.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">Monthly KFW Payment (EMI)</span>
+        <div class="input-wrap">
+          <input type="number" id="out-kfw-emi" class="result-field" readonly style="color:var(--purple); text-align:right;" />
+        </div>
+      </div>
+    </div>
+    <div id="kfw-emi-bar" class="emi-bar purple">
+      <span class="lbl2">KFW Monthly EMI (Annuität)</span>
+      <span class="val2" id="kfw-emi-bar-val">€ 0 / mo</span>
+    </div>
+    <div class="info-box" style="margin-top:8px;font-size:.75rem;">
+      ⚠️ KFW offers significantly lower interest rates than commercial banks — but full repayment within the term forces higher monthly EMI.
+      Despite higher monthly costs, <strong>total interest saved</strong> over the loan life can be substantial vs rolling the same amount into the bank loan.
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 4. Bank Mortgage                                                        -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head amber">🏦 &nbsp;4. Bank Mortgage (Annuitätendarlehen)</div>
+  <div class="card-body">
+    <div class="grid2">
+      <div class="field">
+        <span class="lbl">
+          Bank Loan Amount
+          <span id="bank-amt-badge" class="badge badge-auto">AUTO</span>
+          <button id="bank-amt-reset" class="reset-btn" style="display:none" onclick="resetOv('bank-amt')">↻ reset</button>
+        </span>
+        <div class="input-wrap has-sym">
+          <span class="sym">€</span>
+          <input type="number" id="bank-amt" class="auto-val" min="0" step="5000" oninput="setOv('bank-amt')" />
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">Auto = Total loan − KFW amount. Override for split-loan scenarios.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">Bank Interest Rate (Sollzins / p.a.)</span>
+        <div class="input-wrap has-unit">
+          <input type="number" id="bank-rate" value="4.0" min="0" max="20" step="0.05" oninput="recalc()" />
+          <span class="unit">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">Bank Loan Amortisation Term</span>
+        <div class="input-wrap has-unit">
+          <input type="number" id="bank-term" value="25" min="5" max="40" step="1" oninput="recalc()" />
+          <span class="unit">yr</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">Full amortisation (Volltilgung). Typical 20–30 yr for owner-occupied.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">Monthly Bank Payment (EMI)</span>
+        <div class="input-wrap">
+          <input type="number" id="out-bank-emi" class="result-field" readonly style="color:var(--amber); text-align:right;" />
+        </div>
+      </div>
+    </div>
+
+    <div class="emi-bar amber">
+      <span class="lbl2">Bank Monthly EMI (Annuität)</span>
+      <span class="val2" id="bank-emi-bar-val">€ 0 / mo</span>
+    </div>
+
+    <div class="info-pill" style="margin-top:12px;">
+      <span class="pill blue">LTV &nbsp;<span class="pv" id="pill-ltv">—</span></span>
+      <span class="pill green">Equity &nbsp;<span class="pv" id="pill-equity-pct">—</span></span>
+      <span class="pill amber">Total EMI &nbsp;<span class="pv" id="pill-total-emi">—</span></span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 5. Owner Housing Costs                                                  -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head teal">🏡 &nbsp;5. Owner Monthly Housing Costs</div>
+  <div class="card-body">
+    <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;line-height:1.6;">
+      These costs apply to the <strong>buyer only</strong>. Both buyer and renter pay their own utilities (Nebenkosten/Betriebskosten) separately, so only the owner-specific costs below are included in the comparison.
+    </p>
+    <div class="grid2">
+      <div class="field">
+        <span class="lbl">Hausgeld / WEG Costs (non-recoverable)</span>
+        <div class="input-wrap has-sym has-unit">
+          <span class="sym">€</span>
+          <input type="number" id="hausgeld" value="250" min="0" step="10" oninput="recalc()" />
+          <span class="unit">/mo</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">Owner's share of building mgmt, Rücklage (reserve fund), common areas. Typical €2–4/m²/mo.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">Grundsteuer (Property Tax)</span>
+        <div class="input-wrap has-sym has-unit">
+          <span class="sym">€</span>
+          <input type="number" id="grundsteuer" value="12" min="0" step="1" oninput="recalc()" />
+          <span class="unit">/mo</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">Post-2025 reform (Bayern): Äquivalenzbetrag × Hebesatz. Example — 75 m² unit with ~90 m² land share: Äquivalenzbetrag ≈ 75×0.31 + 90×0.04 = 26.85 € → annual tax ≈ €91 (340% Hebesatz) to €161 (600%) / ~€8–13/mo. Typical Bavarian cities at ~490% aufkommensneutral: ≈ €11–14/mo. Check your Grundsteuerbescheid or Finanzamt for the exact figure — it has dropped significantly from the old calculation for most apartments.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">Maintenance / Repair Reserve</span>
+        <div class="input-wrap has-sym has-unit">
+          <span class="sym">€</span>
+          <input type="number" id="maintenance" value="75" min="0" step="10" oninput="recalc()" />
+          <span class="unit">/mo</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">Owner's personal maintenance reserve for the unit (e.g. kitchen, bathroom). ~€1/m²/mo typical. In addition to WEG Rücklage above.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">Wohngebäudeversicherung (Building Insurance)</span>
+        <div class="input-wrap has-sym has-unit">
+          <span class="sym">€</span>
+          <input type="number" id="insurance" value="30" min="0" step="5" oninput="recalc()" />
+          <span class="unit">/mo</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">If not included in WEG Hausgeld. Typical €20–50/mo for condos; higher for houses.</span>
+      </div>
+    </div>
+
+    <div class="emi-bar green" style="margin-top:14px">
+      <span class="lbl2">Total Monthly Buy Cost (EMI + Housing)</span>
+      <span class="val2" id="out-total-buy-cost">€ 0 / mo</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 6. Rental Alternative                                                   -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head" style="background:#0c4a6e;">🔑 &nbsp;6. Rental Alternative</div>
+  <div class="card-body">
+    <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;line-height:1.6;">
+      Equivalent apartment rent (Kaltmiete). The renter invests the same equity (Section 2) in a global ETF on Day 1.
+      Each month, any cash flow difference vs the buy scenario is added to / withdrawn from the ETF portfolio.
+    </p>
+    <div class="grid2">
+      <div class="field">
+        <span class="lbl">Monthly Cold Rent (Kaltmiete)</span>
+        <div class="input-wrap has-sym has-unit">
+          <span class="sym">€</span>
+          <input type="number" id="rent-mo" value="1400" min="0" step="50" oninput="recalc()" />
+          <span class="unit">/mo</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">For a comparable apartment (same size &amp; location as purchase). Enter Kaltmiete only — <strong>do not include</strong> Betriebskosten/Nebenkosten (utilities, Grundsteuer passthrough, etc.), as those are handled separately below.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">Annual Rent Growth Rate</span>
+        <div class="input-wrap has-unit">
+          <input type="number" id="rent-growth" value="3.0" min="0" max="15" step="0.1" oninput="recalc()" />
+          <span class="unit">%/yr</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">German cities avg 3–5%/yr over the past decade. §558 BGB Mietspiegel cap applies but long-run ~3% reasonable.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">
+          Grundsteuer passthrough (Betriebskosten)
+          <span id="gst-renter-badge" class="badge badge-auto">= Section 5</span>
+          <button id="gst-renter-reset" class="reset-btn" style="display:none" onclick="resetOv('grundsteuer-renter')">↻ reset</button>
+        </span>
+        <div class="input-wrap has-sym has-unit">
+          <span class="sym">€</span>
+          <input type="number" id="grundsteuer-renter" class="auto-val" min="0" step="1" oninput="setOv('grundsteuer-renter')" />
+          <span class="unit">/mo</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">Landlords <strong>must</strong> pass Grundsteuer to tenants via Betriebskostenabrechnung (§19 BetrKV Anlage 1). Auto-mirrored from Section 5 so it cancels out in the net comparison. Set to 0 only if the landlord absorbs it in the Kaltmiete.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">Total Effective Renter Cost (Year 1)</span>
+        <div class="emi-bar" style="background:rgba(29,78,216,0.08);margin-top:0;">
+          <span class="lbl2" style="color:var(--blue);">Kaltmiete + Grundsteuer</span>
+          <span class="val2" style="color:var(--blue);" id="out-total-rent-cost">€ — / mo</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">This is the true apples-to-apples renter cost matched against Section 5's buyer cost.</span>
+      </div>
+    </div>
+
+    <!-- Monthly comparison -->
+    <hr class="divider">
+    <div class="section-sub">Year 1 Monthly Cash Flow Comparison</div>
+    <div class="flow-table">
+      <div class="flow-row" style="background:rgba(21,128,61,0.06);">
+        <span style="font-weight:700;font-size:.82rem;">🏠 Buy path</span><span></span>
+      </div>
+      <div class="flow-row">
+        <span>&nbsp;&nbsp;EMI (KFW + Bank)</span>
+        <span id="cmp-emi">—</span>
+      </div>
+      <div class="flow-row">
+        <span>&nbsp;&nbsp;+ Hausgeld, Maintenance, Insurance</span>
+        <span id="cmp-housing-costs">—</span>
+      </div>
+      <div class="flow-row">
+        <span>&nbsp;&nbsp;+ Grundsteuer (paid directly as owner)</span>
+        <span id="cmp-gst-buy">—</span>
+      </div>
+      <div class="flow-row sub">
+        <span>&nbsp;&nbsp;= Total buy cost</span>
+        <span id="cmp-buy-cost">—</span>
+      </div>
+      <div class="flow-row" style="background:rgba(29,78,216,0.06);">
+        <span style="font-weight:700;font-size:.82rem;">🔑 Rent path</span><span></span>
+      </div>
+      <div class="flow-row">
+        <span>&nbsp;&nbsp;Kaltmiete</span>
+        <span id="cmp-kaltmiete">—</span>
+      </div>
+      <div class="flow-row">
+        <span>&nbsp;&nbsp;+ Grundsteuer (passthrough via Betriebskosten)</span>
+        <span id="cmp-gst-rent">—</span>
+      </div>
+      <div class="flow-row sub">
+        <span>&nbsp;&nbsp;= Total effective renter cost</span>
+        <span id="cmp-rent-cost">—</span>
+      </div>
+      <div class="flow-row total" id="cmp-diff-row">
+        <span>Monthly premium for buying (Year 1)</span>
+        <span id="cmp-diff">—</span>
+      </div>
+      <div class="flow-row neutral">
+        <span>↑ Grundsteuer appears on both sides and cancels out. The net premium is EMI + Hausgeld + Maint. + Insurance − Kaltmiete. This monthly difference is invested by the renter in ETF; it narrows over time as rent rises and mortgages pay down.</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 7. Market Assumptions & Analysis Period                                  -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head" style="background:#1e1b4b;">📊 &nbsp;7. Market Assumptions &amp; Analysis Period</div>
+  <div class="card-body">
+    <div class="grid2">
+      <div class="field">
+        <span class="lbl">Annual Property Appreciation (%/yr)</span>
+        <div class="input-wrap has-unit">
+          <input type="number" id="prop-growth" value="2.0" min="-5" max="20" step="0.1" oninput="recalc()" />
+          <span class="unit">%/yr</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">Long-run German average ~1–2%/yr real. Cities may be higher. 2010–2022 was exceptional; normalise post-correction.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">ETF Annual Return (nominal, before tax)</span>
+        <div class="input-wrap has-unit">
+          <input type="number" id="etf-return" value="7.0" min="0" max="25" step="0.1" oninput="recalc()" />
+          <span class="unit">%/yr</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">MSCI World / S&P 500 long-run ~7–8%/yr nominal (EUR). Lower your estimate for conservative modelling.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">Inflation Rate</span>
+        <div class="input-wrap has-unit">
+          <input type="number" id="inflation-rate" value="2.0" min="0" max="15" step="0.1" oninput="recalc()" />
+          <span class="unit">%/yr</span>
+        </div>
+        <span style="font-size:.67rem;color:var(--muted);">Used for inflation-adjusted (real) chart mode and to escalate housing costs.</span>
+      </div>
+      <div class="field">
+        <span class="lbl">Analysis Period</span>
+        <div class="range-wrap">
+          <div style="display:flex;gap:10px;align-items:center;">
+            <input type="range" id="analysis-years-range" min="5" max="40" value="25" step="1"
+                   oninput="document.getElementById('analysis-years').value=this.value; recalc();" style="flex:1;" />
+            <div class="input-wrap has-unit" style="width:80px; flex-shrink:0;">
+              <input type="number" id="analysis-years" value="25" min="5" max="40" step="1"
+                     oninput="document.getElementById('analysis-years-range').value=this.value; recalc();" />
+              <span class="unit">yr</span>
+            </div>
+          </div>
+          <div class="range-labels"><span>5</span><span>40 years</span></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="section-sub">Adjustment Options</div>
+    <div class="toggle-row">
+      <label class="switch">
+        <input type="checkbox" id="sale-costs-toggle" onchange="recalc()" />
+        <span class="slider"></span>
+      </label>
+      <span class="tlbl" onclick="document.getElementById('sale-costs-toggle').click()">
+        Deduct property sale costs from buy-path wealth
+        <small> (~4.5% of sale price: Makler buyer+seller ~3.57% + Notar ~0.75% + Grundbuch ~0.25%)</small>
+      </span>
+    </div>
+    <div class="toggle-row">
+      <label class="switch">
+        <input type="checkbox" id="etf-tax-toggle" onchange="recalc()" />
+        <span class="slider"></span>
+      </label>
+      <span class="tlbl" onclick="document.getElementById('etf-tax-toggle').click()">
+        Apply Abgeltungsteuer on ETF gains (26.375% × 70% = ~18.5% effective)
+        <small> — 30% Teilfreistellung for equity ETFs (§20 EStG). Property gain (primary residence, §23 Abs. 1 Nr. 1 S. 3 EStG): <strong>tax-free after ~3 calendar years</strong> of owner-occupation.</small>
+      </span>
+    </div>
+    <div class="toggle-row">
+      <label class="switch">
+        <input type="checkbox" id="inflation-toggle" onchange="recalc()" />
+        <span class="slider"></span>
+      </label>
+      <span class="tlbl" onclick="document.getElementById('inflation-toggle').click()">
+        Show wealth chart in real (inflation-adjusted) euros
+        <small> — all values deflated to today's purchasing power</small>
+      </span>
+    </div>
+
+    <div class="info-box amber" style="margin-top:12px;">
+      🏦 <strong>Property capital gains — Eigennutzungsausnahme (§23 Abs. 1 Nr. 1 Satz 3 EStG):</strong>
+      Since we are comparing buying <em>your own home</em> vs renting the same apartment, the owner-occupancy exception applies.
+      Capital gains are <strong>fully tax-free</strong> if you lived in the property during the <strong>year of sale and the two preceding calendar years</strong>
+      (i.e. ~3 calendar years of Eigennutzung — in practice potentially as few as ~13 months if occupation spans parts of 3 calendar years).
+      No minimum holding period applies — the 10-year Spekulationsfrist is only for <em>non-owner-occupied</em> (rented-out / investment) properties.
+      Property equity is therefore shown without any capital gains tax deduction throughout this calculator.
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 8. Wealth Trajectory Chart                                              -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head" style="background:#0f172a;">📈 &nbsp;8. Wealth Trajectory — Buy Equity vs ETF Portfolio</div>
+  <div class="card-body">
+
+    <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;line-height:1.6;">
+      <strong style="color:var(--green);">Green line:</strong> Property net equity (value − remaining loan), optionally net of sale costs.
+      &nbsp;|&nbsp; <strong style="color:var(--blue);">Blue line:</strong> Renter's ETF portfolio (same equity invested on day 1 ± monthly cash flow differences).
+      Both paths start with the same initial capital.
+    </p>
+
+    <div id="crossover-badge-wrap"></div>
+
+    <div style="position:relative; height:380px; margin-top:10px;">
+      <canvas id="wealth-chart"></canvas>
+    </div>
+
+    <div class="kpi-grid g4" style="margin-top:18px;">
+      <div class="tile green">
+        <div class="tile-lbl">Buy Equity (Year <span class="horizon-lbl">25</span>)</div>
+        <div class="tile-val" id="kpi-buy-final">—</div>
+        <div class="tile-sub" id="kpi-buy-final-sub">property value − loan</div>
+      </div>
+      <div class="tile blue">
+        <div class="tile-lbl">ETF Portfolio (Year <span class="horizon-lbl">25</span>)</div>
+        <div class="tile-val" id="kpi-etf-final">—</div>
+        <div class="tile-sub" id="kpi-etf-final-sub">gross portfolio value</div>
+      </div>
+      <div class="tile teal">
+        <div class="tile-lbl">Property Value (Year <span class="horizon-lbl">25</span>)</div>
+        <div class="tile-val" id="kpi-prop-val">—</div>
+        <div class="tile-sub" id="kpi-prop-sub">at <span id="kpi-prop-rate">2.0</span>%/yr appreciation</div>
+      </div>
+      <div class="tile amber">
+        <div class="tile-lbl">Remaining Loan (Year <span class="horizon-lbl">25</span>)</div>
+        <div class="tile-val" id="kpi-loan-remaining">—</div>
+        <div class="tile-sub">KFW + bank outstanding</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 9. Monthly Cost Evolution Chart                                          -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head" style="background:#0f172a;">💸 &nbsp;9. Monthly Cost Evolution — Buy vs Rent</div>
+  <div class="card-body">
+    <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;line-height:1.6;">
+      Monthly cash outflows for each path, year by year.
+      <strong style="color:#d97706;">Orange line:</strong> Total Buy (Hausgeld + Grundsteuer + Maintenance + Insurance + EMIs) — drops sharply once loans are paid off.
+      <strong style="color:#1d4ed8;">Blue line:</strong> Total Rent (Kaltmiete + Grundsteuer passthrough, growing at your specified rate).
+      Bars show the buy-side breakdown: <strong style="color:#0f766e;">teal</strong> = fixed housing costs,
+      <strong style="color:rgba(180,83,9,1);">amber</strong> = Bank EMI, <strong style="color:rgb(124,58,237);">purple</strong> = KFW EMI.
+    </p>
+    <div style="position:relative; height:320px;">
+      <canvas id="cost-chart"></canvas>
+    </div>
+    <div style="font-size:.71rem;color:var(--muted);margin-top:8px;display:flex;gap:14px;flex-wrap:wrap;">
+      <span>&#9472; Total Buy (orange)</span>
+      <span>&#9472; Total Rent (blue)</span>
+      <span>&#9646; KFW EMI bars (purple)</span>
+      <span>&#9646; Bank EMI bars (amber)</span>
+      <span>&#9646; Housing costs bars (teal)</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 10. Year-by-Year Snapshot Table                                          -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head" style="background:#0f172a;">📋 &nbsp;10. Year-by-Year Snapshot</div>
+  <div class="card-body">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <p style="font-size:.78rem;color:var(--muted);">Property value, loan balance, buy equity, ETF portfolio and monthly costs at each year-end.</p>
+      <button id="toggle-all-years" onclick="toggleTableRows()"
+              style="font-size:.73rem;padding:5px 12px;border:1px solid var(--border);border-radius:6px;background:var(--bg);cursor:pointer;color:var(--muted);">
+        ▼ Show all years
+      </button>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table class="data-table" id="snapshot-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Property Value</th>
+            <th>Loan Balance</th>
+            <th style="color:var(--green);">Buy Equity</th>
+            <th style="color:var(--blue);">ETF Portfolio</th>
+            <th>Monthly Buy</th>
+            <th>Monthly Rent</th>
+            <th>Winner</th>
+          </tr>
+        </thead>
+        <tbody id="snapshot-tbody"></tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 11. Recommendation & Key Insights                                        -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head" style="background:#0f172a;">🎯 &nbsp;11. Recommendation &amp; Key Insights</div>
+  <div class="card-body" id="recommendation-body" style="padding:0;min-height:60px;">
+    <p style="padding:16px 20px;font-size:.8rem;color:var(--muted);">Calculating…</p>
+  </div>
+</div>
+
+</div><!-- /col-main -->
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SIDEBAR                                                                 -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="sidebar">
+  <div class="summary-card">
+    <div class="summary-head">📊 &nbsp;Summary</div>
+    <div class="summary-body">
+
+      <div class="sec-lbl">Acquisition Costs</div>
+      <div class="bk-table">
+        <div class="bk-row"><span class="bk-l">Purchase Price</span>       <span class="bk-v" id="s-price">€ —</span></div>
+        <div class="bk-row"><span class="bk-l">Notarkosten (1.5%)</span>   <span class="bk-v" id="s-notar">€ —</span></div>
+        <div class="bk-row"><span class="bk-l">Grunderwerbsteuer</span>    <span class="bk-v" id="s-grest">€ —</span></div>
+        <div class="bk-row"><span class="bk-l">Grundbuch + Makler</span>   <span class="bk-v" id="s-gb-makler">€ —</span></div>
+        <div class="bk-row" style="font-weight:700;"><span class="bk-l">Total Acquisition</span><span class="bk-v" id="s-total-acq" style="color:var(--green);">€ —</span></div>
+      </div>
+
+      <div class="sec-lbl">Financing</div>
+      <div class="sum-row"><span class="sl">Equity (cash)</span>    <span class="sv green" id="s-equity">€ —</span></div>
+      <div class="sum-row" id="s-kfw-row"><span class="sl">KFW Loan</span><span class="sv purple" id="s-kfw-amt">€ —</span></div>
+      <div class="sum-row"><span class="sl">Bank Mortgage</span>    <span class="sv amber" id="s-bank-amt">€ —</span></div>
+
+      <hr class="sdiv">
+      <div class="sec-lbl">Monthly Payments (Year 1)</div>
+      <div class="sum-row" id="s-kfw-emi-row"><span class="sl">KFW EMI</span>     <span class="sv purple" id="s-kfw-emi">€ —</span></div>
+      <div class="sum-row"><span class="sl">Bank EMI</span>           <span class="sv amber"  id="s-bank-emi">€ —</span></div>
+      <div class="sum-row"><span class="sl">Housing costs</span>      <span class="sv teal"   id="s-housing">€ —</span></div>
+      <div class="sum-row" style="font-weight:600;font-size:.88rem;">
+        <span class="sl">Total buy cost</span>
+        <span class="sv green" id="s-total-buy">€ —</span>
+      </div>
+      <div class="sum-row" style="font-size:.88rem;">
+        <span class="sl">Monthly rent</span>
+        <span class="sv blue" id="s-rent">€ —</span>
+      </div>
+      <div style="font-size:.68rem;color:var(--muted);margin-top:7px;line-height:1.5;padding:7px 10px;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--border);">
+        <strong>Not included (both paths):</strong> Heizkosten, hot &amp; cold water, electricity, waste disposal, internet.
+        These Nebenkosten apply equally to buying and renting, so they cancel out in the comparison.
+      </div>
+
+      <hr class="sdiv">
+      <div class="sec-lbl">Break-Even Analysis</div>
+      <div id="s-breakeven-wrap">
+        <div class="sum-row"><span class="sl">Crossover Year</span><span class="sv" id="s-crossover">—</span></div>
+        <div style="font-size:.71rem;color:var(--muted);margin-top:4px;" id="s-crossover-note"></div>
+      </div>
+
+      <hr class="sdiv">
+      <div class="sec-lbl">Horizon Snapshot</div>
+      <div class="horizon-tabs">
+        <div class="htab active" onclick="setHorizon(10,this)">10 yr</div>
+        <div class="htab" onclick="setHorizon(20,this)">20 yr</div>
+        <div class="htab" onclick="setHorizon(30,this)">30 yr</div>
+      </div>
+      <div id="horizon-content">
+        <!-- filled by JS -->
+      </div>
+
+      <hr class="sdiv">
+      <div id="s-verdict"></div>
+
+      <div class="sum-total">
+        <span class="st-l">Analysis period</span>
+        <span class="st-v" id="s-analysis-period">25 yr</span>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /sidebar -->
+
+</div><!-- /page -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   STATE & UTILITIES
+══════════════════════════════════════════════════════════════════════════ */
+const OV = {};           // manual overrides: fieldId → true/false
+let kfwOn = true;
+let wealthChart = null;
+let costChart = null;
+let simData = [];        // last simulation result
+let activeHorizon = 10;
+let showAllYears = false;
+
+const $  = id => document.getElementById(id);
+const gv = id => parseFloat($(id).value) || 0;
+const sv = (id, v) => { if ($(id)) $(id).value = v; };
+const st = (id, v) => { if ($(id)) $(id).textContent = v; };
+
+function fmtE(v, suffix) {
+  const sign = v < 0 ? '−' : '';
+  const s = Math.abs(Math.round(v)).toLocaleString('de-DE');
+  return sign + '€\u202f' + s + (suffix || '');
+}
+function fmtEk(v) {
+  const sign = v < 0 ? '−' : '';
+  const abs = Math.abs(v);
+  if (abs >= 1e6) return sign + '€\u202f' + (abs/1e6).toFixed(2).replace('.',',') + ' Mio';
+  if (abs >= 1e3) return sign + '€\u202f' + Math.round(abs/1e3) + 'k';
+  return fmtE(v);
+}
+function fmtPct(v, d=1) { return v.toFixed(d).replace('.',',') + ' %'; }
+
+function calcEMI(P, annualRatePct, termYears) {
+  if (P <= 0 || termYears <= 0) return 0;
+  const r = annualRatePct / 100 / 12;
+  const n = termYears * 12;
+  if (r === 0) return P / n;
+  return P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   OVERRIDE SYSTEM
+══════════════════════════════════════════════════════════════════════════ */
+const OV_META = {
+  'notar':              ['notar-badge',       'notar-reset',       'AUTO 1.5%'],
+  'grest':              ['grest-badge',       'grest-reset',       'AUTO'],
+  'gb':                 ['gb-badge',          'gb-reset',          'AUTO 0.5%'],
+  'equity':             ['equity-badge',      'equity-reset',      'AUTO 25%'],
+  'kfw-amt':            ['kfw-amt-badge',     'kfw-amt-reset',     'DEFAULT'],
+  'bank-amt':           ['bank-amt-badge',    'bank-amt-reset',    'AUTO'],
+  'grundsteuer-renter': ['gst-renter-badge',  'gst-renter-reset',  '= Section 5'],
+};
+
+function setOv(fid) {
+  OV[fid] = true;
+  const m = OV_META[fid]; if (!m) return;
+  const badge = $(m[0]), rst = $(m[1]), inp = $(fid);
+  if (badge) { badge.className = 'badge badge-custom'; badge.textContent = 'CUSTOM'; }
+  if (rst)   rst.style.display = 'inline';
+  if (inp)   { inp.classList.remove('auto-val'); inp.classList.add('custom-val'); }
+  recalc();
+}
+
+function resetOv(fid) {
+  OV[fid] = false;
+  const m = OV_META[fid]; if (!m) return;
+  const badge = $(m[0]), rst = $(m[1]), inp = $(fid);
+  if (badge) { badge.className = 'badge badge-auto'; badge.textContent = m[2]; }
+  if (rst)   rst.style.display = 'none';
+  if (inp)   { inp.classList.add('auto-val'); inp.classList.remove('custom-val'); }
+  recalc();
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   KFW TOGGLE
+══════════════════════════════════════════════════════════════════════════ */
+function toggleKfw() {
+  kfwOn = $('kfw-toggle').checked;
+  $('kfw-fields').style.display  = kfwOn ? '' : 'none';
+  $('kfw-emi-bar').style.display = kfwOn ? '' : 'none';
+  $('s-kfw-row').style.display     = kfwOn ? '' : 'none';
+  $('s-kfw-emi-row').style.display = kfwOn ? '' : 'none';
+  // Reset bank override so it auto-recalculates
+  OV['bank-amt'] = false;
+  const bn = $('bank-amt'); if (bn) { bn.classList.add('auto-val'); bn.classList.remove('custom-val'); }
+  const bb = $('bank-amt-badge'); if (bb) { bb.className = 'badge badge-auto'; bb.textContent = 'AUTO'; }
+  const br = $('bank-amt-reset'); if (br) br.style.display = 'none';
+  recalc();
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   BASE PRICE CHANGE
+══════════════════════════════════════════════════════════════════════════ */
+function onBase() { recalc(); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SIMULATION
+══════════════════════════════════════════════════════════════════════════ */
+function simulate(p) {
+  const {
+    purchasePrice, transactionCosts, equity,
+    kfwAmt, kfwRate, kfwTermYrs, kfwEMI,
+    bankAmt, bankRate, bankTermYrs, bankEMI,
+    hausgeld, grundsteuer, maintenance, insurance,
+    rentY1, rentGrowthPct, grundsteuerRenter,
+    propGrowthPct, etfReturnPct,
+    inflationPct, analysisYears, saleCostsPct, etfTaxEffective
+  } = p;
+
+  const kfwR       = kfwRate / 100 / 12;
+  const bankR      = bankRate / 100 / 12;
+  const etfMonthly = etfReturnPct / 100 / 12;
+  const kfwMonths  = kfwTermYrs * 12;
+  const bankMonths = bankTermYrs * 12;
+
+  let kfwBal   = kfwAmt;
+  let bankBal  = bankAmt;
+  let etfVal   = equity;        // renter's ETF portfolio
+  let etfInv   = equity;        // total capital invested in ETF (for tax calc)
+
+  const fixedHousing = hausgeld + grundsteuer + maintenance + insurance;
+  const results = [];
+
+  // Year 0 snapshot
+  const buyGross0 = purchasePrice - (kfwAmt + bankAmt); // = equity - transactionCosts
+  results.push({
+    year: 0,
+    propValue: purchasePrice,
+    kfwBal, bankBal,
+    loanBal: kfwAmt + bankAmt,
+    buyGross: buyGross0,
+    buyNet: buyGross0 - (purchasePrice * saleCostsPct),
+    etfVal, etfInv,
+    etfNet: etfVal,
+    monthlyBuy: kfwEMI + bankEMI + fixedHousing,
+    monthlyRent: rentY1 + p.grundsteuerRenter,
+    kfwPayment: kfwEMI,
+    bankPayment: bankEMI,
+    fixedHousing,
+    inflFactor: 1.0
+  });
+
+  for (let m = 1; m <= analysisYears * 12; m++) {
+    const yr = Math.floor((m - 1) / 12); // 0-based year index
+
+    // Current rent (grows each year)
+    const rentThisMonth = rentY1 * Math.pow(1 + rentGrowthPct / 100, yr);
+
+    // KFW payment & balance
+    let kfwPay = 0;
+    if (m <= kfwMonths && kfwBal > 0.01) {
+      kfwPay = Math.min(kfwEMI, kfwBal * (1 + kfwR)); // can't overpay
+      const kfwInt = kfwBal * kfwR;
+      const kfwPrin = kfwPay - kfwInt;
+      kfwBal = Math.max(0, kfwBal - kfwPrin);
+    }
+
+    // Bank payment & balance
+    let bankPay = 0;
+    if (m <= bankMonths && bankBal > 0.01) {
+      bankPay = Math.min(bankEMI, bankBal * (1 + bankR));
+      const bankInt = bankBal * bankR;
+      const bankPrin = bankPay - bankInt;
+      bankBal = Math.max(0, bankBal - bankPrin);
+    }
+
+    const totalBuy = kfwPay + bankPay + fixedHousing;
+    // Renter also pays Grundsteuer via Betriebskosten — cancels out with buyer's Grundsteuer
+    const totalRent = rentThisMonth + grundsteuerRenter;
+
+    // ETF grows each month
+    etfVal *= (1 + etfMonthly);
+
+    // Monthly cash flow difference: if buyer pays more, renter invests the surplus
+    const diff = totalBuy - totalRent;
+    etfVal += diff;     // diff > 0 → buyer pays more → renter has surplus to invest → ETF grows
+                        // diff < 0 → renter pays more than buyer → renter withdraws from ETF
+    if (diff > 0) etfInv += diff;   // track invested principal (withdrawals don't reduce cost basis)
+
+    // Record at year end
+    if (m % 12 === 0) {
+      const yr1 = m / 12; // 1-based year
+      const propVal = purchasePrice * Math.pow(1 + propGrowthPct / 100, yr1);
+      const loanBal = kfwBal + bankBal;
+      const buyGross = propVal - loanBal;
+      const saleCost = buyGross > 0 ? propVal * saleCostsPct : 0;
+      const buyNet = buyGross - saleCost;
+
+      // ETF tax adjustment (apply at "exit" point)
+      let etfNet = etfVal;
+      if (etfTaxEffective > 0 && etfVal > etfInv) {
+        const gain = etfVal - etfInv;
+        etfNet = etfInv + gain * (1 - etfTaxEffective);
+      } else if (etfVal < 0) {
+        etfNet = etfVal; // negative portfolio (renter in "debt")
+      }
+
+      const inflFactor = Math.pow(1 + inflationPct / 100, yr1);
+
+      results.push({
+        year: yr1,
+        propValue: propVal,
+        kfwBal: kfwBal,
+        bankBal: bankBal,
+        loanBal,
+        buyGross,
+        buyNet,
+        etfVal,
+        etfInv,
+        etfNet,
+        monthlyBuy: totalBuy,
+        monthlyRent: totalRent,
+        kfwPayment: kfwPay,
+        bankPayment: bankPay,
+        fixedHousing,
+        inflFactor
+      });
+    }
+  }
+
+  return results;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MAIN RECALC
+══════════════════════════════════════════════════════════════════════════ */
+function recalc() {
+  /* ─ 1. Acquisition ─ */
+  const purchasePrice = gv('purchase-price');
+  const grestPct = gv('grest-pct');
+  if (!OV['notar']) sv('notar', Math.round(purchasePrice * 0.015));
+  if (!OV['grest']) sv('grest', Math.round(purchasePrice * grestPct / 100));
+  if (!OV['gb'])    sv('gb',    Math.round(purchasePrice * 0.005));
+
+  const notarAmt  = gv('notar');
+  const grestAmt  = gv('grest');
+  const gbAmt     = gv('gb');
+  const maklerAmt = gv('makler');
+  const transactionCosts = notarAmt + grestAmt + gbAmt + maklerAmt;
+  const totalAcq = purchasePrice + transactionCosts;
+
+  /* ─ 2. Equity ─ */
+  if (!OV['equity']) sv('equity', Math.round(totalAcq * 0.25));
+  const equity    = gv('equity');
+  const equityPct = totalAcq > 0 ? equity / totalAcq * 100 : 0;
+  const totalLoan = Math.max(0, totalAcq - equity);
+
+  /* ─ 3. KFW ─ */
+  const kfwAmt     = kfwOn ? gv('kfw-amt') : 0;
+  const kfwRate    = gv('kfw-rate');
+  const kfwTermYrs = gv('kfw-term');
+  const kfwEMI     = calcEMI(kfwAmt, kfwRate, kfwTermYrs);
+
+  /* ─ 4. Bank ─ */
+  const bankAmtCalc = Math.max(0, totalLoan - kfwAmt);
+  if (!OV['bank-amt']) sv('bank-amt', Math.round(bankAmtCalc));
+  const bankAmt     = gv('bank-amt');
+  const bankRate    = gv('bank-rate');
+  const bankTermYrs = gv('bank-term');
+  const bankEMI     = calcEMI(bankAmt, bankRate, bankTermYrs);
+  const totalEMI    = kfwEMI + bankEMI;
+
+  /* ─ 5. Housing costs ─ */
+  const hausgeld    = gv('hausgeld');
+  const grundsteuer = gv('grundsteuer');
+  const maintenance = gv('maintenance');
+  const insurance   = gv('insurance');
+  const fixedHousing = hausgeld + grundsteuer + maintenance + insurance;
+  const totalBuyCostY1 = totalEMI + fixedHousing;
+
+  /* ─ 6. Rent ─ */
+  const rentY1        = gv('rent-mo');
+  const rentGrowthPct = gv('rent-growth');
+  // Grundsteuer passthrough: landlord passes to tenant via Betriebskosten — auto-mirrors Section 5
+  if (!OV['grundsteuer-renter']) sv('grundsteuer-renter', Math.round(grundsteuer));
+  const grundsteuerRenter  = gv('grundsteuer-renter');
+  const totalRentCostY1    = rentY1 + grundsteuerRenter;
+
+  /* ─ 7. Market ─ */
+  const propGrowthPct = gv('prop-growth');
+  const etfReturnPct  = gv('etf-return');
+  const inflationPct  = gv('inflation-rate');
+  const analysisYears = Math.max(5, Math.min(40, Math.round(gv('analysis-years'))));
+  const includeSaleCosts = $('sale-costs-toggle').checked;
+  const applyEtfTax      = $('etf-tax-toggle').checked;
+  const inflationAdj     = $('inflation-toggle').checked;
+
+  const saleCostsPct   = includeSaleCosts ? 0.045 : 0;
+  const etfTaxEffective = applyEtfTax ? 0.26375 * 0.70 : 0; // 18.46%
+
+  /* ─ Update display fields ─ */
+  st('out-total-acq', fmtE(totalAcq));
+  sv('out-equity-pct', equityPct.toFixed(1));
+  st('out-total-loan', fmtE(totalLoan));
+  sv('out-kfw-emi', Math.round(kfwEMI));
+  sv('out-bank-emi', Math.round(bankEMI));
+  st('kfw-emi-bar-val', fmtE(kfwEMI) + ' / mo');
+  st('bank-emi-bar-val', fmtE(bankEMI) + ' / mo');
+  st('out-total-buy-cost', fmtE(totalBuyCostY1) + ' / mo');
+
+  // Pills
+  const ltv = totalAcq > 0 ? totalLoan / purchasePrice * 100 : 0;
+  st('pill-ltv',        fmtPct(ltv));
+  st('pill-equity-pct', fmtPct(equityPct));
+  st('pill-total-emi',  fmtE(totalEMI) + '/mo');
+
+  // Grest badge label
+  const gb2 = $('grest-badge');
+  if (gb2 && !OV['grest']) gb2.textContent = 'AUTO ' + grestPct.toFixed(1) + '%';
+
+  // Year 1 cash flow comparison (Grundsteuer cancels out → net diff = EMI + Hausgeld + Maint + Ins − Kaltmiete)
+  const monthlyDiff = totalBuyCostY1 - totalRentCostY1;
+  const housingNonGst = hausgeld + maintenance + insurance;
+  st('out-total-rent-cost', fmtE(totalRentCostY1) + ' / mo');
+  st('cmp-emi',           fmtE(totalEMI) + ' / mo');
+  st('cmp-housing-costs', fmtE(housingNonGst) + ' / mo');
+  st('cmp-gst-buy',       fmtE(grundsteuer) + ' / mo');
+  st('cmp-buy-cost',      fmtE(totalBuyCostY1) + ' / mo');
+  st('cmp-kaltmiete',     fmtE(rentY1) + ' / mo');
+  st('cmp-gst-rent',      fmtE(grundsteuerRenter) + ' / mo');
+  st('cmp-rent-cost',     fmtE(totalRentCostY1) + ' / mo');
+  st('cmp-diff', (monthlyDiff >= 0 ? '+' : '') + fmtE(monthlyDiff) + ' / mo');
+  const diffRow = $('cmp-diff-row');
+  if (diffRow) {
+    diffRow.className = 'flow-row total ' + (monthlyDiff >= 0 ? 'neg' : 'pos');
+    diffRow.querySelector('span:first-child').textContent =
+      monthlyDiff >= 0 ? 'Monthly premium for buying (Year 1)' : 'Monthly saving from buying (Year 1)';
+  }
+
+  /* ─ Sidebar ─ */
+  st('s-price', fmtE(purchasePrice));
+  st('s-notar', fmtE(notarAmt));
+  st('s-grest', fmtE(grestAmt));
+  st('s-gb-makler', fmtE(gbAmt + maklerAmt));
+  st('s-total-acq', fmtE(totalAcq));
+  st('s-equity', fmtE(equity));
+  st('s-kfw-amt', fmtE(kfwAmt));
+  st('s-bank-amt', fmtE(bankAmt));
+  st('s-kfw-emi', fmtE(kfwEMI) + '/mo');
+  st('s-bank-emi', fmtE(bankEMI) + '/mo');
+  st('s-housing', fmtE(fixedHousing) + '/mo');
+  st('s-total-buy', fmtE(totalBuyCostY1) + '/mo');
+  st('s-rent', fmtE(totalRentCostY1) + '/mo');
+  st('s-analysis-period', analysisYears + ' yr');
+
+  // KPI sub labels update
+  document.querySelectorAll('.horizon-lbl').forEach(el => el.textContent = analysisYears);
+  st('kpi-prop-rate', propGrowthPct.toFixed(1));
+
+  /* ─ Run simulation ─ */
+  simData = simulate({
+    purchasePrice, transactionCosts, equity,
+    kfwAmt, kfwRate, kfwTermYrs, kfwEMI,
+    bankAmt, bankRate, bankTermYrs, bankEMI,
+    hausgeld, grundsteuer, maintenance, insurance,
+    rentY1, rentGrowthPct, grundsteuerRenter,
+    propGrowthPct, etfReturnPct,
+    inflationPct, analysisYears, saleCostsPct, etfTaxEffective
+  });
+
+  /* ─ Update UI ─ */
+  updateWealthChart(simData, inflationAdj, analysisYears);
+  updateCostChart(simData, analysisYears);
+  updateTable(simData, analysisYears);
+  updateSidebar(simData, analysisYears, inflationAdj);
+  updateRecommendation(simData, analysisYears, {
+    bankTermYrs, kfwTermYrs, bankEMI, kfwEMI, bankAmt, kfwAmt,
+    rentY1, rentGrowthPct, grundsteuerRenter,
+    propGrowthPct, etfReturnPct, purchasePrice
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SIDEBAR & HORIZON
+══════════════════════════════════════════════════════════════════════════ */
+function getDataAtYear(yr) {
+  return simData.find(d => d.year === yr) || simData[simData.length - 1];
+}
+
+function findCrossoverYear() {
+  for (let i = 1; i < simData.length; i++) {
+    if (simData[i].buyNet > simData[i].etfNet) return simData[i].year;
+  }
+  return null;
+}
+
+function updateSidebar(data, analysisYears, inflationAdj) {
+  // Crossover
+  const crossoverYr = findCrossoverYear();
+  const sco = $('s-crossover'), scn = $('s-crossover-note');
+  if (crossoverYr !== null) {
+    if (sco) { sco.textContent = 'Year ' + crossoverYr; sco.className = 'sv green'; }
+    if (scn) scn.textContent = 'Buying beats renting by year ' + crossoverYr + '. Beyond this point, property equity exceeds ETF portfolio.';
+  } else {
+    if (sco) { sco.textContent = 'Beyond ' + analysisYears + ' yr'; sco.className = 'sv blue'; }
+    if (scn) scn.textContent = 'Within this analysis period, the ETF portfolio stays ahead. Try extending the period or adjusting appreciation.';
+  }
+
+  // Crossover badge in chart section
+  const cbw = $('crossover-badge-wrap');
+  if (cbw) {
+    if (crossoverYr !== null) {
+      cbw.innerHTML = `<div class="crossover-badge found">🏆 Buy path overtakes ETF at <strong>Year ${crossoverYr}</strong> — property equity then leads for the remainder.</div>`;
+    } else {
+      cbw.innerHTML = `<div class="crossover-badge none">📊 ETF portfolio stays ahead throughout the full ${analysisYears}-year analysis period.</div>`;
+    }
+  }
+
+  // Horizon
+  renderHorizonContent(activeHorizon, data, inflationAdj);
+
+  // KPIs (final year)
+  const final = data[data.length - 1];
+  if (final) {
+    const buyDisplay = inflationAdj ? final.buyNet / final.inflFactor : final.buyNet;
+    const etfDisplay = inflationAdj ? final.etfNet / final.inflFactor : final.etfNet;
+    st('kpi-buy-final', fmtEk(buyDisplay));
+    st('kpi-etf-final', fmtEk(etfDisplay));
+    st('kpi-prop-val', fmtEk(inflationAdj ? final.propValue / final.inflFactor : final.propValue));
+    st('kpi-loan-remaining', fmtEk(final.loanBal));
+    st('kpi-buy-final-sub', `property value − loan` + (inflationAdj ? ' (real)' : ''));
+    st('kpi-etf-final-sub', `gross portfolio` + (inflationAdj ? ' (real)' : ''));
+  }
+
+  // Verdict
+  const verdictEl = $('s-verdict');
+  if (verdictEl && final) {
+    const diff = final.buyNet - final.etfNet;
+    const absD = Math.abs(diff);
+    if (diff > 0) {
+      verdictEl.innerHTML = `<div class="verdict buy">🏠 After ${analysisYears} years, <strong>buying wins</strong> by ${fmtEk(absD)} — property equity exceeds ETF portfolio${crossoverYr ? ' (crossover at Year ' + crossoverYr + ')' : ''}.</div>`;
+    } else {
+      verdictEl.innerHTML = `<div class="verdict rent">📈 After ${analysisYears} years, <strong>renting + ETF wins</strong> by ${fmtEk(absD)} — ETF portfolio exceeds buy equity.</div>`;
+    }
+  }
+}
+
+function setHorizon(yr, el) {
+  activeHorizon = yr;
+  document.querySelectorAll('.htab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const inflAdj = $('inflation-toggle').checked;
+  renderHorizonContent(yr, simData, inflAdj);
+}
+
+function renderHorizonContent(yr, data, inflationAdj) {
+  const el = $('horizon-content');
+  if (!el || !data.length) return;
+  const analysisYears = data[data.length - 1].year;
+  const d = data.find(r => r.year === yr) || data[data.length - 1];
+  const effectiveYr = d.year;
+  const inf = d.inflFactor || 1;
+  const buyDisp = inflationAdj ? d.buyNet / inf : d.buyNet;
+  const etfDisp = inflationAdj ? d.etfNet / inf : d.etfNet;
+  const propDisp = inflationAdj ? d.propValue / inf : d.propValue;
+  const loanDisp = d.loanBal;
+  const diff = buyDisp - etfDisp;
+  const winner = diff > 0 ? 'buy' : 'rent';
+  const realNote = inflationAdj ? ' (real)' : '';
+  const yearNote = effectiveYr < yr ? ` (capped at ${effectiveYr}yr)` : '';
+
+  el.innerHTML = `
+    <div class="bk-table" style="margin-top:0;">
+      <div class="bk-row"><span class="bk-l">Year${yearNote}</span><span class="bk-v">${effectiveYr}</span></div>
+      <div class="bk-row"><span class="bk-l">Property Value</span><span class="bk-v" style="color:var(--green);">${fmtEk(propDisp)}${realNote}</span></div>
+      <div class="bk-row"><span class="bk-l">Loan Balance</span><span class="bk-v">${fmtEk(loanDisp)}</span></div>
+      <div class="bk-row"><span class="bk-l">🏠 Buy Equity</span><span class="bk-v" style="color:var(--green);font-size:.85rem;">${fmtEk(buyDisp)}${realNote}</span></div>
+      <div class="bk-row"><span class="bk-l">📈 ETF Portfolio</span><span class="bk-v" style="color:var(--blue);font-size:.85rem;">${fmtEk(etfDisp)}${realNote}</span></div>
+      <div class="bk-row" style="font-weight:700;">
+        <span class="bk-l">Leader</span>
+        <span class="bk-v" style="color:${winner==='buy'?'var(--green)':'var(--blue)'};">
+          ${winner==='buy' ? '🏠 Buy +' + fmtEk(diff) : '📈 ETF +' + fmtEk(Math.abs(diff))}
+        </span>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   WEALTH CHART
+══════════════════════════════════════════════════════════════════════════ */
+function initWealthChart() {
+  const ctx = $('wealth-chart').getContext('2d');
+  wealthChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: '🏠 Buy — Net Property Equity',
+          data: [],
+          borderColor: '#15803d',
+          backgroundColor: 'rgba(21,128,61,0.07)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 2,
+          pointHoverRadius: 5,
+          borderWidth: 2.5
+        },
+        {
+          label: '📈 Rent — ETF Portfolio',
+          data: [],
+          borderColor: '#1d4ed8',
+          backgroundColor: 'rgba(29,78,216,0.07)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 2,
+          pointHoverRadius: 5,
+          borderWidth: 2.5
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 } },
+        tooltip: {
+          backgroundColor: 'rgba(15,23,42,0.92)',
+          callbacks: {
+            label: ctx => ' ' + ctx.dataset.label + ': ' + fmtE(ctx.raw)
+          }
+        }
+      },
+      scales: {
+        x: { grid: { color: '#e2e8f0' }, ticks: { font: { size: 11 } } },
+        y: {
+          grid: { color: '#e2e8f0' },
+          ticks: {
+            font: { size: 11 },
+            callback: v => {
+              if (Math.abs(v) >= 1e6) return '€' + (v/1e6).toFixed(1) + 'M';
+              if (Math.abs(v) >= 1e3) return '€' + (v/1e3).toFixed(0) + 'k';
+              return '€' + v;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+function updateWealthChart(data, inflationAdj, analysisYears) {
+  if (!wealthChart || data.length < 2) return;
+  const labels = data.map(d => 'Yr ' + d.year);
+  wealthChart.data.labels = labels;
+  wealthChart.data.datasets[0].data = data.map(d =>
+    inflationAdj ? Math.round(d.buyNet / d.inflFactor) : Math.round(d.buyNet)
+  );
+  wealthChart.data.datasets[1].data = data.map(d =>
+    inflationAdj ? Math.round(d.etfNet / d.inflFactor) : Math.round(d.etfNet)
+  );
+  wealthChart.data.datasets[0].label = '🏠 Buy — Net Property Equity' + (inflationAdj ? ' (real)' : '');
+  wealthChart.data.datasets[1].label = '📈 Rent — ETF Portfolio' + (inflationAdj ? ' (real)' : '');
+  wealthChart.update('none');
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   COST CHART (stacked bar + rent line)
+══════════════════════════════════════════════════════════════════════════ */
+function initCostChart() {
+  const ctx = $('cost-chart').getContext('2d');
+  costChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: 'Housing Costs (Hausgeld, Grundsteuer, Maint., Insurance)',
+          type: 'bar',
+          data: [],
+          backgroundColor: 'rgba(15,118,110,0.45)',
+          stack: 'buy',
+          order: 5
+        },
+        {
+          label: 'Bank EMI',
+          type: 'bar',
+          data: [],
+          backgroundColor: 'rgba(180,83,9,0.55)',
+          stack: 'buy',
+          order: 4
+        },
+        {
+          label: 'KFW EMI',
+          type: 'bar',
+          data: [],
+          backgroundColor: 'rgba(124,58,237,0.55)',
+          stack: 'buy',
+          order: 3
+        },
+        {
+          type: 'line',
+          label: '🏠 Total Buy (monthly outflow)',
+          data: [],
+          borderColor: '#d97706',
+          backgroundColor: 'transparent',
+          tension: 0.3,
+          pointRadius: 2,
+          pointHoverRadius: 5,
+          borderWidth: 2.5,
+          borderDash: [],
+          stack: 'buyLine',
+          order: 1
+        },
+        {
+          type: 'line',
+          label: '🔑 Total Rent (monthly outflow)',
+          data: [],
+          borderColor: '#1d4ed8',
+          backgroundColor: 'transparent',
+          tension: 0.3,
+          pointRadius: 2,
+          pointHoverRadius: 5,
+          borderWidth: 2.5,
+          stack: 'rentLine',
+          order: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 11 }, usePointStyle: true } },
+        tooltip: {
+          backgroundColor: 'rgba(15,23,42,0.92)',
+          callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + fmtE(ctx.raw) + '/mo' }
+        }
+      },
+      scales: {
+        x: { stacked: true, grid: { color: '#e2e8f0' }, ticks: { font: { size: 10 } } },
+        y: {
+          stacked: true,
+          grid: { color: '#e2e8f0' },
+          ticks: {
+            font: { size: 11 },
+            callback: v => '€' + (v/1e3).toFixed(0) + 'k'
+          }
+        }
+      }
+    }
+  });
+}
+
+function updateCostChart(data, analysisYears) {
+  if (!costChart || data.length < 2) return;
+  const yearData = data.filter(d => d.year > 0);
+  const labels = yearData.map(d => 'Yr ' + d.year);
+  costChart.data.labels = labels;
+  costChart.data.datasets[0].data = yearData.map(d => Math.round(d.fixedHousing));
+  costChart.data.datasets[1].data = yearData.map(d => Math.round(d.bankPayment));
+  costChart.data.datasets[2].data = yearData.map(d => Math.round(d.kfwPayment));
+  costChart.data.datasets[3].data = yearData.map(d => Math.round(d.monthlyBuy));
+  costChart.data.datasets[4].data = yearData.map(d => Math.round(d.monthlyRent));
+  costChart.update('none');
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TABLE
+══════════════════════════════════════════════════════════════════════════ */
+function updateTable(data, analysisYears) {
+  const tbody = $('snapshot-tbody');
+  if (!tbody) return;
+  const inflAdj = $('inflation-toggle').checked;
+
+  const crossoverYr = findCrossoverYear();
+  const yearData = data.filter(d => d.year > 0);
+
+  tbody.innerHTML = yearData.map(d => {
+    const inf = d.inflFactor || 1;
+    const buyDisp = inflAdj ? d.buyNet / inf : d.buyNet;
+    const etfDisp = inflAdj ? d.etfNet / inf : d.etfNet;
+    const propDisp = inflAdj ? d.propValue / inf : d.propValue;
+    const winner = buyDisp > etfDisp ? 'buy' : 'rent';
+    const diff = Math.abs(buyDisp - etfDisp);
+    const isHidden = !showAllYears && d.year % 5 !== 0 && d.year !== analysisYears && d.year !== crossoverYr;
+    const isCrossover = d.year === crossoverYr;
+
+    return `<tr class="${isHidden ? 'hidden-row' : ''} ${isCrossover ? 'highlight' : ''}" style="${isHidden ? 'display:none;' : ''}">
+      <td>${d.year}${isCrossover ? ' ⭐' : ''}</td>
+      <td>${fmtEk(propDisp)}</td>
+      <td>${fmtEk(d.loanBal)}</td>
+      <td class="winner-buy">${fmtEk(buyDisp)}</td>
+      <td class="winner-rent">${fmtEk(etfDisp)}</td>
+      <td>${fmtE(d.monthlyBuy)}</td>
+      <td>${fmtE(d.monthlyRent)}</td>
+      <td class="${winner === 'buy' ? 'winner-buy' : 'winner-rent'}">
+        ${winner === 'buy' ? '🏠 +' + fmtEk(diff) : '📈 +' + fmtEk(diff)}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleTableRows() {
+  showAllYears = !showAllYears;
+  const btn = $('toggle-all-years');
+  if (btn) btn.textContent = showAllYears ? '▲ Show 5-year intervals' : '▼ Show all years';
+  const rows = document.querySelectorAll('#snapshot-tbody tr.hidden-row');
+  rows.forEach(r => r.style.display = showAllYears ? '' : 'none');
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RECOMMENDATION & KEY INSIGHTS
+══════════════════════════════════════════════════════════════════════════ */
+function updateRecommendation(data, analysisYears, p) {
+  const el = $('recommendation-body');
+  if (!el || data.length < 2) return;
+
+  const inflAdj  = $('inflation-toggle').checked;
+  const final    = data[data.length - 1];
+  const yr1snap  = data.find(d => d.year === 1) || data[1];
+
+  // ── Wealth at end ──
+  const inf     = final.inflFactor || 1;
+  const buyDisp = inflAdj ? final.buyNet / inf : final.buyNet;
+  const etfDisp = inflAdj ? final.etfNet / inf : final.etfNet;
+  const diff    = buyDisp - etfDisp;
+  const winsBuy = diff > 0;
+  const absDiff = Math.abs(diff);
+
+  // ── Monthly premium Year 1 ──
+  const monthlyPremium = yr1snap ? yr1snap.monthlyBuy - yr1snap.monthlyRent : 0;
+
+  // ── Monthly crossover: first year buy ≤ rent per month ──
+  let monthlyCrossover = null;
+  for (const d of data) {
+    if (d.year > 0 && d.monthlyBuy <= d.monthlyRent) { monthlyCrossover = d.year; break; }
+  }
+
+  // ── Wealth crossover ──
+  const wealthCrossover = findCrossoverYear();
+
+  // ── Total interest paid ──
+  const bankMonths    = Math.min(p.bankTermYrs, analysisYears) * 12;
+  const kfwMonths     = Math.min(p.kfwTermYrs,  analysisYears) * 12;
+  const bankInterest  = Math.max(0, p.bankEMI * bankMonths - (p.bankAmt - (final.bankBal || 0)));
+  const kfwInterest   = Math.max(0, p.kfwEMI  * kfwMonths  - (p.kfwAmt  - (final.kfwBal  || 0)));
+  const totalInterest = bankInterest + kfwInterest;
+
+  // ── Total rent paid (geometric series) ──
+  const g = p.rentGrowthPct / 100;
+  const totalRentPaid = g > 0.0001
+    ? p.rentY1 * 12 * (Math.pow(1 + g, analysisYears) - 1) / g + p.grundsteuerRenter * 12 * analysisYears
+    : (p.rentY1 + p.grundsteuerRenter) * 12 * analysisYears;
+
+  // ── Sensitivity: extra property gain from +1% appreciation ──
+  const extraPropGain = p.purchasePrice * (
+    Math.pow(1 + (p.propGrowthPct + 1) / 100, analysisYears) -
+    Math.pow(1 + p.propGrowthPct         / 100, analysisYears)
+  );
+
+  // ── Post-payoff monthly saving (if loans paid within analysis period) ──
+  const maxTerm = Math.max(p.bankTermYrs, p.kfwTermYrs);
+  let postPayoffSaving = null;
+  if (maxTerm < analysisYears) {
+    const afterPayoff = data.find(d => d.year === maxTerm + 1) || data[data.length - 1];
+    if (afterPayoff) postPayoffSaving = afterPayoff.monthlyRent - afterPayoff.monthlyBuy;
+  }
+
+  // ── Labels ──
+  const wlText = wealthCrossover ? `Year ${wealthCrossover}` : `Beyond ${analysisYears} yr`;
+  const moText = monthlyCrossover ? `Year ${monthlyCrossover}`
+               : (monthlyPremium <= 0 ? 'Already cheaper' : `Beyond ${analysisYears} yr`);
+  const cls    = absDiff < 500 ? 'tie' : winsBuy ? 'buy' : 'rent';
+  const icon   = winsBuy ? '🏠' : '📈';
+  const inflNote = inflAdj ? ' (real, inflation-adjusted)' : ' (nominal)';
+
+  // ── Recommendation text ──
+  let recommendation;
+  if (winsBuy) {
+    recommendation = wealthCrossover && wealthCrossover > Math.round(analysisYears * 0.6)
+      ? `<strong>Consider buying</strong> if you plan to stay for at least <strong>${wealthCrossover} years</strong>. The wealth advantage builds slowly but grows strongly after the mortgage is repaid.`
+      : `<strong>Buying is the stronger long-term choice</strong> under these assumptions. Proceed if your horizon is ${analysisYears}+ years and you value the certainty of ownership.`;
+  } else {
+    recommendation = wealthCrossover
+      ? `<strong>Renting + ETF investing leads</strong> within your ${analysisYears}-year window. Consider buying only if you plan to stay <strong>beyond Year ${wealthCrossover}</strong> or if ETF returns moderate significantly.`
+      : `<strong>Renting and investing in ETFs</strong> builds more wealth over this ${analysisYears}-year horizon. Buy primarily if non-financial factors (stability, family, personalisation) are decisive.`;
+  }
+
+  // ── "Why this verdict?" bullets ──
+  const bullets = [];
+  if (winsBuy) {
+    if (wealthCrossover) bullets.push(`Property equity overtakes the ETF portfolio at <strong>Year ${wealthCrossover}</strong> and continues growing ahead thereafter.`);
+    if (monthlyCrossover)
+      bullets.push(`Monthly buy costs fall below rent from <strong>Year ${monthlyCrossover}</strong> — after the mortgage is paid off, owning is far cheaper per month.`);
+    else if (monthlyPremium <= 0)
+      bullets.push(`Buying is already <strong>cheaper per month from Day 1</strong> — you save ${fmtE(Math.abs(monthlyPremium))}/mo vs renting.`);
+    if (postPayoffSaving !== null && postPayoffSaving > 0)
+      bullets.push(`From Year ${maxTerm + 1} onwards (full payoff), owning costs ~<strong>${fmtE(postPayoffSaving)}/mo less</strong> than renting — a permanent monthly saving.`);
+    bullets.push(`Total mortgage interest: ~<strong>${fmtEk(totalInterest)}</strong>. Total rent that would have been paid: ~<strong>${fmtEk(totalRentPaid)}</strong>. Despite similar sunk costs, property appreciation tips the balance.`);
+  } else {
+    const etfGap = p.etfReturnPct - p.propGrowthPct;
+    bullets.push(`ETF returns (${p.etfReturnPct.toFixed(1)}%/yr) outpace property appreciation (${p.propGrowthPct.toFixed(1)}%/yr) by <strong>${etfGap.toFixed(1)} pp</strong> — this gap compounds heavily over ${analysisYears} years.`);
+    if (monthlyPremium > 0)
+      bullets.push(`The <strong>${fmtE(monthlyPremium)}/mo</strong> Year-1 premium for buying is continuously reinvested by the renter, significantly boosting the ETF portfolio.`);
+    bullets.push(`Total rent paid: ~<strong>${fmtEk(totalRentPaid)}</strong>. Total mortgage interest: ~<strong>${fmtEk(totalInterest)}</strong>. Despite similar sunk costs, the ETF's compounding rate makes the difference.`);
+    if (wealthCrossover) bullets.push(`Note: buying would eventually pull ahead — wealth crossover occurs at <strong>Year ${wealthCrossover}</strong>. Consider a longer analysis period.`);
+  }
+
+  // ── Sensitivity bullets ──
+  const sens = [];
+  if (!winsBuy)
+    sens.push(`If ETF returns fell to <strong>${(p.etfReturnPct - 2).toFixed(1)}%/yr</strong> (2 pp lower), buying becomes considerably more competitive — re-run with adjusted assumptions.`);
+  else
+    sens.push(`A lower ETF return would widen the buy advantage. If ETF returns drop toward <strong>${(p.etfReturnPct - 1).toFixed(1)}%/yr</strong>, buying likely dominates even sooner.`);
+  sens.push(`A <strong>+1%/yr property appreciation</strong> (${(p.propGrowthPct + 1).toFixed(1)}% instead of ${p.propGrowthPct.toFixed(1)}%) would add approximately <strong>${fmtEk(extraPropGain)}</strong> to the final property value.`);
+  if (wealthCrossover !== null && !winsBuy)
+    sens.push(`Extending your horizon to <strong>${wealthCrossover} years</strong> would see buying pull ahead. Short-term movers should prefer renting.`);
+  else if (winsBuy && wealthCrossover)
+    sens.push(`Selling <em>before</em> Year ${wealthCrossover} would have favoured renting — time horizon is the single most important variable.`);
+  if (postPayoffSaving !== null && postPayoffSaving > 0 && !winsBuy)
+    sens.push(`After Year ${maxTerm} (full payoff), owning becomes ~<strong>${fmtE(postPayoffSaving)}/mo cheaper</strong> than renting. Long-term holders benefit most from buying.`);
+
+  // ── Build HTML ──
+  el.innerHTML = `
+    <div class="rec-banner ${cls}">
+      ${icon} <strong>${winsBuy ? 'Buying wins' : 'Renting + ETF wins'}</strong> by ${fmtEk(absDiff)} after ${analysisYears} years${inflNote}.
+      <span class="rec-action">${recommendation}</span>
+    </div>
+
+    <div class="rec-grid">
+      <div class="rec-chip">
+        <div class="rc-label">Monthly premium (Year 1)</div>
+        <div class="rc-value ${monthlyPremium > 0 ? 'neg' : 'pos'}">${monthlyPremium >= 0 ? '+' : ''}${fmtE(monthlyPremium)}/mo</div>
+        <div class="rc-sub">${monthlyPremium > 0 ? 'Extra cost to buy vs rent' : 'Saving vs renting from Day 1'}</div>
+      </div>
+      <div class="rec-chip">
+        <div class="rc-label">Monthly cost crossover</div>
+        <div class="rc-value ${monthlyCrossover || monthlyPremium <= 0 ? 'green' : 'blue'}">${moText}</div>
+        <div class="rc-sub">When buy ≤ rent per month</div>
+      </div>
+      <div class="rec-chip">
+        <div class="rc-label">Wealth crossover</div>
+        <div class="rc-value ${wealthCrossover ? 'green' : 'blue'}">${wlText}</div>
+        <div class="rc-sub">When buy equity &gt; ETF portfolio</div>
+      </div>
+      <div class="rec-chip">
+        <div class="rc-label">Total mortgage interest</div>
+        <div class="rc-value">${fmtEk(totalInterest)}</div>
+        <div class="rc-sub">Paid to bank${analysisYears < maxTerm ? ' (within ' + analysisYears + ' yr)' : ' over full term'}</div>
+      </div>
+      <div class="rec-chip">
+        <div class="rc-label">Rent at Year ${analysisYears}</div>
+        <div class="rc-value">${fmtE(final.monthlyRent)}/mo</div>
+        <div class="rc-sub">From ${fmtE(p.rentY1 + p.grundsteuerRenter)}/mo today (+${p.rentGrowthPct.toFixed(1)}%/yr)</div>
+      </div>
+      <div class="rec-chip">
+        <div class="rc-label">Property at Year ${analysisYears}</div>
+        <div class="rc-value">${fmtEk(final.propValue)}</div>
+        <div class="rc-sub">From ${fmtEk(p.purchasePrice)} today (+${p.propGrowthPct.toFixed(1)}%/yr)</div>
+      </div>
+    </div>
+
+    <div class="rec-bullets">
+      <div class="rc-section-label">Why this verdict?</div>
+      <ul>${bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+    </div>
+
+    <div class="rec-sensitivity">
+      <div class="rc-section-label" style="color:var(--amber);">⚖️ What would tip the balance?</div>
+      <ul>${sens.map(s => `<li>${s}</li>`).join('')}</ul>
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SCENARIO SAVE / LOAD
+══════════════════════════════════════════════════════════════════════════ */
+const FIELD_IDS = [
+  'purchase-price','grest-pct','notar','grest','gb','makler',
+  'equity','kfw-amt','kfw-rate','kfw-term','bank-amt','bank-rate','bank-term',
+  'hausgeld','grundsteuer','maintenance','insurance',
+  'rent-mo','rent-growth','grundsteuer-renter',
+  'prop-growth','etf-return','inflation-rate','analysis-years'
+];
+
+function saveScenario() {
+  const name = $('scenario-name').value || 'buy-vs-rent';
+  const data = { _name: name, _version: 2, _kfwOn: kfwOn };
+  FIELD_IDS.forEach(id => { data[id] = gv(id); });
+  data['sale-costs-toggle'] = $('sale-costs-toggle').checked;
+  data['etf-tax-toggle']    = $('etf-tax-toggle').checked;
+  data['inflation-toggle']  = $('inflation-toggle').checked;
+  Object.keys(OV_META).forEach(k => { data['_ov_' + k] = OV[k] || false; });
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name + '.json';
+  a.click();
+}
+
+function loadScenario(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data._name) sv('scenario-name', data._name);
+      FIELD_IDS.forEach(id => { if (data[id] !== undefined) sv(id, data[id]); });
+      ['sale-costs-toggle','etf-tax-toggle','inflation-toggle'].forEach(id => {
+        if (data[id] !== undefined && $(id)) $(id).checked = data[id];
+      });
+      Object.keys(OV_META).forEach(k => {
+        if (data['_ov_' + k]) setOv(k);
+        else resetOv(k);
+      });
+      // Sync range slider
+      const ay = $('analysis-years');
+      const ayr = $('analysis-years-range');
+      if (ay && ayr) ayr.value = ay.value;
+      if (data._kfwOn !== undefined) {
+        $('kfw-toggle').checked = data._kfwOn;
+        toggleKfw();
+      }
+      const loaded = $('scenario-loaded');
+      if (loaded) { loaded.style.display = 'inline'; setTimeout(() => loaded.style.display = 'none', 2500); }
+      recalc();
+    } catch(err) { alert('Failed to load scenario: ' + err.message); }
+  };
+  reader.readAsText(file);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  initWealthChart();
+  initCostChart();
+  // Sync range slider initial value
+  const ayr = $('analysis-years-range');
+  if (ayr) ayr.value = gv('analysis-years');
+  recalc();
+});
+
+/* Global event delegation — any input/select/checkbox inside .page triggers a full recalc */
+document.addEventListener('input',  function(e) { if (e.target.closest('.page')) recalc(); });
+document.addEventListener('change', function(e) { if (e.target.closest('.page')) recalc(); });
+</script>
+</body>
+</html>

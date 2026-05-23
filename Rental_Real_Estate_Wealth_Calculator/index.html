@@ -1,0 +1,2564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>German Rental Real Estate Wealth Calculator</title>
+  <style>
+    /* ── Reset & Variables ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #1d4ed8;
+      --blue-dark:   #1e3a8a;
+      --blue-light:  #dbeafe;
+      --green:       #065f46;
+      --green-light: #d1fae5;
+      --purple:      #4c1d95;
+      --purple-light:#ede9fe;
+      --amber:       #78350f;
+      --amber-light: #fef3c7;
+      --red-light:   #fee2e2;
+      --bg:          #f1f5f9;
+      --card:        #ffffff;
+      --border:      #e2e8f0;
+      --text:        #0f172a;
+      --muted:       #64748b;
+      --auto-bg:     #eff6ff;
+      --custom-bg:   #fffbeb;
+      --custom-bdr:  #f59e0b;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                   'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── Header ────────────────────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 100%);
+      color: #fff;
+      padding: 18px 24px;
+    }
+    header h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
+    header p  { font-size: 0.82rem; opacity: 0.75; margin-top: 3px; }
+
+    /* ── Scenario bar ──────────────────────────────────────────── */
+    .scenario-bar {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .scenario-bar label { font-size: .75rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+    .scenario-bar input[type="text"] {
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 4px 9px;
+      font-size: .8rem;
+      background: var(--bg);
+      color: var(--text);
+      width: 200px;
+    }
+    .scen-btn {
+      font-size: .78rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--card);
+      color: var(--text);
+      transition: background .15s;
+    }
+    .scen-btn:hover { background: var(--bg); }
+    .scen-btn.save { border-color: var(--blue); color: var(--blue); }
+    .scen-btn.load { border-color: var(--green); color: var(--green); }
+    #scenario-loaded { font-size:.72rem; color:var(--green); display:none; font-weight:600; }
+
+    /* ── Layout ────────────────────────────────────────────────────────── */
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 18px;
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .page { grid-template-columns: 1fr; }
+    }
+
+    .col-main { display: flex; flex-direction: column; gap: 16px; }
+
+    /* ── Card ──────────────────────────────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,.07);
+    }
+
+    .card-head {
+      padding: 12px 18px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: .01em;
+    }
+    .card-head.blue   { background: var(--blue); }
+    .card-head.green  { background: var(--green); }
+    .card-head.purple { background: var(--purple); }
+    .card-head.amber  { background: var(--amber); }
+
+    .card-body { padding: 16px 18px; }
+
+    /* ── Form Grid ─────────────────────────────────────────────────────── */
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field.span2 { grid-column: 1 / -1; }
+
+    /* ── Labels ────────────────────────────────────────────────────────── */
+    .lbl {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Badges ────────────────────────────────────────────────────────── */
+    .badge {
+      font-size: 0.62rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      line-height: 1.6;
+      white-space: nowrap;
+    }
+    .badge-auto   { background: var(--blue-light);  color: var(--blue); }
+    .badge-custom { background: var(--amber-light);  color: var(--amber); }
+
+    .reset-btn {
+      font-size: 0.68rem;
+      color: var(--blue);
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+      text-decoration: underline;
+      font-family: inherit;
+    }
+    .reset-btn:hover { color: var(--blue-dark); }
+
+    /* ── Inputs ────────────────────────────────────────────────────────── */
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-wrap .sym {
+      position: absolute;
+      left: 10px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .input-wrap .unit {
+      position: absolute;
+      right: 10px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      pointer-events: none;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      padding: 9px 12px;
+      font-size: 0.9rem;
+      color: var(--text);
+      background: #fff;
+      transition: border-color .15s, box-shadow .15s, background .15s;
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    input[type="number"]:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(29,78,216,.12);
+    }
+    .input-wrap.has-sym  input { padding-left: 26px; }
+    .input-wrap.has-unit input { padding-right: 36px; }
+
+    input.auto-val   { background: var(--auto-bg); }
+    input.custom-val { background: var(--custom-bg); border-color: var(--custom-bdr); }
+
+    input[readonly] {
+      background: #f8fafc !important;
+      cursor: default;
+      color: var(--muted);
+    }
+    input.result-field {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      text-align: right;
+      background: #f8fafc !important;
+    }
+
+    /* ── Divider ───────────────────────────────────────────────────────── */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+
+    .section-sub {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-sub::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Totals ────────────────────────────────────────────────────────── */
+    .total-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 14px;
+      border-radius: 8px;
+      margin-top: 14px;
+      color: #fff;
+    }
+    .total-bar.blue   { background: var(--blue); }
+    .total-bar.green  { background: var(--green); }
+    .total-bar.amber  { background: var(--amber); }
+    .total-bar .lbl2  { font-size: 0.82rem; font-weight: 500; }
+    .total-bar .val2  { font-size: 1.15rem; font-weight: 700; }
+
+    .emi-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+    .emi-bar.purple { background: var(--purple-light); }
+    .emi-bar.purple .lbl2 { color: var(--purple); }
+    .emi-bar.purple .val2 { color: var(--purple); }
+    .emi-bar.amber  { background: var(--amber-light); }
+    .emi-bar.amber  .lbl2 { color: var(--amber); }
+    .emi-bar.amber  .val2 { color: var(--amber); }
+    .emi-bar .lbl2  { font-size: 0.82rem; font-weight: 500; }
+    .emi-bar .val2  { font-size: 1.1rem; font-weight: 700; }
+
+    /* ── Toggle switch ─────────────────────────────────────────────────── */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .toggle-row .tlbl {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .switch { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; inset: 0;
+      background: #cbd5e1;
+      border-radius: 22px;
+      cursor: pointer;
+      transition: .2s;
+    }
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      left: 3px; top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: .2s;
+    }
+    .switch input:checked + .slider { background: var(--purple); }
+    .switch input:checked + .slider::before { transform: translateX(18px); }
+
+    /* ── Info pill ─────────────────────────────────────────────────────── */
+    .info-pill {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+    .pill.blue   { background: var(--blue-light);   color: var(--blue); }
+    .pill.green  { background: var(--green-light);  color: var(--green); }
+    .pill.amber  { background: var(--amber-light);  color: var(--amber); }
+    .pill.red    { background: var(--red-light);    color: #991b1b; }
+    .pill span.pv { font-weight: 700; }
+
+    /* ── Sidebar / Summary ─────────────────────────────────────────────── */
+    .sidebar { position: sticky; top: 16px; }
+
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,.07);
+    }
+    .summary-head {
+      background: var(--text);
+      color: #fff;
+      padding: 12px 18px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: .01em;
+    }
+    .summary-body { padding: 14px 18px; }
+
+    .bk-table {
+      background: var(--bg);
+      border-radius: 7px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .bk-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 11px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+    }
+    .bk-row:last-child { border-bottom: none; }
+    .bk-row .bk-l { color: var(--muted); }
+    .bk-row .bk-v { font-weight: 600; }
+
+    .sum-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.83rem;
+    }
+    .sum-row:last-child { border-bottom: none; }
+    .sum-row .sl { color: var(--muted); }
+    .sum-row .sv { font-weight: 600; }
+    .sv.blue   { color: var(--blue); }
+    .sv.green  { color: var(--green); }
+    .sv.purple { color: var(--purple); }
+    .sv.amber  { color: var(--amber); }
+
+    .sum-total {
+      background: var(--blue);
+      color: #fff;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 14px -18px -14px;
+      border-radius: 0 0 10px 10px;
+    }
+    .sum-total .st-l { font-size: 0.82rem; font-weight: 500; }
+    .sum-total .st-v { font-size: 1.4rem; font-weight: 800; }
+
+    .sec-lbl {
+      font-size: 0.67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      margin: 12px 0 6px;
+    }
+
+    hr.sdiv { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+
+    /* ── Rental Yield ────────────────────────────────────────────────────── */
+    .yield-tiles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 620px) { .yield-tiles { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 380px) { .yield-tiles { grid-template-columns: 1fr; } }
+
+    .ytile {
+      border-radius: 9px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: #f1f5f9;
+    }
+    .ytile.blue   { background: var(--blue-light); }
+    .ytile.teal   { background: #ccfbf1; }
+    .ytile.green  { background: var(--green-light); }
+    .ytile.red    { background: var(--red-light); }
+    .ytile.amber  { background: var(--amber-light); }
+
+    .yt-lbl { font-size: 0.7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+    .yt-val { font-size: 1.45rem; font-weight: 800; line-height: 1.15; margin: 4px 0; color: var(--text); }
+    .ytile.blue  .yt-val { color: var(--blue); }
+    .ytile.teal  .yt-val { color: #0f766e; }
+    .ytile.green .yt-val { color: var(--green); }
+    .ytile.red   .yt-val { color: #dc2626; }
+    .ytile.amber .yt-val { color: var(--amber); }
+    .yt-sub { font-size: 0.69rem; color: var(--muted); }
+
+    .yield-breakdown {
+      background: var(--bg);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 14px;
+    }
+    .yb-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 13px;
+      font-size: 0.82rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .yb-row:last-child { border-bottom: none; }
+    .yb-row.income span:first-child { color: var(--green); font-weight: 600; }
+    .yb-row.deduct span:last-child  { color: #dc2626; }
+    .yb-row.sub   { font-weight: 600; background: rgba(255,255,255,.7); }
+    .yb-row.total { font-weight: 700; font-size: .86rem; background: rgba(255,255,255,.95); }
+    .yb-row.total.pos span:last-child { color: var(--green); }
+    .yb-row.total.neg span:last-child { color: #dc2626; }
+
+    /* ── AfA option blocks ─────────────────────────────────────────────── */
+    .afa-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      transition: opacity .2s, border-color .2s;
+    }
+    .afa-block.afa-active { border-color: var(--green); }
+    .afa-block.afa-disabled { opacity: .35; pointer-events: none; }
+
+    .info-box {
+      background: var(--blue-light);
+      border: 1px solid #bfdbfe;
+      border-radius: 7px;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      color: #1e3a8a;
+      line-height: 1.55;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🏠 German Rental Real Estate Wealth Calculator</h1>
+    <p>Model acquisition costs, financing, rental yield, tax deductions &amp; 20-year wealth vs ETF — all in one place</p>
+  </div>
+</header>
+
+<!-- Scenario save / load bar -->
+<div class="scenario-bar">
+  <label for="scenario-name">Scenario name:</label>
+  <input type="text" id="scenario-name" value="property-details" placeholder="property-details" />
+  <button class="scen-btn save" onclick="saveScenario()">&#128190; Save JSON</button>
+  <label class="scen-btn load">
+    &#128194; Load JSON
+    <input type="file" accept=".json" style="display:none;"
+           onchange="loadScenario(this.files[0]); this.value='';" />
+  </label>
+  <span id="scenario-loaded"></span>
+</div>
+
+<div class="page">
+
+  <!-- ── MAIN COLUMN ──────────────────────────────────────────────────────── -->
+  <div class="col-main">
+
+    <!-- ① Property Costs ───────────────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-head blue">📋 &nbsp;1. Property Cost Breakdown</div>
+      <div class="card-body">
+
+        <div class="section-sub">Purchase Price</div>
+        <div class="grid2">
+          <div class="field">
+            <span class="lbl">Land Cost (Grundstückspreis)</span>
+            <div class="input-wrap has-sym">
+              <span class="sym">€</span>
+              <input type="number" id="land" value="0" min="0" step="1000"
+                     oninput="onBase()" />
+            </div>
+          </div>
+          <div class="field">
+            <span class="lbl">Property / Construction Cost</span>
+            <div class="input-wrap has-sym">
+              <span class="sym">€</span>
+              <input type="number" id="prop" value="460000" min="0" step="1000"
+                     oninput="onBase()" />
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+        <div class="section-sub">
+          Transaction Costs
+          <span style="text-transform:none;letter-spacing:0;font-weight:400;font-size:.7rem">
+            — auto-calculated from purchase price; click &nbsp;<em>↻ reset</em>&nbsp; to restore
+          </span>
+        </div>
+
+        <div class="grid2">
+          <!-- Notarkosten -->
+          <div class="field">
+            <span class="lbl">
+              Notarkosten
+              <span id="notar-badge" class="badge badge-auto">AUTO 1.5%</span>
+              <button id="notar-reset" class="reset-btn" style="display:none"
+                      onclick="resetOv('notar')">↻ reset</button>
+            </span>
+            <div class="input-wrap has-sym">
+              <span class="sym">€</span>
+              <input type="number" id="notar" class="auto-val" min="0" step="100"
+                     oninput="setOv('notar')" />
+            </div>
+          </div>
+
+          <!-- Grunderwerbsteuer -->
+          <div class="field">
+            <span class="lbl">
+              Grunderwerbsteuer
+              <span id="grest-badge" class="badge badge-auto">AUTO 3.5%</span>
+              <button id="grest-reset" class="reset-btn" style="display:none"
+                      onclick="resetOv('grest')">↻ reset</button>
+            </span>
+            <div class="input-wrap has-sym">
+              <span class="sym">€</span>
+              <input type="number" id="grest" class="auto-val" min="0" step="100"
+                     oninput="setOv('grest')" />
+            </div>
+          </div>
+
+          <!-- Grundbucheintrag -->
+          <div class="field">
+            <span class="lbl">
+              Grundbucheintrag
+              <span id="grundbuch-badge" class="badge badge-auto">AUTO 0.5%</span>
+              <button id="grundbuch-reset" class="reset-btn" style="display:none"
+                      onclick="resetOv('grundbuch')">↻ reset</button>
+            </span>
+            <div class="input-wrap has-sym">
+              <span class="sym">€</span>
+              <input type="number" id="grundbuch" class="auto-val" min="0" step="100"
+                     oninput="setOv('grundbuch')" />
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+        <div class="section-sub">Optional Additional Costs</div>
+        <div class="grid2">
+          <div class="field">
+            <span class="lbl">Gutachter Fee (Surveyor / Appraiser)</span>
+            <div class="input-wrap has-sym">
+              <span class="sym">€</span>
+              <input type="number" id="gutachter" value="0" min="0" step="100"
+                     oninput="recalc()" />
+            </div>
+          </div>
+          <div class="field">
+            <span class="lbl">Makler Fee (Estate Agent)</span>
+            <div class="input-wrap has-sym">
+              <span class="sym">€</span>
+              <input type="number" id="makler" value="0" min="0" step="100"
+                     oninput="recalc()" />
+            </div>
+          </div>
+        </div>
+
+        <div class="total-bar blue" style="margin-top:16px">
+          <span class="lbl2">Total Acquisition Cost</span>
+          <span class="val2" id="out-total-acq">€ 0</span>
+        </div>
+
+      </div>
+    </div><!-- /card -->
+
+
+    <!-- ② Equity ────────────────────────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-head green">💰 &nbsp;2. Equity (Eigenkapital)</div>
+      <div class="card-body">
+        <div class="grid2">
+
+          <div class="field">
+            <span class="lbl">
+              Equity Amount
+              <span id="equity-badge" class="badge badge-auto">AUTO 20%</span>
+              <button id="equity-reset" class="reset-btn" style="display:none"
+                      onclick="resetOv('equity')">↻ reset</button>
+            </span>
+            <div class="input-wrap has-sym">
+              <span class="sym">€</span>
+              <input type="number" id="equity" class="auto-val" min="0" step="1000"
+                     oninput="setOv('equity')" />
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="lbl">Equity % of Acquisition Cost</span>
+            <div class="input-wrap">
+              <input type="number" id="out-equity-pct" class="result-field"
+                     readonly style="color:var(--green); text-align:right;" />
+            </div>
+          </div>
+
+        </div>
+
+        <div class="total-bar green">
+          <span class="lbl2">Total Loan Required</span>
+          <span class="val2" id="out-loan-req">€ 0</span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ③ KFW Loan ──────────────────────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-head purple">🏛️ &nbsp;3. KFW Subsidised Loan &nbsp;<span style="font-weight:400;opacity:.8;font-size:.8rem">(optional — qualifying properties only)</span></div>
+      <div class="card-body">
+
+        <div class="toggle-row">
+          <label class="switch">
+            <input type="checkbox" id="kfw-toggle" checked onchange="toggleKfw()" />
+            <span class="slider"></span>
+          </label>
+          <span class="tlbl" onclick="document.getElementById('kfw-toggle').click()">
+            Include KFW subsidised loan &nbsp;
+            <span style="font-weight:400;color:var(--muted);font-size:.78rem">
+              (KFW 40 / KFW 40 QNG certified new builds)
+            </span>
+          </span>
+        </div>
+
+        <div id="kfw-fields" class="grid2">
+
+          <div class="field">
+            <span class="lbl">
+              KFW Loan Amount
+              <span id="kfw-amt-badge" class="badge badge-auto">DEFAULT</span>
+              <button id="kfw-amt-reset" class="reset-btn" style="display:none"
+                      onclick="resetOv('kfw-amt')">↻ reset</button>
+            </span>
+            <div class="input-wrap has-sym">
+              <span class="sym">€</span>
+              <input type="number" id="kfw-amt" value="150000" class="auto-val"
+                     min="0" step="1000" oninput="setOv('kfw-amt')" />
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="lbl">KFW Interest Rate</span>
+            <div class="input-wrap has-unit">
+              <input type="number" id="kfw-rate" value="1.0"
+                     min="0" max="20" step="0.01" oninput="recalc()" />
+              <span class="unit">%</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="lbl">KFW Loan Term</span>
+            <div class="input-wrap has-unit">
+              <input type="number" id="kfw-term" value="10"
+                     min="1" max="35" step="1" oninput="recalc()" />
+              <span class="unit">yr</span>
+            </div>
+            <span style="font-size:.68rem;color:var(--muted);">Default 10 yr — standard KFW 40 QNG fixed-rate period</span>
+          </div>
+
+          <div class="field">
+            <span class="lbl">Monthly KFW Payment (EMI)</span>
+            <div class="input-wrap">
+              <input type="number" id="out-kfw-emi" class="result-field"
+                     readonly style="color:var(--purple);" />
+            </div>
+          </div>
+
+        </div>
+
+        <div id="kfw-emi-bar" class="emi-bar purple">
+          <span class="lbl2">KFW Monthly EMI</span>
+          <span class="val2" id="out-kfw-emi-bar">€ 0 / mo</span>
+        </div>
+        <div class="info-box" style="margin-top:8px;font-size:.75rem;">
+          ⚠️ KFW's <strong>10-year term</strong> forces faster repayment → higher monthly EMI than rolling the same amount into a 20-year bank loan.
+          However, at 1% vs 4%, KFW saves significantly on <em>total interest paid</em> over the life of the loan.
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ④ Bank Loan ─────────────────────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-head amber">🏦 &nbsp;4. Bank Mortgage Loan</div>
+      <div class="card-body">
+
+        <div class="grid2">
+
+          <div class="field">
+            <span class="lbl">
+              Bank Loan Amount
+              <span id="bank-amt-badge" class="badge badge-auto">AUTO</span>
+              <button id="bank-amt-reset" class="reset-btn" style="display:none"
+                      onclick="resetOv('bank-amt')">↻ reset</button>
+            </span>
+            <div class="input-wrap has-sym">
+              <span class="sym">€</span>
+              <input type="number" id="bank-amt" class="auto-val"
+                     min="0" step="1000" oninput="setOv('bank-amt')" />
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="lbl">Bank Interest Rate</span>
+            <div class="input-wrap has-unit">
+              <input type="number" id="bank-rate" value="4.0"
+                     min="0" max="20" step="0.01" oninput="recalc()" />
+              <span class="unit">%</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="lbl">Bank Loan Term</span>
+            <div class="input-wrap has-unit">
+              <input type="number" id="bank-term" value="20"
+                     min="1" max="40" step="1" oninput="recalc()" />
+              <span class="unit">yr</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="lbl">Monthly Bank Payment (EMI)</span>
+            <div class="input-wrap">
+              <input type="number" id="out-bank-emi" class="result-field"
+                     readonly style="color:var(--amber);" />
+            </div>
+          </div>
+
+        </div>
+
+        <div class="emi-bar amber">
+          <span class="lbl2">Bank Monthly EMI</span>
+          <span class="val2" id="out-bank-emi-bar">€ 0 / mo</span>
+        </div>
+
+        <!-- Info pills -->
+        <div class="info-pill" id="info-pills">
+          <span class="pill blue">LTV &nbsp;<span class="pv" id="pill-ltv">—</span></span>
+          <span class="pill blue">Total Debt &nbsp;<span class="pv" id="pill-debt">—</span></span>
+          <span class="pill green">Equity &nbsp;<span class="pv" id="pill-eq-pct">—</span></span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ⑤ Annual Payment Schedule ─────────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-head" style="background:#0f172a;">📈 &nbsp;5. Annual Payment Schedule (20 Years)</div>
+      <div class="card-body">
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;line-height:1.6;">
+          Annual total payments (monthly EMI &times; 12) for each loan across Years 1–20.
+          KFW drops to zero after its loan term ends. Hover any bar for a yearly &amp; monthly breakdown.
+        </p>
+        <div style="position:relative;height:360px;">
+          <canvas id="payment-chart"></canvas>
+        </div>
+        <div id="chart-note" style="margin-top:10px;font-size:.74rem;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap;">
+          <span>&#9646; Purple = KFW Subsidised Loan</span>
+          <span>&#9646; Brown = Bank Mortgage Loan</span>
+          <span>&#9472; Blue line = Combined monthly outflow (right axis)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑦ Rental Yield Calculator ─────────────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-head" style="background:#0c4a6e;">🏨 &nbsp;6. Rental Yield Calculator</div>
+      <div class="card-body">
+
+        <div class="section-sub">Rental Income</div>
+        <div class="grid2">
+          <div class="field">
+            <span class="lbl">Monthly Cold Rent (Kaltmiete)</span>
+            <div class="input-wrap has-sym has-unit">
+              <span class="sym">€</span>
+              <input type="number" id="rent-mo" value="1200" min="0" step="50"
+                     oninput="recalc()" />
+              <span class="unit">/mo</span>
+            </div>
+          </div>
+          <div class="field">
+            <span class="lbl">Vacancy Allowance</span>
+            <div class="input-wrap has-unit">
+              <input type="number" id="vacancy" value="2" min="0" max="50" step="0.5"
+                     oninput="recalc()" />
+              <span class="unit">%</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+        <div class="section-sub">Annual Operating Costs</div>
+        <div class="grid2">
+          <div class="field">
+            <span class="lbl">Non-recoverable Hausgeld <span style="text-transform:none;font-weight:400;letter-spacing:0;">(Verwaltung, Rücklage)</span></span>
+            <div class="input-wrap has-sym has-unit">
+              <span class="sym">€</span>
+              <input type="number" id="hausgeld" value="200" min="0" step="10"
+                     oninput="recalc()" />
+              <span class="unit">/mo</span>
+            </div>
+          </div>
+          <div class="field">
+            <span class="lbl">Letting / Management Fee</span>
+            <div class="input-wrap has-unit">
+              <input type="number" id="mgmt-fee" value="5" min="0" max="25" step="0.5"
+                     oninput="recalc()" />
+              <span class="unit">%</span>
+            </div>
+            <span style="font-size:.68rem;color:var(--muted);">% of gross annual rent</span>
+          </div>
+          <div class="field">
+            <span class="lbl">Maintenance Reserve</span>
+            <div class="input-wrap has-sym has-unit">
+              <span class="sym">€</span>
+              <input type="number" id="maint" value="10" min="0" step="1"
+                     oninput="recalc()" />
+              <span class="unit">/m²</span>
+            </div>
+            <span style="font-size:.68rem;color:var(--muted);">per m² per year</span>
+          </div>
+          <div class="field">
+            <span class="lbl">Living Area (Wohnfläche)</span>
+            <div class="input-wrap has-unit">
+              <input type="number" id="area-sqm" value="56" min="1" step="1"
+                     oninput="recalc()" />
+              <span class="unit">m²</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+        <div class="section-sub">Results</div>
+
+        <!-- KPI tiles -->
+        <div class="yield-tiles">
+          <div class="ytile blue">
+            <div class="yt-lbl">Gross Rental Yield</div>
+            <div class="yt-val" id="y-gross-yield">—</div>
+            <div class="yt-sub">Gross rent ÷ property value</div>
+          </div>
+          <div class="ytile" id="ytile-net">
+            <div class="yt-lbl">Net Rental Yield</div>
+            <div class="yt-val" id="y-net-yield">—</div>
+            <div class="yt-sub">Net income ÷ total acquisition cost</div>
+          </div>
+          <div class="ytile" id="ytile-cf">
+            <div class="yt-lbl">Monthly Cash Flow</div>
+            <div class="yt-val" id="y-monthly-cf">—</div>
+            <div class="yt-sub" id="y-cf-sub">After mortgage &amp; costs</div>
+          </div>
+        </div>
+
+        <!-- Waterfall breakdown -->
+        <div class="yield-breakdown">
+          <div class="yb-row income">
+            <span>📥 Gross Annual Rent</span>
+            <span id="y-gross-rent">—</span>
+          </div>
+          <div class="yb-row deduct">
+            <span>&nbsp;&nbsp;– Vacancy Loss</span>
+            <span id="y-vacancy-loss">—</span>
+          </div>
+          <div class="yb-row sub">
+            <span>&nbsp;&nbsp;= Effective Annual Rent</span>
+            <span id="y-eff-rent">—</span>
+          </div>
+          <div class="yb-row deduct">
+            <span>&nbsp;&nbsp;– Non-recoverable Hausgeld</span>
+            <span id="y-hausgeld-yr">—</span>
+          </div>
+          <div class="yb-row deduct">
+            <span>&nbsp;&nbsp;– Letting / Management Fee</span>
+            <span id="y-mgmt-yr">—</span>
+          </div>
+          <div class="yb-row deduct">
+            <span>&nbsp;&nbsp;– Maintenance Reserve</span>
+            <span id="y-maint-yr">—</span>
+          </div>
+          <div class="yb-row sub">
+            <span>&nbsp;&nbsp;= Net Rental Income</span>
+            <span id="y-net-income">—</span>
+          </div>
+          <div class="yb-row deduct">
+            <span>&nbsp;&nbsp;– Annual Mortgage</span>
+            <span id="y-mortgage-yr">—</span>
+          </div>
+          <div class="yb-row total" id="yb-cf-row">
+            <span>= Annual Cash Flow</span>
+            <span id="y-annual-cf">—</span>
+          </div>
+        </div>
+
+        <div class="info-box">
+          💡 <strong>Pre-tax figures.</strong> See Section 7 below for your after-tax cash flow
+          once interest &amp; AfA deductions are applied at your marginal tax rate.
+        </div>
+
+        <div class="info-box" style="margin-top:8px;">
+          ℹ️ <strong>Grundsteuer (Property Tax) is not included</strong> in operating costs above.
+          It is typically passed through to the tenant as part of the <em>Betriebskostenabrechnung</em>
+          (permitted under §2 Nr. 1 BetrKV), making it cost-neutral for the landlord. If you absorb it
+          yourself, add the annual amount (~€300–€800 for a typical apartment; higher in Munich) to the
+          Hausgeld field or factor it into your own analysis.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ⑦ Tax Deduction Calculator ──────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-head" style="background:#1a202c;">📊 &nbsp;7. Rental Yield — Tax Deductions (Year 1 Analysis)</div>
+      <div class="card-body">
+
+        <div class="info-box" style="background:#fef9c3;border-color:#fde047;color:#713f12;margin-bottom:16px;">
+          📄 Find your <strong>zvE</strong> in your <strong>Steuerbescheid</strong> (Finanzamt).<br>
+          Look for: <em>„Für die Anwendung des ESt-Tarifs maßgebender Betrag"</em> — the amount
+          <strong>after</strong> all personal deductions (Sonderausgaben, Vorsorgeaufwendungen,
+          Kinderfreibeträge etc.), used directly as the base for the §32a EStG tax formula.<br><br>
+          💡 <strong>No Steuerbescheid to hand?</strong> As a rough guide, zvE ≈ 75–85% of your
+          gross salary (Bruttolohn) for a typical employee — the gap covers social insurance
+          contributions and the Arbeitnehmer-Pauschbetrag. Use a lower percentage if you have
+          higher deductions (e.g. PKV, high Werbungskosten).
+        </div>
+
+        <div class="section-sub">Your Current Tax Situation</div>
+        <div class="grid2">
+          <div class="field span2">
+            <span class="lbl">zvE — Zu versteuerndes Einkommen <span style="text-transform:none;font-weight:400;letter-spacing:0;">(§2 Abs. 5 EStG)</span></span>
+            <div class="input-wrap has-sym">
+              <span class="sym">€</span>
+              <input type="number" id="tax-income" value="120000" min="0" step="1000"
+                     oninput="recalc()" />
+            </div>
+          </div>
+        </div>
+
+        <div class="grid2" style="margin-top:12px;">
+          <div class="field">
+            <span class="lbl">Building Value Fraction</span>
+            <div class="input-wrap has-unit">
+              <input type="number" id="bldg-frac" value="80" min="50" max="95" step="5"
+                     oninput="recalc()" />
+              <span class="unit">%</span>
+            </div>
+            <span style="font-size:.68rem;color:var(--muted);">Building purchase price ÷ (land + property). Applied to <em>total Anschaffungskosten</em> (incl. Nebenkosten) per §7 EStG. Typical 80–87% for new-builds; confirm with builder's Steuerbetrachtung.</span>
+          </div>
+          <div class="field">
+            <span class="lbl">Property Build Period</span>
+            <select id="prop-period" onchange="onPropPeriodChange()"
+                    style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);font-size:.82rem;color:var(--text);cursor:pointer;">
+              <option value="new_post_oct23">New build — Baubeginn after Oct 2023 (3% linear or 5% degressive §7(5a); §7b eligible if EH40+QNG)</option>
+              <option value="new_post22">New build — completed 2023, Baubeginn Jan–Sep 2023 (3% linear; §7b eligible)</option>
+              <option value="existing_post24">Existing building — built 1925–2022 (2% linear only)</option>
+              <option value="existing_pre25">Existing building — built before 1925 (2.5% linear only)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-sub" style="margin-top:16px;">Depreciation (AfA) Options</div>
+
+        <!-- §7(4) Linear AfA -->
+        <div class="afa-block afa-active" id="afa-linear-block">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <div>
+              <span style="font-weight:600;font-size:.88rem;">§7(4) Linear AfA</span>
+              <span style="font-size:.72rem;color:var(--muted);margin-left:6px;">Standard · always applicable</span>
+            </div>
+            <span id="afa-linear-amount" style="font-weight:700;color:var(--green);font-size:.92rem;">—</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap;">
+            <span style="font-size:.82rem;color:var(--text);">Rate:</span>
+            <div class="input-wrap has-unit" style="width:90px;flex-shrink:0;">
+              <input type="number" id="afa-linear-rate" value="3" min="0" max="5" step="0.5"
+                     oninput="recalc()" />
+              <span class="unit">%</span>
+            </div>
+            <span id="afa-linear-note" style="font-size:.72rem;color:var(--muted);">3% · new build post-2022 · §7(4) Nr. 2</span>
+          </div>
+        </div>
+
+        <!-- §7(5) Degressive AfA -->
+        <div class="afa-block" id="afa-degr-block" style="margin-top:8px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <label class="switch" style="flex-shrink:0;">
+              <input type="checkbox" id="degr-afa" onchange="onDegressiveChange()" />
+              <span class="slider"></span>
+            </label>
+            <div style="flex:1;min-width:0;">
+              <span style="font-weight:600;font-size:.88rem;">§7(5a) Degressive AfA — 5% declining balance</span>
+              <span style="font-size:.72rem;color:var(--muted);display:block;margin-top:2px;">Replaces §7(4) &nbsp;·&nbsp; Baubeginn Oct 2023 – Sep 2029 &nbsp;·&nbsp; Combinable with §7b Sonder-AfA</span>
+            </div>
+            <span id="afa-degr-amount" style="font-weight:700;color:var(--green);font-size:.92rem;margin-left:auto;">—</span>
+          </div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:6px;padding-left:50px;">
+            Year 1 = 5% × building value. From Year 2: 5% of remaining book value (declining each year).
+          </div>
+          <div id="opt-degr-row" style="display:none;margin-top:8px;padding-left:50px;">
+            <div style="display:inline-flex;align-items:center;gap:8px;">
+              <label class="switch" style="transform:scale(0.78);transform-origin:left center;flex-shrink:0;">
+                <input type="checkbox" id="opt-degr" onchange="recalc()" />
+                <span class="slider"></span>
+              </label>
+              <span style="font-size:.76rem;color:var(--text);">⚡ <strong>Optimised switch</strong> — auto-switch to §7(4) linear at the optimal year to maximise total 20yr deduction</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- §7b Sonder-AfA -->
+        <div class="afa-block" id="afa-sonder-block" style="margin-top:8px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <label class="switch" style="flex-shrink:0;">
+              <input type="checkbox" id="sonder-afa" checked onchange="recalc()" />
+              <span class="slider"></span>
+            </label>
+            <div style="flex:1;min-width:0;">
+              <span style="font-weight:600;font-size:.88rem;">§7b Sonder-AfA — 5% (Years 1–4)</span>
+              <span style="font-size:.72rem;color:var(--muted);display:block;margin-top:2px;">Adds to §7(4) linear or §7(5a) degressive &nbsp;·&nbsp; First-time letting (Erstbezug) &nbsp;·&nbsp; Effizienzhaus 40 + QNG (Qualitätssiegel Nachhaltiges Gebäude) &nbsp;·&nbsp; Herstellungskosten ≤ €5,200/m²</span>
+            </div>
+            <span id="afa-sonder-amount" style="font-weight:700;color:var(--green);font-size:.92rem;margin-left:auto;">—</span>
+          </div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:6px;padding-left:50px;">
+            Deduction base capped at €4,000/m² × m² (§7b Abs. 3 Nr. 2). Combinable with §7(4) <em>or</em> §7(5a) degressive per §7b Abs. 1 EStG.
+          </div>
+        </div>
+
+        <div class="info-box" style="background:#dcfce7;border-color:#86efac;color:#14532d;margin-top:10px;">
+          ✅ <strong>§7(5a) + §7b can be combined</strong> — confirmed by official EStG text:<br>
+          §7b Abs. 1 EStG explicitly reads: <em>„…neben der Absetzung für Abnutzung nach § 7 Absatz 4 <strong>oder 5a</strong>…"</em><br>
+          This means §7b Sonder-AfA may be claimed alongside <em>either</em> §7(4) linear AfA <em>or</em> §7(5a) degressive AfA.<br><br>
+          ⚠️ <strong>§7b energy standard for post-2022 Bauantrag (§7b Abs. 2 Nr. 2 EStG):</strong><br>
+          Buildings with Bauantrag after 31.12.2022 must meet <strong>Effizienzhaus 40 mit Nachhaltigkeits-Klasse</strong> and prove it via the
+          <strong>QNG (Qualitätssiegel Nachhaltiges Gebäude)</strong> quality label. <em>EH55 does not qualify</em> — only EH40 + QNG meets the threshold.
+          Herstellungskosten must not exceed <strong>€5,200/m²</strong>; deduction base is capped at €4,000/m².
+        </div>
+
+        <hr class="divider">
+        <div class="section-sub">Property Deductions — Year 1 (auto from loan &amp; yield sections)</div>
+        <div class="yield-breakdown">
+          <div class="yb-row income">
+            <span>📥 Effective Rental Income (after vacancy)</span>
+            <span id="tx-rent-income">—</span>
+          </div>
+          <div class="yb-row deduct">
+            <span>&nbsp;&nbsp;– Mortgage Interest, Year 1 (§9 EStG)</span>
+            <span id="tx-interest">—</span>
+          </div>
+          <div class="yb-row deduct" id="tx-afa-linear-row">
+            <span id="tx-afa-linear-lbl">&nbsp;&nbsp;– §7(4) Linear AfA (3%)</span>
+            <span id="tx-afa-reg">—</span>
+          </div>
+          <div class="yb-row deduct" id="tx-afa-degr-row" style="display:none;">
+            <span>&nbsp;&nbsp;– §7(5a) Degressive AfA (5%, Year 1)</span>
+            <span id="tx-afa-degr">—</span>
+          </div>
+          <div class="yb-row deduct" id="tx-sonder-row">
+            <span>&nbsp;&nbsp;– §7b Sonder-AfA (5%, Yrs 1–4)</span>
+            <span id="tx-afa-sonder">—</span>
+          </div>
+          <div class="yb-row deduct">
+            <span>&nbsp;&nbsp;– Operating Costs (Hausgeld, Verwaltung, Instandhaltung)</span>
+            <span id="tx-oper">—</span>
+          </div>
+          <div class="yb-row sub">
+            <span>&nbsp;&nbsp;= Rental Net Income / (Loss)</span>
+            <span id="tx-rental-net">—</span>
+          </div>
+        </div>
+
+        <hr class="divider">
+        <div class="section-sub">Tax Impact</div>
+        <div class="yield-tiles">
+          <div class="ytile blue">
+            <div class="yt-lbl">Your Current Tax</div>
+            <div class="yt-val" id="tx-current-total">—</div>
+            <div class="yt-sub">ESt + Soli on declared income</div>
+          </div>
+          <div class="ytile teal" id="tx-saving-tile">
+            <div class="yt-lbl">Annual Tax Saving</div>
+            <div class="yt-val" id="tx-saving-annual">—</div>
+            <div class="yt-sub" id="tx-saving-mo-sub">— /mo</div>
+          </div>
+          <div class="ytile" id="tx-aftertax-tile">
+            <div class="yt-lbl">After-Tax Monthly Cash Flow</div>
+            <div class="yt-val" id="tx-after-tax-mo">—</div>
+            <div class="yt-sub">Pre-tax CF + monthly tax refund</div>
+          </div>
+        </div>
+
+        <div class="yield-breakdown" style="margin-top:14px;">
+          <div class="yb-row">
+            <span>Taxable income (current, before property)</span>
+            <span id="tx-gross-income" style="font-weight:600;">—</span>
+          </div>
+          <div class="yb-row deduct">
+            <span>&nbsp;&nbsp;+ Rental Net Income / (Loss)</span>
+            <span id="tx-rental-net2">—</span>
+          </div>
+          <div class="yb-row sub">
+            <span>&nbsp;&nbsp;= New taxable income</span>
+            <span id="tx-new-income">—</span>
+          </div>
+          <div class="yb-row">
+            <span>Tax on current income (ESt + Soli)</span>
+            <span id="tx-current-total2" style="font-weight:600;">—</span>
+          </div>
+          <div class="yb-row">
+            <span>Tax on new (reduced) income</span>
+            <span id="tx-new-tax" style="font-weight:600;">—</span>
+          </div>
+          <div class="yb-row total" id="tx-saving-row">
+            <span>Annual Tax Saving (Steuerersparnis)</span>
+            <span id="tx-saving-final">—</span>
+          </div>
+          <div class="yb-row sub">
+            <span>Pre-tax monthly cash flow</span>
+            <span id="tx-pretax-mo">—</span>
+          </div>
+          <div class="yb-row total" id="tx-aftertax-row">
+            <span>After-Tax Monthly Cash Flow</span>
+            <span id="tx-after-tax-mo2">—</span>
+          </div>
+        </div>
+
+        <div class="info-box" style="margin-top:14px;background:#f0fdf4;border-color:#86efac;color:#14532d;">
+          💡 <strong>Year 1 snapshot.</strong> The 20-year schedule below shows how deductions, tax saving, and cash flow evolve as interest amortises and §7b ends at year 4.
+        </div>
+
+        <!-- ── 20-Year Depreciation & Tax Saving Schedule ────────────────── -->
+        <hr class="divider">
+        <div class="section-sub">20-Year Depreciation &amp; Tax Saving Schedule</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+          <div class="ytile teal" style="flex:1;min-width:130px;">
+            <div class="yt-lbl">Total Tax Saving (20yr)</div>
+            <div class="yt-val" id="cum-tax-saving-20">—</div>
+          </div>
+          <div class="ytile blue" style="flex:1;min-width:130px;">
+            <div class="yt-lbl">Total AfA Claimed (20yr)</div>
+            <div class="yt-val" id="total-afa-20">—</div>
+          </div>
+          <div class="ytile amber" id="tile-switch-yr" style="flex:1;min-width:130px;display:none;">
+            <div class="yt-lbl">Optimal switch to Linear</div>
+            <div class="yt-val" id="switch-year-lbl">—</div>
+          </div>
+        </div>
+        <div style="position:relative;height:310px;">
+          <canvas id="tax-schedule-chart"></canvas>
+        </div>
+        <div style="font-size:.71rem;color:var(--muted);margin-top:7px;text-align:center;line-height:1.8;">
+          <span style="display:inline-block;width:10px;height:10px;background:rgba(99,102,241,0.8);border-radius:2px;margin-right:3px;vertical-align:middle;"></span>§7(5a) Degressive
+          <span style="display:inline-block;width:10px;height:10px;background:rgba(96,165,250,0.8);border-radius:2px;margin:0 3px 0 10px;vertical-align:middle;"></span>§7(4) Linear
+          <span style="display:inline-block;width:10px;height:10px;background:rgba(52,211,153,0.8);border-radius:2px;margin:0 3px 0 10px;vertical-align:middle;"></span>§7b Sonder-AfA
+          &nbsp;·&nbsp; right axis = tax saving lines
+        </div>
+
+        <!-- Schedule inputs note -->
+        <div id="sched-inputs-note" style="font-size:.70rem;color:var(--muted);margin-top:10px;padding:6px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;line-height:1.7;"></div>
+
+        <!-- Year-by-year detail table (collapsible) -->
+        <div style="margin-top:10px;">
+          <button id="sched-toggle-btn"
+                  onclick="(function(){var w=$('sched-table-wrap');var open=w.style.display!=='none';w.style.display=open?'none':'';$('sched-toggle-btn').textContent=open?'\u25bc Show year-by-year detail':'\u25b2 Hide detail table';})();"
+                  style="width:100%;font-size:.74rem;color:var(--muted);background:none;border:1px solid var(--border);border-radius:5px;padding:5px 10px;cursor:pointer;">
+            &#9660; Show year-by-year detail
+          </button>
+          <div id="sched-table-wrap" style="display:none;overflow-x:auto;margin-top:6px;">
+            <table style="width:100%;border-collapse:collapse;font-size:.74rem;">
+              <thead>
+                <tr style="background:var(--bg);">
+                  <th style="text-align:left;padding:4px 8px;color:var(--muted);font-weight:600;">Yr</th>
+                  <th style="padding:4px 8px;text-align:right;color:var(--muted);font-weight:600;">Interest</th>
+                  <th style="padding:4px 8px;text-align:right;color:var(--muted);font-weight:600;">AfA</th>
+                  <th style="padding:4px 8px;text-align:right;color:var(--muted);font-weight:600;">Rental Net</th>
+                  <th style="padding:4px 8px;text-align:right;color:var(--muted);font-weight:600;">Tax Saving</th>
+                  <th style="padding:4px 8px;text-align:right;color:var(--muted);font-weight:600;">Cumulative Tax Saving</th>
+                </tr>
+              </thead>
+              <tbody id="sched-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ⑧ Wealth Analysis ─────────────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-head" style="background:#065f46;">📈 &nbsp;8. Wealth Analysis (20 Years)</div>
+      <div class="card-body">
+
+        <div class="grid2">
+          <div class="field">
+            <span class="lbl">Annual Property Appreciation</span>
+            <span style="font-size:.68rem;color:var(--muted);">Munich conservative long-run ~3% p.a. (2010–2020 was exceptional at 6–8%). Applied to total purchase price.</span>
+            <div class="input-wrap has-unit">
+              <input type="number" id="appreciation" value="3.0" min="0" max="20" step="0.1"
+                     oninput="recalc()" />
+              <span class="unit">% / yr</span>
+            </div>
+          </div>
+          <div class="field">
+            <span class="lbl">ETF Annual Return (S&amp;P 500 / MSCI World)</span>
+            <span style="font-size:.68rem;color:var(--muted);">S&amp;P 500 EUR long-run ~7–8% p.a. after 0.2% TER. Nominal, not inflation-adjusted.</span>
+            <div class="input-wrap has-unit">
+              <input type="number" id="etf-return" value="7.0" min="0" max="30" step="0.1"
+                     oninput="recalc()" />
+              <span class="unit">% / yr</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-sub" style="margin-top:16px;">Real Estate — 20-Year Outcome</div>
+        <div class="yield-tiles" style="grid-template-columns:repeat(4,1fr);">
+          <div class="ytile green">
+            <div class="yt-lbl">Year 20 Property Value</div>
+            <div class="yt-val" id="w-propval-20">&mdash;</div>
+            <div class="yt-sub">At <span id="w-app-rate">3.0</span>% p.a.</div>
+          </div>
+          <div class="ytile red">
+            <div class="yt-lbl">Year 20 Remaining Debt</div>
+            <div class="yt-val" id="w-debt-20">&mdash;</div>
+            <div class="yt-sub">Bank + KFW outstanding</div>
+          </div>
+          <div class="ytile teal">
+            <div class="yt-lbl">Year 20 Net Equity</div>
+            <div class="yt-val" id="w-equity-20">&mdash;</div>
+            <div class="yt-sub">Tax-free §23 EStG (&gt;10 yr hold)</div>
+          </div>
+          <div class="ytile amber">
+            <div class="yt-lbl">Equity Multiple</div>
+            <div class="yt-val" id="w-multiple">&mdash;</div>
+            <div class="yt-sub">vs initial equity invested</div>
+          </div>
+        </div>
+
+        <div class="section-sub" style="margin-top:14px;">Cash Flow Analysis</div>
+        <div class="yield-tiles" style="grid-template-columns:repeat(2,1fr);">
+          <div class="ytile" id="w-breakeven-tile">
+            <div class="yt-lbl">Years to Positive Cash Flow</div>
+            <div class="yt-val" id="w-breakeven">&mdash;</div>
+            <div class="yt-sub">Year when annual cash flow first turns positive</div>
+          </div>
+          <div class="ytile teal">
+            <div class="yt-lbl">Post-Mortgage Monthly Cash Flow</div>
+            <div class="yt-val" id="w-postloan-mo">&mdash;</div>
+            <div class="yt-sub">Rent after deducting running costs, before tax, once all mortgages are closed</div>
+          </div>
+        </div>
+
+        <div class="section-sub" style="margin-top:14px;">ETF Comparison — same equity + mirrored monthly flows</div>
+        <div class="yield-tiles" style="grid-template-columns:repeat(3,1fr);">
+          <div class="ytile blue">
+            <div class="yt-lbl">ETF Year 20 (Gross)</div>
+            <div class="yt-val" id="w-etf-gross">&mdash;</div>
+            <div class="yt-sub">Before capital gains tax</div>
+          </div>
+          <div class="ytile" id="w-etf-nettax-tile">
+            <div class="yt-lbl">ETF Year 20 (After Tax)</div>
+            <div class="yt-val" id="w-etf-nettax">&mdash;</div>
+            <div class="yt-sub">~18.5% effective (Abgeltungssteuer + Teilfreistellung)</div>
+          </div>
+          <div class="ytile" id="w-advantage-tile">
+            <div class="yt-lbl">RE Advantage vs ETF</div>
+            <div class="yt-val" id="w-advantage">&mdash;</div>
+            <div class="yt-sub" id="w-advantage-sub">RE net equity − ETF after-tax</div>
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div style="position:relative;height:340px;margin-top:18px;">
+          <canvas id="wealth-chart"></canvas>
+        </div>
+
+        <div style="font-size:.67rem;color:var(--muted);margin-top:8px;line-height:1.7;padding:6px 10px;background:var(--bg);border-radius:6px;border:1px solid var(--border);">
+          <strong>ETF method:</strong> Same equity invested day 1. Each year the net real estate cash flow (rent + tax saving − mortgage payments − running costs) is mirrored: if RE costs you money, the ETF investor also invests that amount; if RE pays you, the ETF investor withdraws it. ETF gains taxed at ~18.5% effective (Abgeltungssteuer 26.375% × 70% Teilfreistellung for equity funds). <strong>RE capital gain is fully tax-free</strong> after a 10-year hold (§23 EStG). Comparison is indicative — Vorabpauschale, currency risk and sequence-of-returns risk not modelled.
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /col-main -->
+
+
+  <!-- ── SIDEBAR ──────────────────────────────────────────────────────────── -->
+  <div class="sidebar">
+    <div class="summary-card">
+      <div class="summary-head">📊 &nbsp;Summary</div>
+      <div class="summary-body">
+
+        <div class="sec-lbl">Acquisition Cost Breakdown</div>
+        <div class="bk-table">
+          <div class="bk-row"><span class="bk-l">Land + Property</span>     <span class="bk-v" id="s-base">€ 0</span></div>
+          <div class="bk-row"><span class="bk-l">Notarkosten (1.5%)</span>  <span class="bk-v" id="s-notar">€ 0</span></div>
+          <div class="bk-row"><span class="bk-l">Grunderwerbsteuer (3.5%)</span><span class="bk-v" id="s-grest">€ 0</span></div>
+          <div class="bk-row"><span class="bk-l">Grundbucheintrag (0.5%)</span><span class="bk-v" id="s-grundbuch">€ 0</span></div>
+          <div class="bk-row"><span class="bk-l">Gutachter + Makler</span>  <span class="bk-v" id="s-other">€ 0</span></div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;font-weight:700;
+                    font-size:.88rem;padding:4px 0 10px;border-bottom:2px solid var(--border)">
+          <span>Total Acquisition</span>
+          <span style="color:var(--blue)" id="s-total">€ 0</span>
+        </div>
+
+        <div class="sec-lbl">Financing Structure</div>
+        <div class="sum-row"><span class="sl">Equity</span>          <span class="sv green" id="s-equity">€ 0</span></div>
+        <div class="sum-row" id="s-kfw-row">
+          <span class="sl">KFW Loan (1.00%)</span>   <span class="sv purple" id="s-kfw">€ 0</span>
+        </div>
+        <div class="sum-row"><span class="sl">Bank Loan</span>        <span class="sv amber"  id="s-bank">€ 0</span></div>
+
+        <hr class="sdiv">
+        <div class="sec-lbl">Monthly Payments</div>
+        <div class="sum-row" id="s-kfw-emi-row">
+          <span class="sl">KFW EMI</span>   <span class="sv purple" id="s-kfw-emi">€ 0</span>
+        </div>
+        <div class="sum-row"><span class="sl">Bank EMI</span>  <span class="sv amber"  id="s-bank-emi">€ 0</span></div>
+
+        <div class="sum-total">
+          <span class="st-l">Total Payment to Bank — Month 1</span>
+          <span class="st-v" id="s-total-monthly">€ 0</span>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /sidebar -->
+
+</div><!-- /page -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+/* ── State ──────────────────────────────────────────────────────────────── */
+const ov = {};          // override flags: fieldId → boolean
+let kfwOn = true;
+
+/* ── Utilities ──────────────────────────────────────────────────────────── */
+const $  = id => document.getElementById(id);
+const gn = id => parseFloat($(id).value) || 0;
+const sn = (id, v) => { $(id).value = Math.round(v); };
+const se = (id, v) => { if ($(id)) $(id).textContent = v; };
+const si = (id, v) => { if ($(id)) $(id).value = v; };
+
+function fmtEur(v) {
+  return '€\u2009' + Math.round(v).toLocaleString('de-DE');
+}
+function fmtEurDec(v) {
+  return '€\u2009' + v.toLocaleString('de-DE', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function fmtPct(v) { return v.toFixed(1) + ' %'; }
+
+function calcEMI(principal, annualRatePct, termYears) {
+  if (principal <= 0 || termYears <= 0) return 0;
+  const r = annualRatePct / 100 / 12;
+  const n = termYears * 12;
+  if (r === 0) return principal / n;
+  return principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+}
+
+/* ── Override / badge logic ─────────────────────────────────────────────── */
+// Map fieldId → [badgeId, resetId, autoLabel]
+const OV_META = {
+  'notar':    ['notar-badge',    'notar-reset',    'AUTO 1.5%'],
+  'grest':    ['grest-badge',    'grest-reset',    'AUTO 3.5%'],
+  'grundbuch':['grundbuch-badge','grundbuch-reset', 'AUTO 0.5%'],
+  'equity':   ['equity-badge',   'equity-reset',   'AUTO 20%'],
+  'kfw-amt':  ['kfw-amt-badge',  'kfw-amt-reset',  'DEFAULT'],
+  'bank-amt': ['bank-amt-badge', 'bank-amt-reset', 'AUTO'],
+};
+
+function setOv(fid) {
+  ov[fid] = true;
+  const [badgeId, resetId] = OV_META[fid];
+  const badge = $(badgeId), rst = $(resetId), inp = $(fid);
+  if (badge) { badge.className = 'badge badge-custom'; badge.textContent = 'CUSTOM'; }
+  if (rst)   rst.style.display = 'inline';
+  if (inp)   { inp.classList.remove('auto-val'); inp.classList.add('custom-val'); }
+  recalc();
+}
+
+function resetOv(fid) {
+  ov[fid] = false;
+  const [badgeId, resetId, autoLabel] = OV_META[fid];
+  const badge = $(badgeId), rst = $(resetId), inp = $(fid);
+  if (badge) { badge.className = 'badge badge-auto'; badge.textContent = autoLabel; }
+  if (rst)   rst.style.display = 'none';
+  if (inp)   { inp.classList.add('auto-val'); inp.classList.remove('custom-val'); }
+  recalc();
+}
+
+/* ── KFW toggle ─────────────────────────────────────────────────────────── */
+function toggleKfw() {
+  kfwOn = $('kfw-toggle').checked;
+  $('kfw-fields').style.display = kfwOn ? '' : 'none';
+  $('kfw-emi-bar').style.display = kfwOn ? '' : 'none';
+  $('s-kfw-row').style.display      = kfwOn ? '' : 'none';
+  $('s-kfw-emi-row').style.display  = kfwOn ? '' : 'none';
+  // Reset bank-amt override so it always recalculates to (total − equity − KFW)
+  ov['bank-amt'] = false;
+  const _ba = $('bank-amt'); if (_ba) { _ba.classList.add('auto-val'); _ba.classList.remove('custom-val'); }
+  const _bb = $('bank-amt-badge'); if (_bb) { _bb.className = 'badge badge-auto'; _bb.textContent = 'AUTO'; }
+  const _br = $('bank-amt-reset'); if (_br) _br.style.display = 'none';
+  recalc();
+}
+
+/* ── Cascade from base price change ────────────────────────────────────── */
+function onBase() { recalc(); }
+
+/* ── Main calculation ──────────────────────────────────────────────────── */
+function recalc() {
+  /* 1. Base price */
+  const land = gn('land');
+  const prop = gn('prop');
+  const base = land + prop;
+
+  /* 2. Transaction costs (auto unless overridden) */
+  if (!ov['notar'])     sn('notar',     base * 0.015);
+  if (!ov['grest'])     sn('grest',     base * 0.035);
+  if (!ov['grundbuch']) sn('grundbuch', base * 0.005);
+
+  const notar     = gn('notar');
+  const grest     = gn('grest');
+  const grundbuch = gn('grundbuch');
+  const gutachter = gn('gutachter');
+  const makler    = gn('makler');
+
+  const totalAcq = base + notar + grest + grundbuch + gutachter + makler;
+
+  /* 3. Equity */
+  if (!ov['equity']) sn('equity', totalAcq * 0.20);
+  const equity    = gn('equity');
+  const equityPct = totalAcq > 0 ? equity / totalAcq * 100 : 0;
+
+  /* 4. KFW */
+  const kfwAmt  = kfwOn ? gn('kfw-amt')  : 0;
+  const kfwRate = gn('kfw-rate');
+  const kfwTerm = gn('kfw-term');
+  const kfwEMI  = kfwOn ? calcEMI(kfwAmt, kfwRate, kfwTerm) : 0;
+
+  /* 5. Bank loan (auto = total - equity - kfw) */
+  const bankDefault = Math.max(0, totalAcq - equity - kfwAmt);
+  if (!ov['bank-amt']) sn('bank-amt', bankDefault);
+  const bankAmt  = gn('bank-amt');
+  const bankRate = gn('bank-rate');
+  const bankTerm = gn('bank-term');
+  const bankEMI  = calcEMI(bankAmt, bankRate, bankTerm);
+
+  /* 6. Totals */
+  const totalDebt    = kfwAmt + bankAmt;
+  const totalMonthly = kfwEMI + bankEMI;
+  const ltv          = base > 0 ? totalDebt / base * 100 : 0;
+
+  /* ── Update outputs ─────────────────────────────────────────────────── */
+  // Section 1
+  se('out-total-acq', fmtEur(totalAcq));
+
+  // Section 2
+  si('out-equity-pct', equityPct.toFixed(1));
+  se('out-loan-req', fmtEur(Math.max(0, totalAcq - equity)));
+
+  // Section 3
+  si('out-kfw-emi', kfwOn ? Math.round(kfwEMI) : 0);
+  se('out-kfw-emi-bar', kfwOn ? fmtEur(kfwEMI) + ' / mo' : '— disabled —');
+
+  // Section 4
+  si('out-bank-emi', Math.round(bankEMI));
+  se('out-bank-emi-bar', fmtEur(bankEMI) + ' / mo');
+
+  // Info pills
+  se('pill-ltv',    fmtPct(ltv));
+  se('pill-debt',   fmtEur(totalDebt));
+  se('pill-eq-pct', fmtPct(equityPct));
+  const pills = $('info-pills');
+  if (pills) {
+    const ltvPill = pills.querySelector('.pill:first-child');
+    if (ltvPill) {
+      ltvPill.className = ltv > 90 ? 'pill red' : ltv > 80 ? 'pill amber' : 'pill blue';
+    }
+  }
+
+  // Sidebar
+  se('s-base',     fmtEur(base));
+  se('s-notar',    fmtEur(notar));
+  se('s-grest',    fmtEur(grest));
+  se('s-grundbuch',fmtEur(grundbuch));
+  se('s-other',    fmtEur(gutachter + makler));
+  se('s-total',    fmtEur(totalAcq));
+  se('s-equity',   fmtEur(equity));
+  se('s-kfw',      kfwOn ? fmtEur(kfwAmt) : '—');
+  se('s-bank',     fmtEur(bankAmt));
+  se('s-kfw-emi',  kfwOn ? fmtEur(kfwEMI) + '/mo' : '—');
+  se('s-bank-emi', fmtEur(bankEMI) + '/mo');
+  se('s-total-monthly', fmtEur(totalMonthly));
+
+  // Update payment chart, rental yield and tax deductions
+  updateChart();
+  recalcYield();
+  recalcTax();
+  updateWealthChart();
+
+  // KFW label in sidebar shows current rate
+  const kfwLbl = $('s-kfw-row');
+  if (kfwLbl) kfwLbl.querySelector('.sl').textContent = 'KFW Loan (' + kfwRate.toFixed(2) + '%)';
+}
+
+/* ── Chart ──────────────────────────────────────────────────────────────── */
+let paymentChart = null;
+
+function updateChart() {
+  const canvas = document.getElementById('payment-chart');
+  if (!canvas || typeof Chart === 'undefined') return;
+
+  const kfwAmt  = kfwOn ? gn('kfw-amt') : 0;
+  const kfwRate = gn('kfw-rate');
+  const kfwTerm = Math.max(1, Math.round(gn('kfw-term')));   // years
+  const kfwEMI  = kfwOn ? calcEMI(kfwAmt, kfwRate, kfwTerm) : 0;
+
+  const bankAmt  = gn('bank-amt');
+  const bankRate = gn('bank-rate');
+  const bankTerm = Math.max(1, Math.round(gn('bank-term'))); // years
+  const bankEMI  = calcEMI(bankAmt, bankRate, bankTerm);
+
+  const YEARS = 20;
+  const labels  = Array.from({length: YEARS}, (_, i) => 'Yr\u202F' + (i + 1));
+  const kfwYr   = [];
+  const bankYr  = [];
+  const moKfw   = [];   // monthly for right-axis line
+  const moBank  = [];
+
+  for (let y = 1; y <= YEARS; y++) {
+    const k = (kfwOn && y <= kfwTerm)  ? kfwEMI  * 12 : 0;
+    const b = (y <= bankTerm) ? bankEMI * 12 : 0;
+    kfwYr.push(k);
+    bankYr.push(b);
+    moKfw.push(k / 12);
+    moBank.push(b / 12);
+  }
+  const totalMo = moKfw.map((k, i) => k + moBank[i]);
+
+  const datasets = [
+    {
+      label: 'KFW Subsidised Loan',
+      data: kfwYr,
+      backgroundColor: 'rgba(109, 40, 217, 0.75)',
+      borderColor:     'rgba(109, 40, 217, 0.9)',
+      borderWidth: 1,
+      stack: 'loans',
+      order: 3,
+      yAxisID: 'yAnnual',
+      hidden: !kfwOn,
+    },
+    {
+      label: 'Bank Mortgage Loan',
+      data: bankYr,
+      backgroundColor: 'rgba(161, 62, 11, 0.75)',
+      borderColor:     'rgba(161, 62, 11, 0.9)',
+      borderWidth: 1,
+      stack: 'loans',
+      order: 3,
+      yAxisID: 'yAnnual',
+    },
+    {
+      label: 'Combined (monthly, right axis)',
+      type: 'line',
+      data: totalMo,
+      borderColor: '#1d4ed8',
+      backgroundColor: 'rgba(29,78,216,0.06)',
+      borderWidth: 2.5,
+      pointBackgroundColor: '#fff',
+      pointBorderColor: '#1d4ed8',
+      pointBorderWidth: 2,
+      pointRadius: 3.5,
+      pointHoverRadius: 6,
+      fill: false,
+      tension: 0.15,
+      order: 1,
+      yAxisID: 'yMonthly',
+    },
+  ];
+
+  if (paymentChart) {
+    paymentChart.data.labels             = labels;
+    paymentChart.data.datasets[0].data   = kfwYr;
+    paymentChart.data.datasets[0].hidden = !kfwOn;
+    paymentChart.data.datasets[1].data   = bankYr;
+    paymentChart.data.datasets[2].data   = totalMo;
+    paymentChart.update('none');
+    return;
+  }
+
+  paymentChart = new Chart(canvas, {
+    type: 'bar',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      scales: {
+        x: {
+          stacked: true,
+          grid: { display: false },
+          ticks: { font: { size: 11 }, maxRotation: 0 },
+        },
+        yAnnual: {
+          type: 'linear',
+          position: 'left',
+          stacked: true,
+          beginAtZero: true,
+          grid: { color: 'rgba(0,0,0,.05)' },
+          ticks: {
+            font: { size: 11 },
+            callback: v => '\u20ac\u2009' + (v / 1000).toFixed(0) + 'K',
+          },
+          title: {
+            display: true,
+            text: 'Annual Payment (\u20ac/yr)',
+            color: '#64748b',
+            font: { size: 11 },
+          },
+        },
+        yMonthly: {
+          type: 'linear',
+          position: 'right',
+          beginAtZero: true,
+          grid: { drawOnChartArea: false },
+          ticks: {
+            font: { size: 11 },
+            callback: v => '\u20ac\u2009' + Math.round(v).toLocaleString('de-DE') + '/mo',
+          },
+          title: {
+            display: true,
+            text: 'Combined Monthly (\u20ac/mo)',
+            color: '#1d4ed8',
+            font: { size: 11 },
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { font: { size: 12 }, padding: 16, usePointStyle: true },
+        },
+        tooltip: {
+          callbacks: {
+            label: item => {
+              if (item.datasetIndex === 2) {
+                // line — monthly
+                const mo = Math.round(item.raw);
+                return ' \u2192 Combined monthly: \u20ac' + mo.toLocaleString('de-DE') + ' /mo';
+              }
+              if (!item.raw) return null;
+              const annual  = Math.round(item.raw);
+              const monthly = Math.round(annual / 12);
+              return ' ' + item.dataset.label + ': \u20ac' + annual.toLocaleString('de-DE') + ' /yr  (\u20ac' + monthly.toLocaleString('de-DE') + ' /mo)';
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+/* ── Rental Yield ──────────────────────────────────────────────────────── */
+function recalcYield() {
+  // Derive base values from the already-filled main-calculator fields
+  const base     = gn('land') + gn('prop');
+  const totalAcq = base + gn('notar') + gn('grest') + gn('grundbuch')
+                       + gn('gutachter') + gn('makler');
+
+  const kfwEMI  = kfwOn ? calcEMI(gn('kfw-amt'),  gn('kfw-rate'),  gn('kfw-term'))  : 0;
+  const bankEMI =         calcEMI(gn('bank-amt'), gn('bank-rate'), gn('bank-term'));
+  const mortgageMo = kfwEMI + bankEMI;
+
+  // Yield inputs
+  const rentMo      = gn('rent-mo');
+  const vacancyFrac = gn('vacancy') / 100;
+  const hausgeldMo  = gn('hausgeld');
+  const mgmtFrac    = gn('mgmt-fee') / 100;
+  const maintSqm    = gn('maint');
+  const sqm         = gn('area-sqm');
+
+  // Income
+  const grossRentYr  = rentMo * 12;
+  const vacancyLoss  = grossRentYr * vacancyFrac;
+  const effRentYr    = grossRentYr - vacancyLoss;
+
+  // Costs
+  const hausgeldYr   = hausgeldMo * 12;
+  const mgmtYr       = grossRentYr * mgmtFrac;
+  const maintYr      = maintSqm   * sqm;
+  const totalCostYr  = hausgeldYr + mgmtYr + maintYr;
+
+  // Net income & cash flow
+  const netIncomeYr  = effRentYr - totalCostYr;
+  const mortgageYr   = mortgageMo * 12;
+  const annualCF     = netIncomeYr - mortgageYr;
+  const monthlyCF    = annualCF / 12;
+
+  // Yields
+  const grossYield   = base     > 0 ? grossRentYr / base     * 100 : 0;
+  const netYield     = totalAcq > 0 ? netIncomeYr / totalAcq * 100 : 0;
+
+  // ── KPI Tiles ──────────────────────────────────────────────────────────────────
+  se('y-gross-yield', grossYield.toFixed(2) + '%');
+  se('y-net-yield',   netYield.toFixed(2)   + '%');
+  se('y-monthly-cf',  fmtEur(monthlyCF) + '/mo');
+
+  // Net yield tile colour: teal ≥ 3%, amber 2–3%, default below 2%
+  const nTile = $('ytile-net');
+  if (nTile) nTile.className = 'ytile ' +
+    (netYield >= 3 ? 'teal' : netYield >= 2 ? 'amber' : '');
+
+  // Cash flow tile colour
+  const cfTile = $('ytile-cf');
+  if (cfTile) cfTile.className = 'ytile ' + (monthlyCF >= 0 ? 'green' : 'red');
+  se('y-cf-sub', monthlyCF >= 0
+    ? '▲ Positive — property self-funds'
+    : '▼ Monthly top-up from pocket');
+
+  // ── Waterfall Breakdown ──────────────────────────────────────────────────────
+  se('y-gross-rent',   fmtEur(grossRentYr)  + ' /yr');
+  se('y-vacancy-loss', '− ' + fmtEur(vacancyLoss)  + ' /yr');
+  se('y-eff-rent',         fmtEur(effRentYr)    + ' /yr');
+  se('y-hausgeld-yr',  '− ' + fmtEur(hausgeldYr)   + ' /yr');
+  se('y-mgmt-yr',      '− ' + fmtEur(mgmtYr)       + ' /yr');
+  se('y-maint-yr',     '− ' + fmtEur(maintYr)      + ' /yr');
+  se('y-net-income',       fmtEur(netIncomeYr)  + ' /yr');
+  se('y-mortgage-yr',  '− ' + fmtEur(mortgageYr)   + ' /yr');
+  se('y-annual-cf',        fmtEur(annualCF)     + ' /yr');
+
+  // Cash flow row colour
+  const cfRow = $('yb-cf-row');
+  if (cfRow) cfRow.className = 'yb-row total ' + (annualCF >= 0 ? 'pos' : 'neg');
+}
+
+/* ── German Income Tax 2025/2026 ───────────────────────────────────────── */
+function calcGermanTax(income) {
+  const x = Math.max(0, Math.round(income));
+  let est = 0;
+  if      (x <= 11784)  { est = 0; }
+  else if (x <= 17005)  { const y=(x-11784)/10000; est=(979.18*y+1400)*y; }
+  else if (x <= 66760)  { const y=(x-17005)/10000; est=(192.59*y+2397)*y+966.53; }
+  else if (x <= 277825) { est=0.42*x-10602.13; }
+  else                  { est=0.45*x-18936.88; }
+  est = Math.max(0, Math.round(est));
+  // Solidaritätszuschlag (5.5%, exempt below €18,130 ESt, with Milderungszone)
+  let soli = 0;
+  if (est > 18130) {
+    const milderung = 0.119 * (est - 18130);
+    const full      = 0.055 * est;
+    soli = Math.round(est > 33912 ? full : Math.max(0, milderung));
+  }
+  return { est, soli, total: est + soli };
+}
+
+function getMarginalRate(income) {
+  const x = Math.max(0, income);
+  if (x <= 11784)  return 0;
+  if (x <= 17005)  { const y=(x-11784)/10000; return (2*979.18*y+1400)/10000; }
+  if (x <= 66760)  { const y=(x-17005)/10000; return (2*192.59*y+2397)/10000; }
+  if (x <= 277825) return 0.42;
+  return 0.45;
+}
+
+/* ── AfA configuration handlers ─────────────────────────────────────────── */
+function onPropPeriodChange() {
+  const period     = $('prop-period') ? $('prop-period').value : 'new_post_oct23';
+  const rateEl     = $('afa-linear-rate');
+  const noteEl     = $('afa-linear-note');
+  const linBlock   = $('afa-linear-block');
+  const degrBlock  = $('afa-degr-block');
+  const sonderBlock= $('afa-sonder-block');
+  if (!rateEl) return;
+
+  // Linear block always restored first
+  if (linBlock) linBlock.classList.remove('afa-disabled');
+
+  if (period === 'new_post_oct23') {
+    rateEl.value = 3;
+    if (noteEl) noteEl.textContent = '3% · new build post-2022 · §7(4) Nr. 2';
+    if (degrBlock)   degrBlock.classList.remove('afa-disabled');
+    if (sonderBlock) sonderBlock.classList.remove('afa-disabled');
+  } else if (period === 'new_post22') {
+    rateEl.value = 3;
+    if (noteEl) noteEl.textContent = '3% · new build post-2022 · §7(4) Nr. 2';
+    if ($('degr-afa')) $('degr-afa').checked = false;
+    if (degrBlock)   degrBlock.classList.add('afa-disabled');
+    if (sonderBlock) sonderBlock.classList.remove('afa-disabled');
+  } else if (period === 'existing_post24') {
+    rateEl.value = 2;
+    if (noteEl) noteEl.textContent = '2% · existing building 1925–2022 · §7(4) Nr. 2';
+    if ($('degr-afa'))  $('degr-afa').checked  = false;
+    if ($('sonder-afa')) $('sonder-afa').checked = false;
+    if (degrBlock)   degrBlock.classList.add('afa-disabled');
+    if (sonderBlock) sonderBlock.classList.add('afa-disabled');
+  } else if (period === 'existing_pre25') {
+    rateEl.value = 2.5;
+    if (noteEl) noteEl.textContent = '2.5% · building pre-1925 · §7(4) Nr. 2';
+    if ($('degr-afa'))  $('degr-afa').checked  = false;
+    if ($('sonder-afa')) $('sonder-afa').checked = false;
+    if (degrBlock)   degrBlock.classList.add('afa-disabled');
+    if (sonderBlock) sonderBlock.classList.add('afa-disabled');
+  }
+  recalc();
+}
+
+function onDegressiveChange() {
+  const on       = !!($('degr-afa') && $('degr-afa').checked);
+  const linBlock = $('afa-linear-block');
+  const optRow   = $('opt-degr-row');
+
+  // §7(5a) replaces §7(4) linear, so grey out linear block when degressive is on.
+  // §7b (§7b Abs. 1 EStG: "neben § 7 Abs. 4 oder 5a") IS combinable with §7(5a) — keep it enabled.
+  if (on) {
+    if (linBlock) linBlock.classList.add('afa-disabled');
+    if (optRow)   optRow.style.display = '';
+  } else {
+    if (linBlock) linBlock.classList.remove('afa-disabled');
+    if (optRow)   { optRow.style.display = 'none'; if ($('opt-degr')) $('opt-degr').checked = false; }
+  }
+  recalc();
+}
+
+/* ── Tax Deduction Calculator ───────────────────────────────────────────── */
+function recalcTax() {
+  const taxIncome  = gn('tax-income');
+  const bldgFrac   = gn('bldg-frac') / 100;
+
+  // AfA state
+  const degrOn     = !!($('degr-afa')   && $('degr-afa').checked);
+  const sonderOn   = !!($('sonder-afa') && $('sonder-afa').checked); // §7b combinable with §7(4) or §7(5a) per §7b Abs.1 EStG
+  const linearRate = degrOn ? 0 : (gn('afa-linear-rate') / 100);
+
+  // Property + loan values (read from already-computed DOM fields)
+  const propVal     = gn('land') + gn('prop');
+  // AfA basis = building's share of TOTAL Anschaffungskosten (§7 EStG):
+  // Nebenkosten (Notar, Grunderwerbsteuer, Grundbucheintrag, Gutachter, Makler) are
+  // allocated proportionally to land/building and form part of the depreciable base.
+  const totalAcqVal = propVal + gn('notar') + gn('grest') + gn('grundbuch')
+                    + gn('gutachter') + gn('makler');
+  const buildingVal = totalAcqVal * bldgFrac;
+  const kfwAmt    = kfwOn ? gn('kfw-amt') : 0;
+  const bankAmt   = gn('bank-amt');
+
+  // Year 1 interest — use actual monthly amortization schedule (more accurate than P×r)
+  const interestYr1 = getYearlyInterest(kfwAmt, gn('kfw-rate'), gn('kfw-term'), 1)[0]
+                    + getYearlyInterest(bankAmt, gn('bank-rate'), gn('bank-term'), 1)[0];
+
+  // AfA deductions
+  const afaLinear = buildingVal * linearRate;
+  const afaDegr   = degrOn  ? buildingVal * 0.05 : 0;
+  const afaSonder = sonderOn ? buildingVal * 0.05 : 0;
+  const afaTotal  = afaLinear + afaDegr + afaSonder;
+
+  // Operating costs from yield section
+  const grossRentYr = gn('rent-mo') * 12;
+  const hausgeldYr  = gn('hausgeld') * 12;
+  const mgmtYr      = grossRentYr * gn('mgmt-fee') / 100;
+  const maintYr     = gn('maint') * gn('area-sqm');
+  const operCosts   = hausgeldYr + mgmtYr + maintYr;
+
+  // Effective rental income
+  const effRentYr   = grossRentYr * (1 - gn('vacancy')/100);
+
+  // Rental net income/loss (negative = loss offsets wage income → tax saving)
+  const totalDeduct = interestYr1 + afaTotal + operCosts;
+  const rentalNetYr = effRentYr - totalDeduct;
+
+  // Tax calculations
+  const current      = calcGermanTax(taxIncome);
+  const newIncome    = taxIncome + rentalNetYr;        // loss reduces income
+  const newTax       = calcGermanTax(newIncome);
+  const taxSavingAnn = current.total - newTax.total;
+  const taxSavingMo  = taxSavingAnn / 12;
+
+  // Pre-tax cash flow (mirrors recalcYield logic)
+  const kfwEMI_t  = kfwOn ? calcEMI(kfwAmt, gn('kfw-rate'), gn('kfw-term')) : 0;
+  const bankEMI_t = calcEMI(bankAmt, gn('bank-rate'), gn('bank-term'));
+  const mortgageYr  = (kfwEMI_t + bankEMI_t) * 12;
+  const preTaxAnnCF = effRentYr - operCosts - mortgageYr;
+  const afterTaxMo  = (preTaxAnnCF + taxSavingAnn) / 12;
+
+  // ── AfA block amounts ────────────────────────────────────────────────────
+  se('afa-linear-amount', degrOn ? 'N/A' : ('− ' + fmtEur(afaLinear) + ' /yr'));
+  se('afa-degr-amount',   degrOn ? '− ' + fmtEur(afaDegr)   + ' /yr' : '—');
+  se('afa-sonder-amount', sonderOn ? '− ' + fmtEur(afaSonder) + ' /yr' : '—');
+
+  // ── Breakdown: show/hide AfA rows + update labels ─────────────────────
+  const linRow  = $('tx-afa-linear-row');
+  const dgrRow  = $('tx-afa-degr-row');
+  const srRow   = $('tx-sonder-row');
+  if (linRow) linRow.style.display = degrOn ? 'none' : '';
+  if (dgrRow) dgrRow.style.display = degrOn ? '' : 'none';
+  if (srRow)  srRow.style.display  = sonderOn ? '' : 'none';
+
+  const linLbl = $('tx-afa-linear-lbl');
+  if (linLbl) linLbl.textContent = '\u00a0\u00a0\u2013 \u00a77(4) Linear AfA (' + (linearRate*100).toFixed(1) + '%)';
+  se('tx-afa-reg',    '− ' + fmtEur(afaLinear)  + ' /yr');
+  se('tx-afa-degr',   '− ' + fmtEur(afaDegr)    + ' /yr');
+  se('tx-afa-sonder', sonderOn ? '− ' + fmtEur(afaSonder) + ' /yr' : 'N/A');
+
+  // ── Deduction breakdown ─────────────────────────────────────────────────
+  se('tx-rent-income', fmtEur(effRentYr)    + ' /yr');
+  se('tx-interest',  '− ' + fmtEur(interestYr1) + ' /yr');
+  se('tx-oper',      '− ' + fmtEur(operCosts)    + ' /yr');
+  const netLabel = rentalNetYr < 0 ? '▼ Loss ' : '▲ Gain ';
+  se('tx-rental-net', netLabel + fmtEur(Math.abs(rentalNetYr)) + ' /yr');
+  const rnEl = $('tx-rental-net');
+  if (rnEl) rnEl.style.color = rentalNetYr < 0 ? 'var(--green)' : '#dc2626';
+
+  // ── KPI tiles ────────────────────────────────────────────────────────────
+  se('tx-current-total',  fmtEur(current.total) + ' /yr');
+  se('tx-saving-annual',  fmtEur(taxSavingAnn)  + ' /yr');
+  se('tx-saving-mo-sub',  fmtEur(taxSavingMo)   + ' /mo saving');
+  se('tx-after-tax-mo',   fmtEur(afterTaxMo)    + '/mo');
+  const savTile = $('tx-saving-tile');
+  if (savTile) savTile.className = 'ytile ' + (taxSavingAnn > 0 ? 'teal' : 'red');
+  const atTile  = $('tx-aftertax-tile');
+  if (atTile)  atTile.className  = 'ytile ' + (afterTaxMo >= 0 ? 'green' : 'red');
+
+  // ── Full breakdown table ──────────────────────────────────────────────────
+  se('tx-gross-income',   fmtEur(taxIncome)  + ' /yr');
+  const sign2 = rentalNetYr < 0 ? '− ' : '+ ';
+  se('tx-rental-net2',    sign2 + fmtEur(Math.abs(rentalNetYr)) + ' /yr');
+  se('tx-new-income',     fmtEur(Math.max(0, newIncome)) + ' /yr');
+  se('tx-current-total2', fmtEur(current.total) + ' /yr');
+  se('tx-new-tax',        fmtEur(newTax.total)  + ' /yr');
+  se('tx-saving-final',   fmtEur(taxSavingAnn)  + ' /yr');
+  const savRow = $('tx-saving-row');
+  if (savRow) savRow.className = 'yb-row total ' + (taxSavingAnn >= 0 ? 'pos' : 'neg');
+  const sfEl = $('tx-saving-final');
+  if (sfEl) sfEl.style.color = taxSavingAnn >= 0 ? 'var(--green)' : '#dc2626';
+  se('tx-pretax-mo',     fmtEur(preTaxAnnCF/12) + ' /mo');
+  se('tx-after-tax-mo2', fmtEur(afterTaxMo) + ' /mo');
+  const atRow = $('tx-aftertax-row');
+  if (atRow) atRow.className = 'yb-row total ' + (afterTaxMo >= 0 ? 'pos' : 'neg');
+  updateTaxChart();
+}
+
+/* ── 20-Year Schedule helpers ────────────────────────────────────────────── */
+function getYearlyInterest(principal, annualRatePct, termYears, maxYears) {
+  if (!principal || !annualRatePct || !termYears) return Array(maxYears).fill(0);
+  const monthlyRate = annualRatePct / 100 / 12;
+  const emi = calcEMI(principal, annualRatePct, Math.round(termYears));
+  let balance = principal;
+  const result = [];
+  for (let yr = 0; yr < maxYears; yr++) {
+    if (yr >= Math.round(termYears) || balance < 0.01) { result.push(0); continue; }
+    let yearInt = 0;
+    for (let mo = 0; mo < 12; mo++) {
+      if (balance < 0.01) break;
+      const intMo = balance * monthlyRate;
+      yearInt += intMo;
+      balance  = Math.max(0, balance - (emi - intMo));
+    }
+    result.push(yearInt);
+  }
+  return result;
+}
+
+/* Returns remaining loan balance after yearsPaid full years of monthly amortisation */
+function getLoanBalance(principal, annualRatePct, termYears, yearsPaid) {
+  if (!principal || !annualRatePct || !termYears) return principal || 0;
+  if (yearsPaid <= 0) return principal;
+  const term = Math.round(termYears);
+  if (yearsPaid >= term) return 0;
+  const monthlyRate = annualRatePct / 100 / 12;
+  const emi = calcEMI(principal, annualRatePct, term);
+  let balance = principal;
+  const months = yearsPaid * 12;
+  for (let mo = 0; mo < months; mo++) {
+    if (balance < 0.01) { balance = 0; break; }
+    const intMo = balance * monthlyRate;
+    balance = Math.max(0, balance - (emi - intMo));
+  }
+  return balance;
+}
+
+function calc20YearSchedule() {
+  const taxIncome  = gn('tax-income');
+  const bldgFrac   = gn('bldg-frac') / 100;
+  const propVal    = gn('land') + gn('prop');
+  // AfA basis = building's share of total Anschaffungskosten (includes Nebenkosten)
+  const totalAcqVal = propVal + gn('notar') + gn('grest') + gn('grundbuch')
+                    + gn('gutachter') + gn('makler');
+  const buildingVal = totalAcqVal * bldgFrac;
+  if (!buildingVal || !taxIncome) return null;
+  const linearRate = gn('afa-linear-rate') / 100;
+  if (!linearRate) return null;
+  const usefulLife = Math.round(1 / linearRate); // 33 for 3%, 50 for 2%, 40 for 2.5%
+
+  const degrOn   = !!($('degr-afa')   && $('degr-afa').checked);
+  const sonderOn = !!($('sonder-afa') && $('sonder-afa').checked);
+  const optimOn  = !!($('opt-degr')   && $('opt-degr').checked) && degrOn;
+
+  const kfwAmt  = kfwOn ? gn('kfw-amt') : 0;
+  const bankAmt = gn('bank-amt');
+  const kfwInts  = getYearlyInterest(kfwAmt,  gn('kfw-rate'), gn('kfw-term'), 20);
+  const bankInts = getYearlyInterest(bankAmt, gn('bank-rate'), gn('bank-term'), 20);
+
+  const grossRentYr = gn('rent-mo') * 12;
+  const operCosts   = (gn('hausgeld') * 12)
+                    + (grossRentYr * gn('mgmt-fee') / 100)
+                    + (gn('maint')  * gn('area-sqm'));
+  const effRentYr   = grossRentYr * (1 - gn('vacancy') / 100);
+
+  let bookVal      = buildingVal;
+  let usingLinear  = !degrOn;
+  let switchYear   = null;
+  const rows = [];
+  let cumTaxSaving = 0, cumAfa = 0;
+
+  for (let yr = 0; yr < 20; yr++) {
+    const interest = (kfwInts[yr] || 0) + (bankInts[yr] || 0);
+
+    // Optimal switch check: switch when projected linear >= current degressive
+    if (!usingLinear && optimOn) {
+      const remLife = usefulLife - yr;
+      if (remLife > 0 && (bookVal / remLife) >= (bookVal * 0.05)) {
+        usingLinear = true;
+        switchYear  = yr + 1; // 1-indexed
+      }
+    }
+
+    let regularAfa, isLinear;
+    if (usingLinear) {
+      isLinear   = true;
+      regularAfa = bookVal / Math.max(1, usefulLife - yr);
+    } else {
+      isLinear   = false;
+      regularAfa = bookVal * 0.05;
+    }
+
+    // §7b Sonder-AfA: additional 5% of original building value, years 1–4 only
+    const sonderAfa = (sonderOn && yr < 4) ? buildingVal * 0.05 : 0;
+    const totalAfa  = regularAfa + sonderAfa;
+
+    // Both regular AfA and §7b reduce book value (Buchwert)
+    bookVal = Math.max(0, bookVal - regularAfa - sonderAfa);
+
+    const rentalNet = effRentYr - (interest + totalAfa + operCosts);
+    const curTax    = calcGermanTax(taxIncome);
+    const newTax    = calcGermanTax(taxIncome + rentalNet);
+    const taxSav    = curTax.total - newTax.total;
+    cumTaxSaving   += taxSav;
+    cumAfa         += totalAfa;
+
+    rows.push({ year: yr + 1, interest, regularAfa, sonderAfa, totalAfa,
+                rentalNet, taxSav, cumTaxSaving, cumAfa, isLinear });
+  }
+  return { rows, switchYear, cumTaxSaving, cumAfa, buildingVal };
+}
+
+let taxSchedChart = null;
+
+function updateTaxChart() {
+  const canvas = document.getElementById('tax-schedule-chart');
+  if (!canvas || typeof Chart === 'undefined') return;
+  const data = calc20YearSchedule();
+  if (!data) return;
+
+  const { rows, switchYear, cumTaxSaving, cumAfa, buildingVal } = data;
+
+  se('cum-tax-saving-20', fmtEur(Math.round(cumTaxSaving)));
+  se('total-afa-20',      fmtEur(Math.round(cumAfa)));
+
+  const swTile = $('tile-switch-yr');
+  const swLbl  = $('switch-year-lbl');
+  if (switchYear) {
+    if (swTile) swTile.style.display = '';
+    if (swLbl)  swLbl.textContent    = 'Year ' + switchYear;
+  } else {
+    if (swTile) swTile.style.display = 'none';
+  }
+
+  const labels      = rows.map(r => 'Y' + r.year);
+  const regularData = rows.map(r => Math.round(r.regularAfa));
+  const sonderData  = rows.map(r => Math.round(r.sonderAfa));
+  const taxSavData  = rows.map(r => Math.round(r.taxSav));
+  const cumSavData  = rows.map(r => Math.round(r.cumTaxSaving));
+
+  // Purple = degressive, blue = linear (changes at switch year)
+  const regColors  = rows.map(r => r.isLinear ? 'rgba(96,165,250,0.82)' : 'rgba(99,102,241,0.82)');
+  const regBorders = rows.map(r => r.isLinear ? 'rgb(96,165,250)'       : 'rgb(99,102,241)');
+
+  if (taxSchedChart) { taxSchedChart.destroy(); taxSchedChart = null; }
+
+  // ── Year-by-year detail table ─────────────────────────────────────────
+  const tbody = $('sched-tbody');
+  if (tbody) {
+    tbody.innerHTML = rows.map(r => {
+      const posNet  = r.rentalNet >= 0;
+      const negSav  = r.taxSav < 0;
+      const netCol  = posNet  ? '#dc2626' : 'var(--green)';
+      const savCol  = negSav  ? '#dc2626' : 'inherit';
+      const cumCol  = r.cumTaxSaving < 0 ? '#dc2626' : 'inherit';
+      const netSign = posNet  ? '+' : '\u2212';
+      return '<tr style="border-top:1px solid var(--border);">' +
+        '<td style="padding:3px 8px;font-weight:600;">' + r.year + '</td>' +
+        '<td style="padding:3px 8px;text-align:right;">' + fmtEur(Math.round(r.interest)) + '</td>' +
+        '<td style="padding:3px 8px;text-align:right;">' + fmtEur(Math.round(r.totalAfa)) + '</td>' +
+        '<td style="padding:3px 8px;text-align:right;color:' + netCol + ';">' + netSign + fmtEur(Math.abs(Math.round(r.rentalNet))) + '</td>' +
+        '<td style="padding:3px 8px;text-align:right;color:' + savCol + ';">' + fmtEur(Math.round(r.taxSav)) + '</td>' +
+        '<td style="padding:3px 8px;text-align:right;color:' + cumCol + ';">' + fmtEur(Math.round(r.cumTaxSaving)) + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  // ── Schedule inputs note ──────────────────────────────────────────────
+  const inpNote = $('sched-inputs-note');
+  if (inpNote) {
+    const bankAmt2 = gn('bank-amt');
+    const kfwAmt2  = kfwOn ? gn('kfw-amt') : 0;
+    inpNote.innerHTML =
+      '<strong>Schedule inputs:</strong> ' +
+      'Bank loan <strong>' + fmtEur(bankAmt2) + '</strong> @ ' + gn('bank-rate').toFixed(2) + '% for ' + gn('bank-term') + ' yr' +
+      (kfwOn && kfwAmt2 > 0 ? ' &middot; KFW <strong>' + fmtEur(kfwAmt2) + '</strong> @ ' + gn('kfw-rate').toFixed(2) + '%' : '') +
+      ' &middot; AfA base <strong>' + fmtEur(Math.round(buildingVal)) + '</strong>' +
+      ' &middot; Rent <strong>' + fmtEur(gn('rent-mo')) + '</strong>/mo' +
+      ' &middot; Taxable income <strong>' + fmtEur(gn('tax-income')) + '</strong>' +
+      '<br><span style="font-size:.67rem;">If Bank loan or AfA base look wrong, check Sections 1–4 and reset any manually-overridden fields (↻ reset button).</span>';
+  }
+
+  taxSchedChart = new Chart(canvas, {
+    data: {
+      labels,
+      datasets: [
+        { type:'bar',  label:'§7b Sonder-AfA (Yrs 1–4)',
+          data: sonderData,  backgroundColor:'rgba(52,211,153,0.82)',
+          borderColor:'rgb(52,211,153)', borderWidth:1,
+          stack:'afa', yAxisID:'y', order:4 },
+        { type:'bar',  label:'§7(5a) Degressive / §7(4) Linear AfA',
+          data: regularData, backgroundColor: regColors,
+          borderColor: regBorders, borderWidth:1,
+          stack:'afa', yAxisID:'y', order:3 },
+        { type:'line', label:'Annual Tax Saving',
+          data: taxSavData,  borderColor:'rgb(251,146,60)',
+          backgroundColor:'rgba(251,146,60,0.12)', tension:0.35,
+          pointRadius:3, fill:true, yAxisID:'y2', order:1 },
+        { type:'line', label:'Cumulative Tax Saving',
+          data: cumSavData,  borderColor:'rgb(167,139,250)',
+          backgroundColor:'rgba(167,139,250,0.07)', tension:0.35,
+          pointRadius:3, fill:false, borderDash:[5,4], yAxisID:'y2', order:2 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode:'index', intersect:false },
+      plugins: {
+        legend: { position:'bottom', labels:{ font:{size:11}, padding:14, usePointStyle:true } },
+        tooltip: { callbacks: { label(c) {
+          return ' ' + c.dataset.label + ': ' +
+            new Intl.NumberFormat('de-DE', { style:'currency', currency:'EUR', maximumFractionDigits:0 }).format(c.raw);
+        }}}
+      },
+      scales: {
+        x:  { stacked:true, grid:{display:false}, ticks:{font:{size:10}} },
+        y:  { stacked:true, position:'left',
+              title:{display:true, text:'AfA Deductions (€)', font:{size:11}},
+              ticks:{ font:{size:10}, callback(v){ return '€'+(v/1000).toFixed(0)+'k'; } } },
+        y2: { position:'right',
+              title:{display:true, text:'Tax Saving (€)', font:{size:11}},
+              grid:{drawOnChartArea:false},
+              ticks:{ font:{size:10}, callback(v){ return '€'+(v/1000).toFixed(0)+'k'; } } }
+      }
+    }
+  });
+}
+
+/* ── Wealth Analysis ──────────────────────────────────────────────────── */
+function calc20YearWealth() {
+  const propPurchasePrice = gn('land') + gn('prop');
+  const bankAmt    = gn('bank-amt');
+  const kfwAmt     = kfwOn ? gn('kfw-amt') : 0;
+  const initEquity = gn('equity');
+  const appRate    = gn('appreciation') / 100;
+  const etfRate    = gn('etf-return') / 100;
+  const taxData    = calc20YearSchedule();
+
+  // Annual mortgage payments (monthly EMI × 12)
+  const bankEMI  = calcEMI(bankAmt, gn('bank-rate'), gn('bank-term'));
+  const kfwEMI   = kfwOn ? calcEMI(kfwAmt, gn('kfw-rate'), gn('kfw-term')) : 0;
+  const bankTerm = Math.round(gn('bank-term'));
+  const kfwTerm  = kfwOn ? Math.round(gn('kfw-term')) : 0;
+
+  // Annual operating costs (same formula as recalcYield / calc20YearSchedule)
+  const grossRentYr = gn('rent-mo') * 12;
+  const effRentYr   = grossRentYr * (1 - gn('vacancy') / 100);
+  const operCosts   = gn('hausgeld') * 12
+                    + grossRentYr * gn('mgmt-fee') / 100
+                    + gn('maint') * gn('area-sqm');
+
+  let etfPortfolio = initEquity; // ETF starts with same equity
+  let etfCostBasis = initEquity; // tracks total cash deposited into ETF
+
+  const rows = [];
+  // Year 0 snapshot
+  rows.push({
+    year: 0,
+    propVal:      propPurchasePrice,
+    totalDebt:    bankAmt + kfwAmt,
+    grossEquity:  propPurchasePrice - bankAmt - kfwAmt,
+    netEquity:    propPurchasePrice - bankAmt - kfwAmt,
+    etfPortfolio: initEquity,
+    etfAfterTax:  initEquity,
+    cashFlowYr:   0,
+  });
+
+  for (let yr = 1; yr <= 20; yr++) {
+    const propVal     = propPurchasePrice * Math.pow(1 + appRate, yr);
+    const bankBal     = getLoanBalance(bankAmt, gn('bank-rate'), gn('bank-term'), yr);
+    const kfwBal      = getLoanBalance(kfwAmt,  gn('kfw-rate'),  gn('kfw-term'),  yr);
+    const totalDebt   = bankBal + kfwBal;
+    const grossEquity = propVal - totalDebt;
+    const cumTaxSav   = (taxData && taxData.rows[yr - 1]) ? taxData.rows[yr - 1].cumTaxSaving : 0;
+    const taxSavYr    = (taxData && taxData.rows[yr - 1]) ? taxData.rows[yr - 1].taxSav       : 0;
+    const netEquity   = grossEquity + cumTaxSav;
+
+    // Actual cash flow from the RE investor's pocket each year:
+    // +: RE pays you (rent surplus); -: RE costs you (shortfall)
+    const bankPayYr  = yr <= bankTerm ? bankEMI * 12 : 0;
+    const kfwPayYr   = yr <= kfwTerm  ? kfwEMI  * 12 : 0;
+    const cashFlowYr = effRentYr + taxSavYr - bankPayYr - kfwPayYr - operCosts;
+
+    // ETF: mirror of RE cash flow
+    // If RE costs you money, the ETF investor invests that same amount additionally
+    // If RE pays you, the ETF investor withdraws that amount
+    const etfContrib = -cashFlowYr;
+
+    etfPortfolio = etfPortfolio * (1 + etfRate) + etfContrib;
+    etfPortfolio = Math.max(0, etfPortfolio);
+    if (etfContrib > 0) etfCostBasis += etfContrib; // only deposits raise the cost basis
+
+    // German exit tax: Abgeltungssteuer 26.375% × 70% Teilfreistellung (equity ETF) = 18.46%
+    const etfGain    = Math.max(0, etfPortfolio - etfCostBasis);
+    const etfAfterTax = etfPortfolio - etfGain * 0.26375 * 0.70;
+
+    rows.push({ year: yr, propVal, totalDebt, grossEquity, netEquity,
+                etfPortfolio, etfAfterTax, cashFlowYr });
+  }
+
+  // First year where actual cash flow turns positive
+  const breakEvenRow = rows.find(r => r.year > 0 && r.cashFlowYr > 0);
+  const cashBreakEvenYr = breakEvenRow ? breakEvenRow.year : null;
+
+  // Post-loan monthly cash flow (pre-tax): rent minus running costs, no mortgage
+  const postLoanMonthlyCF = (effRentYr - operCosts) / 12;
+
+  return { rows, initEquity, cashBreakEvenYr, postLoanMonthlyCF };
+}
+
+let wealthChart = null;
+
+function updateWealthChart() {
+  const canvas = $('wealth-chart');
+  if (!canvas || typeof Chart === 'undefined') return;
+  const data = calc20YearWealth();
+  if (!data || !data.rows.length) return;
+  const { rows, initEquity, cashBreakEvenYr, postLoanMonthlyCF } = data;
+
+  const last       = rows[rows.length - 1];
+  const appRate    = gn('appreciation');
+  const etfRateIn  = gn('etf-return');
+
+  // Cash flow tiles
+  const beEl   = $('w-breakeven');
+  const beTile = $('w-breakeven-tile');
+  if (beEl) beEl.textContent = cashBreakEvenYr !== null ? 'Year ' + cashBreakEvenYr : '> 20 yrs';
+  if (beTile) {
+    beTile.classList.remove('teal', 'green', 'amber', 'red');
+    beTile.classList.add(cashBreakEvenYr === null ? 'red' : cashBreakEvenYr <= 5 ? 'teal' : cashBreakEvenYr <= 10 ? 'green' : 'amber');
+  }
+  se('w-postloan-mo', fmtEur(Math.round(postLoanMonthlyCF)) + ' /mo');
+
+  const appRateEl = $('w-app-rate');
+  if (appRateEl) appRateEl.textContent = appRate.toFixed(1);
+
+  se('w-propval-20', fmtEur(Math.round(last.propVal)));
+  se('w-debt-20',    fmtEur(Math.round(last.totalDebt)));
+  se('w-equity-20',  fmtEur(Math.round(last.netEquity)));
+
+  const multiple = initEquity > 0 ? last.netEquity / initEquity : null;
+  const mulEl    = $('w-multiple');
+  if (mulEl) mulEl.textContent = multiple !== null ? multiple.toFixed(1) + '\u00d7' : '\u2014';
+  const mulTile = mulEl ? mulEl.closest('.ytile') : null;
+  if (mulTile && multiple !== null) {
+    mulTile.classList.remove('green', 'teal', 'red', 'amber');
+    mulTile.classList.add(multiple >= 3 ? 'teal' : multiple >= 1.5 ? 'amber' : 'red');
+  }
+
+  // ETF tiles
+  se('w-etf-gross',  fmtEur(Math.round(last.etfPortfolio)));
+  se('w-etf-nettax', fmtEur(Math.round(last.etfAfterTax)));
+
+  const advantage  = last.netEquity - last.etfAfterTax;
+  const advEl      = $('w-advantage');
+  const advSubEl   = $('w-advantage-sub');
+  const advTile    = $('w-advantage-tile');
+  if (advEl)    advEl.textContent    = fmtEur(Math.round(Math.abs(advantage)));
+  if (advSubEl) advSubEl.textContent = advantage >= 0 ? 'RE leads vs ETF after-tax' : 'ETF leads vs RE equity';
+  if (advTile) {
+    advTile.classList.remove('teal', 'green', 'red', 'amber');
+    advTile.classList.add(advantage >= 0 ? 'teal' : 'red');
+  }
+
+  const labels    = rows.map(r => 'Y' + r.year);
+  const propData  = rows.map(r => Math.round(r.propVal));
+  const debtData  = rows.map(r => Math.round(r.totalDebt));
+  const eqData    = rows.map(r => Math.round(r.netEquity));
+  const etfGrData = rows.map(r => Math.round(r.etfPortfolio));
+  const etfNtData = rows.map(r => Math.round(r.etfAfterTax));
+
+  if (wealthChart) { wealthChart.destroy(); wealthChart = null; }
+
+  wealthChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Property Value',
+          data: propData,
+          borderColor: 'rgba(59,130,246,0.55)', backgroundColor: 'transparent',
+          borderWidth: 1.5, pointRadius: 0, tension: 0.35,
+          borderDash: [4, 3], fill: false },
+        { label: 'Outstanding Debt',
+          data: debtData,
+          borderColor: 'rgba(239,68,68,0.55)', backgroundColor: 'transparent',
+          borderWidth: 1.5, pointRadius: 0, tension: 0.2,
+          borderDash: [5, 4], fill: false },
+        { label: 'RE Net Equity (tax-free after 10 yr)',
+          data: eqData,
+          borderColor: 'rgb(16,185,129)', backgroundColor: 'rgba(16,185,129,0.10)',
+          borderWidth: 2.5, pointRadius: 3, tension: 0.35, fill: true },
+        { label: 'ETF Gross (' + etfRateIn.toFixed(1) + '% p.a.)',
+          data: etfGrData,
+          borderColor: 'rgba(139,92,246,0.6)', backgroundColor: 'transparent',
+          borderWidth: 1.5, pointRadius: 0, tension: 0.35,
+          borderDash: [3, 3], fill: false },
+        { label: 'ETF After Tax (~18.5% on gains)',
+          data: etfNtData,
+          borderColor: 'rgb(249,115,22)', backgroundColor: 'rgba(249,115,22,0.07)',
+          borderWidth: 2.5, pointRadius: 3, tension: 0.35, fill: false }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 12, usePointStyle: true } },
+        tooltip: { callbacks: { label(c) {
+          return ' ' + c.dataset.label + ': ' +
+            new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(c.raw);
+        }}}
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+        y: {
+          title: { display: true, text: 'Value (€)', font: { size: 11 } },
+          ticks: { font: { size: 10 }, callback(v) { return '\u20ac' + (v / 1000).toFixed(0) + 'k'; } }
+        }
+      }
+    }
+  });
+}
+
+/* ── Scenario save / load ──────────────────────────────────────────── */
+const SCENARIO_INPUTS = [
+  'land','prop','notar','grest','grundbuch','gutachter','makler',
+  'equity','kfw-amt','kfw-rate','kfw-term',
+  'bank-amt','bank-rate','bank-term',
+  'rent-mo','vacancy','hausgeld','mgmt-fee','maint','area-sqm',
+  'tax-income','bldg-frac','afa-linear-rate',
+  'appreciation','etf-return'
+];
+const SCENARIO_SELECTS   = ['prop-period'];
+const SCENARIO_CHECKBOXES = ['kfw-toggle','degr-afa','opt-degr','sonder-afa'];
+
+function saveScenario() {
+  const name = ($('scenario-name').value || 'my-scenario').trim();
+  const payload = {
+    version: 1,
+    name,
+    savedAt: new Date().toISOString(),
+    inputs: {},
+    selects: {},
+    checkboxes: {},
+    overrides: { ...ov }
+  };
+  SCENARIO_INPUTS.forEach(id => {
+    const el = $(id); if (el) payload.inputs[id] = el.value;
+  });
+  SCENARIO_SELECTS.forEach(id => {
+    const el = $(id); if (el) payload.selects[id] = el.value;
+  });
+  SCENARIO_CHECKBOXES.forEach(id => {
+    const el = $(id); if (el) payload.checkboxes[id] = el.checked;
+  });
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  const now  = new Date();
+  const ts   = now.getFullYear() + '-' +
+               String(now.getMonth() + 1).padStart(2, '0') + '-' +
+               String(now.getDate()).padStart(2, '0') + '_' +
+               String(now.getHours()).padStart(2, '0') + '-' +
+               String(now.getMinutes()).padStart(2, '0') + '-' +
+               String(now.getSeconds()).padStart(2, '0');
+  a.download = ts + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function loadScenario(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const d = JSON.parse(e.target.result);
+      if (!d.inputs) throw new Error('Not a valid scenario file.');
+
+      // Restore override flags and badge UI
+      if (d.overrides) {
+        Object.keys(ov).forEach(k => { ov[k] = false; });
+        Object.assign(ov, d.overrides);
+        Object.entries(ov).forEach(([fid, isCustom]) => {
+          if (!OV_META[fid]) return;
+          const [badgeId, resetId, autoLabel] = OV_META[fid];
+          const badge = $(badgeId), rst = $(resetId), inp = $(fid);
+          if (isCustom) {
+            if (badge) { badge.className = 'badge badge-custom'; badge.textContent = 'CUSTOM'; }
+            if (rst)   rst.style.display = 'inline';
+            if (inp)   { inp.classList.remove('auto-val'); inp.classList.add('custom-val'); }
+          } else {
+            if (badge) { badge.className = 'badge badge-auto'; badge.textContent = autoLabel; }
+            if (rst)   rst.style.display = 'none';
+            if (inp)   { inp.classList.add('auto-val'); inp.classList.remove('custom-val'); }
+          }
+        });
+      }
+
+      // Restore input values
+      Object.entries(d.inputs).forEach(([id, val]) => {
+        const el = $(id); if (el) el.value = val;
+      });
+
+      // Restore selects
+      if (d.selects) Object.entries(d.selects).forEach(([id, val]) => {
+        const el = $(id); if (el) el.value = val;
+      });
+
+      // Restore checkboxes
+      if (d.checkboxes) Object.entries(d.checkboxes).forEach(([id, checked]) => {
+        const el = $(id); if (el) el.checked = checked;
+      });
+
+      // Sync KFW toggle UI
+      toggleKfw();
+
+      // Restore scenario name
+      if (d.name) { const n = $('scenario-name'); if (n) n.value = d.name; }
+
+      // Show confirmation
+      const msg = $('scenario-loaded');
+      if (msg) {
+        msg.textContent = '\u2714 Loaded: ' + (d.name || file.name);
+        msg.style.display = 'inline';
+        setTimeout(() => { msg.style.display = 'none'; }, 3000);
+      }
+
+      recalc();
+    } catch (err) {
+      alert('Failed to load scenario: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+/* ── Init ───────────────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', recalc);
+
+/* Global event delegation — any input/select/checkbox inside .page triggers a full recalc */
+document.addEventListener('input',  function(e) { if (e.target.closest('.page')) recalc(); });
+document.addEventListener('change', function(e) { if (e.target.closest('.page')) recalc(); });
+</script>
+</body>
+</html>
