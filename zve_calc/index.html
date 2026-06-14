@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZVE Calculator - Germany (Bayern)</title>
+    <style>
+        :root {
+            --primary: #1a5276;
+            --primary-light: #2980b9;
+            --accent: #27ae60;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #dee2e6;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --success: #27ae60;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .year-selector {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .year-btn {
+            padding: 8px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            background: transparent;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .year-btn.active {
+            background: white;
+            color: var(--primary);
+            border-color: white;
+        }
+
+        .year-btn:hover:not(.active) {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            header {
+                padding: 20px 16px;
+            }
+
+            header h1 {
+                font-size: 1.4rem;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .inline-group {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .year-selector {
+                flex-wrap: wrap;
+            }
+
+            .result-row {
+                font-size: 0.82rem;
+            }
+
+            .result-row.highlight {
+                font-size: 0.95rem;
+            }
+
+            .info-box {
+                font-size: 0.8rem;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+
+        .form-group .hint {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.1);
+        }
+
+        .inline-group {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .inline-group .form-group {
+            flex: 1;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .results-card {
+            background: linear-gradient(135deg, #1a5276, #2471a3);
+            color: white;
+            border: none;
+        }
+
+        .results-card h2 {
+            color: white;
+            border-bottom-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .result-row.highlight {
+            font-weight: 700;
+            font-size: 1.05rem;
+            padding: 12px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            margin-top: 4px;
+        }
+
+        .result-row.sub {
+            padding-left: 16px;
+            opacity: 0.85;
+            font-size: 0.85rem;
+        }
+
+        .result-value {
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .benefits-card {
+            background: linear-gradient(135deg, #1e8449, #27ae60);
+            color: white;
+            border: none;
+        }
+
+        .benefits-card h2 {
+            color: white;
+            border-bottom-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .deduction-card {
+            background: linear-gradient(135deg, #6c3483, #8e44ad);
+            color: white;
+            border: none;
+        }
+
+        .deduction-card h2 {
+            color: white;
+            border-bottom-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .info-box {
+            background: #eaf2f8;
+            border-left: 4px solid var(--info);
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            margin: 12px 0;
+            font-size: 0.85rem;
+        }
+
+        .warning-box {
+            background: #fef9e7;
+            border-left: 4px solid var(--warning);
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            margin: 12px 0;
+            font-size: 0.85rem;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px dashed rgba(255, 255, 255, 0.3);
+            margin: 12px 0;
+        }
+
+        .child-row {
+            background: #f0f4f8;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .child-row h4 {
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .btn-calc {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 12px;
+        }
+
+        .btn-calc:hover {
+            background: #219a52;
+        }
+
+        .disclaimer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 24px;
+            padding: 16px;
+        }
+
+        .tab-container {
+            margin-bottom: 16px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .tab-btn {
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            border-bottom-color: var(--card-bg);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .person-section {
+            display: none;
+        }
+
+        .person-section.active {
+            display: block;
+        }
+
+        .limit-indicator {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .limit-indicator.exceeded {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 0.85rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 6px 10px;
+            text-align: right;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table th {
+            text-align: left;
+            opacity: 0.8;
+        }
+
+        .comparison-table .winner {
+            color: #82e0aa;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🇩🇪 ZVE Calculator — Bayern Region</h1>
+            <p>Zu Versteuerndes Einkommen (Taxable Income) Calculator for Germany</p>
+            <div class="year-selector">
+                <button class="year-btn active" onclick="setYear(2026)">2026</button>
+                <button class="year-btn" onclick="setYear(2027)">2027</button>
+            </div>
+        </header>
+
+        <!-- Export / Import -->
+        <div class="card" style="margin-bottom:24px;">
+            <h2>💾 Save / Load Configuration</h2>
+            <div class="inline-group" style="margin-bottom:12px;">
+                <button class="btn-calc" style="background:var(--primary);margin-top:0;" onclick="exportJSON()">⬇️
+                    Export as JSON</button>
+                <button class="btn-calc" style="background:var(--primary-light);margin-top:0;"
+                    onclick="document.getElementById('importFile').click()">⬆️ Import JSON</button>
+                <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importJSON(event)">
+            </div>
+            <div class="hint">Export saves all your entered values to a JSON file. Import loads previously saved values.
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Personal Information -->
+            <div class="card">
+                <h2>👤 Personal Information</h2>
+                <div class="form-group">
+                    <label>Filing Status</label>
+                    <select id="filingStatus" onchange="toggleSpouse(); calculate();">
+                        <option value="single">Single (Grundtarif)</option>
+                        <option value="married">Married - Joint Filing (Splittingtarif)</option>
+                    </select>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="churchMember" onchange="calculate()">
+                    <label for="churchMember">Church tax member (Kirchensteuer 8% Bayern)</label>
+                </div>
+                <div class="form-group">
+                    <label>Number of Children</label>
+                    <select id="numChildren" onchange="updateChildrenUI(); calculate();">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div id="childrenDetails"></div>
+            </div>
+
+            <!-- Income -->
+            <div class="card">
+                <h2>💰 Income</h2>
+                <div id="incomeSection">
+                    <div class="form-group">
+                        <label>Gross Annual Salary - Person 1 (€)</label>
+                        <input type="number" id="grossSalary1" value="65000" onchange="calculate()">
+                        <div class="hint">Include base salary + bonus + 13th/14th salary + other taxable employment
+                            income.</div>
+                    </div>
+                    <div id="spouse-income" style="display:none;">
+                        <div class="form-group">
+                            <label>Gross Annual Salary - Person 2 (€)</label>
+                            <input type="number" id="grossSalary2" value="45000" onchange="calculate()">
+                            <div class="hint">Include base salary + bonus + 13th/14th salary + other taxable employment
+                                income.</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Werbungskosten (€/year)</label>
+                        <input type="number" id="totalWerbungskosten" value="0" onchange="calculate()">
+                        <div class="hint">Enter your total work-related expenses (Pendlerpauschale + home office +
+                            equipment etc.). If 0 or less than €1,230, the Pauschbetrag (€1,230) is used automatically.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Tax-free Jobticket / Transport Subsidy from Employer (€/year)</label>
+                        <input type="number" id="jobticket" value="0" onchange="calculate()">
+                        <div class="hint">Tax-free employer subsidy (§3 Nr. 15 EStG). This reduces your Pendlerpauschale
+                            claim. E.g. €50/month = €600/year.</div>
+                    </div>
+                </div>
+                <div class="info-box" style="margin-top:12px;">
+                    <strong>What to include in Gross Salary:</strong> Base pay, bonus, 13th/14th month salary, overtime
+                    pay, taxable allowances.<br>
+                    <strong>NOT included here:</strong> Capital gains (taxed separately at 25% Abgeltungsteuer after
+                    €1,000/€2,000 Sparerpauschbetrag). Tax-free employer benefits (Jobticket, meals).<br>
+                    <strong>Werbungskosten examples:</strong> Pendlerpauschale (€0.30/km first 20km, €0.38 beyond), home
+                    office (€6/day, max 210 days = €1,260), work equipment, union fees, professional training.
+                </div>
+            </div>
+
+            <!-- Pension / Deductions -->
+            <div class="card">
+                <h2>🏦 Pension & Deductions - Person 1</h2>
+                <div class="form-group">
+                    <label>bAV / Direktversicherung Contribution (€/year)</label>
+                    <input type="number" id="bav1" value="0" onchange="calculate()">
+                    <div class="hint">🟢 Paid from <strong>gross salary (Brutto)</strong> — deducted by employer before
+                        tax & social security.</div>
+                    <div class="limit-indicator" id="bavLimit1"></div>
+                </div>
+                <div class="form-group">
+                    <label>Rürup / Basisrente Contribution (€/year)</label>
+                    <input type="number" id="ruerup1" value="0" onchange="calculate()">
+                    <div class="hint">🟡 Paid from <strong>net income (Netto)</strong> — you pay from your bank account,
+                        then deduct as Sonderausgabe in tax return.</div>
+                    <div class="limit-indicator" id="ruerupLimit1"></div>
+                </div>
+                <div id="riester-section-1">
+                    <div class="form-group">
+                        <label id="riesterLabel1">Riester Contribution (€/year)</label>
+                        <input type="number" id="riester1" value="0" onchange="calculate()">
+                        <div class="hint">🟡 Paid from <strong>net income (Netto)</strong> — you pay from your bank
+                            account, then deduct as Sonderausgabe in tax return.</div>
+                        <div class="limit-indicator" id="riesterLimit1"></div>
+                    </div>
+                </div>
+                <div class="info-box" id="pensionInfo1"></div>
+            </div>
+
+            <!-- Pension Person 2 -->
+            <div class="card" id="pension-card-2" style="display:none;">
+                <h2>🏦 Pension & Deductions - Person 2</h2>
+                <div class="form-group">
+                    <label>bAV / Direktversicherung Contribution (€/year)</label>
+                    <input type="number" id="bav2" value="0" onchange="calculate()">
+                    <div class="hint">🟢 Paid from <strong>gross salary (Brutto)</strong> — deducted by employer before
+                        tax & social security.</div>
+                    <div class="limit-indicator" id="bavLimit2"></div>
+                </div>
+                <div class="form-group">
+                    <label>Rürup / Basisrente Contribution (€/year)</label>
+                    <input type="number" id="ruerup2" value="0" onchange="calculate()">
+                    <div class="hint">🟡 Paid from <strong>net income (Netto)</strong> — you pay from your bank account,
+                        then deduct as Sonderausgabe in tax return.</div>
+                    <div class="limit-indicator" id="ruerupLimit2"></div>
+                </div>
+                <div id="riester-section-2">
+                    <div class="form-group">
+                        <label id="riesterLabel2">Riester Contribution (€/year)</label>
+                        <input type="number" id="riester2" value="0" onchange="calculate()">
+                        <div class="hint">🟡 Paid from <strong>net income (Netto)</strong> — you pay from your bank
+                            account, then deduct as Sonderausgabe in tax return.</div>
+                        <div class="limit-indicator" id="riesterLimit2"></div>
+                    </div>
+                </div>
+                <div class="info-box" id="pensionInfo2"></div>
+            </div>
+
+            <!-- Social Security Parameters -->
+            <div class="card">
+                <h2>⚙️ Parameters (adjustable)</h2>
+                <div class="info-box" style="margin-bottom:14px;">
+                    <strong>BBG RV</strong> (Beitragsbemessungsgrenze Rentenversicherung): Maximum income subject to
+                    pension &amp; unemployment insurance contributions. Also determines bAV tax-free limit (8%) and
+                    SV-free limit (4%).<br>
+                    <strong>BBG KV</strong> (Beitragsbemessungsgrenze Krankenversicherung): Maximum income subject to
+                    health &amp; long-term care insurance contributions.<br>
+                    <strong>RV</strong> = Rentenversicherung (pension), <strong>KV</strong> = Krankenversicherung
+                    (health), <strong>PV</strong> = Pflegeversicherung (long-term care), <strong>AV</strong> =
+                    Arbeitslosenversicherung (unemployment). Rates shown are total (employer + employee); each pays
+                    half.<br>
+                    <strong>Höchstbeitrag knappschaftl. RV</strong>: Upper limit for Rürup/Basisrente deduction (§10
+                    Abs. 3 EStG). Your Rürup room = this value minus your total RV contributions.<br><br>
+                    📎 <a href="https://www.bundesregierung.de/breg-de/suche/sozialversicherungsrechengroessen-702702"
+                        target="_blank" rel="noopener" style="color:var(--info);">Official source:
+                        Sozialversicherungsrechengrößen (bundesregierung.de)</a><br>
+                    📎 <a
+                        href="https://www.deutsche-rentenversicherung.de/DRV/DE/Ueber-uns-und-Presse/Presse/Meldungen/2025/251120_sozialversicherungswerte_2026.html"
+                        target="_blank" rel="noopener" style="color:var(--info);">Deutsche Rentenversicherung: SV-Werte
+                        2026</a>
+                </div>
+                <div class="inline-group">
+                    <div class="form-group">
+                        <label>BBG RV (€/year)</label>
+                        <input type="number" id="bbgRV" value="96600" onchange="calculate()">
+                    </div>
+                    <div class="form-group">
+                        <label>BBG KV (€/year)</label>
+                        <input type="number" id="bbgKV" value="66150" onchange="calculate()">
+                    </div>
+                </div>
+                <div class="inline-group">
+                    <div class="form-group">
+                        <label>RV Rate (%) — total</label>
+                        <input type="number" id="rvRate" value="18.6" step="0.1" onchange="calculate()">
+                    </div>
+                    <div class="form-group">
+                        <label>KV Rate (% incl. Zusatzbeitrag) — total</label>
+                        <input type="number" id="kvRate" value="17.05" step="0.01" onchange="calculate()">
+                        <div class="hint">14.6% base + 2.45% TK Zusatzbeitrag</div>
+                    </div>
+                </div>
+                <div class="inline-group">
+                    <div class="form-group">
+                        <label>PV Rate (%) — total</label>
+                        <input type="number" id="pvRate" value="3.4" step="0.1" onchange="calculate()">
+                    </div>
+                    <div class="form-group">
+                        <label>AV Rate (%) — total</label>
+                        <input type="number" id="avRate" value="2.6" step="0.1" onchange="calculate()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Höchstbeitrag knappschaftl. RV (for Rürup limit) (€)</label>
+                    <input type="number" id="hoechstbeitragKnRV" value="29344" onchange="calculate()">
+                </div>
+                <div class="warning-box">
+                    ⚠️ Default values are for <strong>2026 with TK (Techniker Krankenkasse)</strong>: base KV rate 14.6%
+                    + TK Zusatzbeitrag 2.45% = 17.05%. If you're with a different insurer, adjust the KV rate
+                    accordingly. PV rate of 3.4% assumes no children surcharge exemption (childless surcharge of 0.6%
+                    included for persons 23+ without children — reduce to 2.8% if you have children).
+                </div>
+            </div>
+
+            <!-- Childcare Costs -->
+            <div class="card" id="childcare-card" style="display:none;">
+                <h2>👶 Childcare Costs (Krippe/Kita)</h2>
+                <div class="info-box">
+                    80% of childcare costs (excluding meals) are deductible, max €4,800 per child per year (§10 Abs. 1
+                    Nr. 5 EStG). Only for children under 14.
+                </div>
+                <div id="childcareCosts"></div>
+            </div>
+
+            <!-- Results -->
+            <div class="card results-card full-width">
+                <h2>📊 Results</h2>
+                <div id="results">
+                    <p style="opacity:0.7;">Enter your data above. Results update automatically.</p>
+                </div>
+            </div>
+
+            <!-- Visualization -->
+            <div class="card full-width" style="background:#1b2631;border:none;">
+                <h2 style="color:white;border-bottom-color:rgba(255,255,255,0.2);">📈 Income Breakdown</h2>
+                <div id="chart-container" style="display:flex;gap:24px;flex-wrap:wrap;">
+                    <div style="flex:1;min-width:280px;">
+                        <h3 style="color:rgba(255,255,255,0.8);font-size:0.9rem;margin-bottom:12px;">Gross to Net
+                            Waterfall</h3>
+                        <div id="waterfallChart"></div>
+                    </div>
+                    <div style="flex:0 0 220px;min-width:220px;">
+                        <h3 style="color:rgba(255,255,255,0.8);font-size:0.9rem;margin-bottom:12px;">Distribution</h3>
+                        <canvas id="pieChart" width="200" height="200"></canvas>
+                        <div id="pieLegend" style="margin-top:12px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefits -->
+            <div class="card benefits-card">
+                <h2>👨‍👩‍👧‍👦 Family Benefits (not taxable)</h2>
+                <div id="benefits">
+                    <p style="opacity:0.7;">Add children to see benefits.</p>
+                </div>
+            </div>
+
+            <!-- Deduction Summary -->
+            <div class="card deduction-card">
+                <h2>📉 Deduction Summary</h2>
+                <div id="deductionSummary">
+                    <p style="opacity:0.7;">Deduction breakdown will appear here.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insights -->
+        <div class="card"
+            style="margin-top:16px;background:linear-gradient(135deg,#1a2a1a 0%,#1b2631 100%);border:1px solid rgba(39,174,96,0.3);">
+            <h2 style="color:#27ae60;">💡 Tax Optimization Insights</h2>
+            <div id="insightsSection">
+                <p style="opacity:0.7;">Enter your data above to see personalized optimization tips.</p>
+            </div>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Disclaimer:</strong> This calculator provides estimates for educational purposes only.
+            It does not constitute tax advice. Always consult a tax advisor (Steuerberater) for your specific situation.
+            <br>Tax formulas based on §32a EStG (2026). Parameters are estimates and may change.
+        </div>
+    </div>
+
+    <script>
+        // ============ CONFIGURATION ============
+        let selectedYear = 2026;
+
+        const CONFIG = {
+            2026: {
+                grundfreibetrag: 12348,
+                zone2Start: 12349,
+                zone2End: 17799,
+                zone3Start: 17800,
+                zone3End: 69878,
+                zone4Start: 69879,
+                zone4End: 277825,
+                zone5Start: 277826,
+                // Formula coefficients from §32a EStG 2026
+                zone2A: 914.51,
+                zone2B: 1400,
+                zone2Offset: 12348,
+                zone3A: 173.10,
+                zone3B: 2397,
+                zone3C: 1034.87,
+                zone3Offset: 17799,
+                zone4Rate: 0.42,
+                zone4Sub: 11135.63,
+                zone5Rate: 0.45,
+                zone5Sub: 19470.38,
+                // Kindergeld
+                kindergeld: 259, // per month per child
+                // Kinderfreibetrag (per parent): Kinderfreibetrag + BEA
+                kinderfreibetragPerParent: 3414 + 1464, // = 4878
+                // Soli
+                soliRate: 0.055,
+                soliFreigrenzeSingle: 18130,
+                soliFreigrenzeMarried: 36260,
+                soliMilderung: 0.119, // 11.9% of excess
+                // Kirchensteuer Bayern
+                kirchensteuerRate: 0.08,
+                // Werbungskosten
+                werbungskostenPauschbetrag: 1230,
+                // Sonderausgaben Pauschbetrag
+                sonderausgabenPauschbetrag: 36, // single, 72 married
+                // bAV limits (% of BBG)
+                bavTaxFreePercent: 0.08,
+                bavSVFreePercent: 0.04,
+                // Riester
+                riesterMax: 2100,
+                riesterGrundzulage: 175,
+                riesterKinderzulage: 300,
+                // Childcare
+                childcareDeductionRate: 0.80,
+                childcareMaxDeduction: 4800,
+                // Bayerisches Familiengeld (for children born before 2025)
+                familiengeldAge1to3: 250, // per month
+                familiengeldNote: "Only for children born before 01.01.2025",
+                // Private Vorsorge label
+                privateVorsorgeLabel: "Riester-Rente",
+                privateVorsorgeMaxDeduction: 2100,
+            },
+            2027: {
+                // Estimated 2027 values (Grundfreibetrag likely increases)
+                grundfreibetrag: 12600, // estimated
+                zone2Start: 12601,
+                zone2End: 18100, // estimated
+                zone3Start: 18101,
+                zone3End: 71000, // estimated
+                zone4Start: 71001,
+                zone4End: 277825,
+                zone5Start: 277826,
+                // Estimated coefficients (will be updated when law is published)
+                zone2A: 900.00,
+                zone2B: 1400,
+                zone2Offset: 12600,
+                zone3A: 170.00,
+                zone3B: 2397,
+                zone3C: 1050.00,
+                zone3Offset: 18100,
+                zone4Rate: 0.42,
+                zone4Sub: 11400.00,
+                zone5Rate: 0.45,
+                zone5Sub: 19750.00,
+                kindergeld: 259, // likely same or slightly higher
+                kinderfreibetragPerParent: 3414 + 1464,
+                soliRate: 0.055,
+                soliFreigrenzeSingle: 18130,
+                soliFreigrenzeMarried: 36260,
+                soliMilderung: 0.119,
+                kirchensteuerRate: 0.08,
+                werbungskostenPauschbetrag: 1230,
+                sonderausgabenPauschbetrag: 36,
+                bavTaxFreePercent: 0.08,
+                bavSVFreePercent: 0.04,
+                // Altersvorsorgedepot replaces Riester
+                riesterMax: 1800, // Sonderausgabenabzug for Altersvorsorgedepot
+                riesterGrundzulage: 540, // max Grundzulage
+                riesterKinderzulage: 300,
+                childcareDeductionRate: 0.80,
+                childcareMaxDeduction: 4800,
+                familiengeldAge1to3: 0, // discontinued for new births
+                familiengeldNote: "Discontinued for children born from 2025 onwards",
+                privateVorsorgeLabel: "Altersvorsorgedepot",
+                privateVorsorgeMaxDeduction: 1800,
+            }
+        };
+
+        // ============ UI FUNCTIONS ============
+        function setYear(year) {
+            selectedYear = year;
+            document.querySelectorAll('.year-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.trim() == year);
+            });
+            // Update labels
+            const cfg = CONFIG[year];
+            document.getElementById('riesterLabel1').textContent = cfg.privateVorsorgeLabel + ' Contribution (€/year)';
+            document.getElementById('riesterLabel2').textContent = cfg.privateVorsorgeLabel + ' Contribution (€/year)';
+            calculate();
+        }
+
+        function toggleSpouse() {
+            const isMarried = document.getElementById('filingStatus').value === 'married';
+            document.getElementById('spouse-income').style.display = isMarried ? 'block' : 'none';
+            document.getElementById('pension-card-2').style.display = isMarried ? 'block' : 'none';
+        }
+
+        function updateChildrenUI() {
+            const num = parseInt(document.getElementById('numChildren').value);
+            const container = document.getElementById('childrenDetails');
+            const childcareContainer = document.getElementById('childcareCosts');
+            const childcareCard = document.getElementById('childcare-card');
+
+            let html = '';
+            let childcareHtml = '';
+
+            for (let i = 1; i <= num; i++) {
+                html += `
+                <div class="child-row">
+                    <h4>Child ${i}</h4>
+                    <div class="hint" style="margin-bottom:8px;">Age at the start of the tax year (Jan 1)</div>
+                    <div class="inline-group">
+                        <div class="form-group">
+                            <label>Years</label>
+                            <input type="number" id="childAge${i}" value="2" min="0" max="25" onchange="calculate()">
+                        </div>
+                        <div class="form-group">
+                            <label>Months</label>
+                            <input type="number" id="childMonth${i}" value="0" min="0" max="11" onchange="calculate()">
+                        </div>
+                        <div class="form-group">
+                            <label>Born before 2025?</label>
+                            <select id="childBornBefore2025_${i}" onchange="calculate()">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>`;
+                childcareHtml += `
+                <div class="form-group">
+                    <label>Child ${i} - Annual Childcare Cost excl. meals (€)</label>
+                    <input type="number" id="childcare${i}" value="0" onchange="calculate()">
+                </div>`;
+            }
+
+            container.innerHTML = html;
+            childcareContainer.innerHTML = childcareHtml;
+            childcareCard.style.display = num > 0 ? 'block' : 'none';
+            calculate();
+        }
+
+        // ============ TAX CALCULATION ============
+        function calcESt(zvE, cfg) {
+            if (zvE <= 0) return 0;
+            zvE = Math.floor(zvE); // round down to full Euro
+            let tax = 0;
+            if (zvE <= cfg.grundfreibetrag) {
+                tax = 0;
+            } else if (zvE <= cfg.zone2End) {
+                const y = (zvE - cfg.zone2Offset) / 10000;
+                tax = (cfg.zone2A * y + cfg.zone2B) * y;
+            } else if (zvE <= cfg.zone3End) {
+                const z = (zvE - cfg.zone3Offset) / 10000;
+                tax = (cfg.zone3A * z + cfg.zone3B) * z + cfg.zone3C;
+            } else if (zvE <= cfg.zone4End) {
+                tax = cfg.zone4Rate * zvE - cfg.zone4Sub;
+            } else {
+                tax = cfg.zone5Rate * zvE - cfg.zone5Sub;
+            }
+            return Math.floor(tax); // round down to full Euro
+        }
+
+        function calcSoli(est, cfg, isMarried) {
+            const freigrenze = isMarried ? cfg.soliFreigrenzeMarried : cfg.soliFreigrenzeSingle;
+            if (est <= freigrenze) return 0;
+            const fullSoli = est * cfg.soliRate;
+            const milderung = (est - freigrenze) * cfg.soliMilderung;
+            return Math.min(fullSoli, milderung);
+        }
+
+        function calculate() {
+            const cfg = CONFIG[selectedYear];
+            const isMarried = document.getElementById('filingStatus').value === 'married';
+            const churchMember = document.getElementById('churchMember').checked;
+            const numChildren = parseInt(document.getElementById('numChildren').value);
+            const gross1 = parseFloat(document.getElementById('grossSalary1').value) || 0;
+            const gross2 = isMarried ? (parseFloat(document.getElementById('grossSalary2').value) || 0) : 0;
+            const totalWK = parseFloat(document.getElementById('totalWerbungskosten').value) || 0;
+            const jobticket = parseFloat(document.getElementById('jobticket').value) || 0;
+
+            // Parameters
+            const bbgRV = parseFloat(document.getElementById('bbgRV').value) || 96600;
+            const bbgKV = parseFloat(document.getElementById('bbgKV').value) || 66150;
+            const rvRate = parseFloat(document.getElementById('rvRate').value) / 100 || 0.186;
+            const kvRate = parseFloat(document.getElementById('kvRate').value) / 100 || 0.163;
+            const pvRate = parseFloat(document.getElementById('pvRate').value) / 100 || 0.034;
+            const avRate = parseFloat(document.getElementById('avRate').value) / 100 || 0.026;
+            const hoechstbeitrag = parseFloat(document.getElementById('hoechstbeitragKnRV').value) || 29344;
+
+            // bAV
+            const bav1 = parseFloat(document.getElementById('bav1').value) || 0;
+            const bav2 = isMarried ? (parseFloat(document.getElementById('bav2').value) || 0) : 0;
+            const ruerup1 = parseFloat(document.getElementById('ruerup1').value) || 0;
+            const ruerup2 = isMarried ? (parseFloat(document.getElementById('ruerup2').value) || 0) : 0;
+            const riester1 = parseFloat(document.getElementById('riester1').value) || 0;
+            const riester2 = isMarried ? (parseFloat(document.getElementById('riester2').value) || 0) : 0;
+
+            // bAV limits
+            const bavMaxTaxFree = Math.floor(bbgRV * cfg.bavTaxFreePercent);
+            const bavMaxSVFree = Math.floor(bbgRV * cfg.bavSVFreePercent);
+            const effectiveBav1 = Math.min(bav1, bavMaxTaxFree);
+            const effectiveBav2 = Math.min(bav2, bavMaxTaxFree);
+
+            // Update limit indicators
+            updateLimitIndicator('bavLimit1', bav1, bavMaxTaxFree, `Tax-free limit: €${bavMaxTaxFree.toLocaleString()} (8% of BBG). SV-free: €${bavMaxSVFree.toLocaleString()} (4% of BBG)`);
+            updateLimitIndicator('bavLimit2', bav2, bavMaxTaxFree, `Tax-free limit: €${bavMaxTaxFree.toLocaleString()} (8% of BBG). SV-free: €${bavMaxSVFree.toLocaleString()} (4% of BBG)`);
+
+            // Gross after bAV (bAV reduces gross before tax/SV)
+            const taxableGross1 = Math.max(0, gross1 - effectiveBav1);
+            const taxableGross2 = Math.max(0, gross2 - effectiveBav2);
+
+            // Social security contributions (employee share)
+            function calcSV(gross, bavSV) {
+                const svGross = Math.max(0, gross - Math.min(bavSV, bavMaxSVFree));
+                const rv = Math.min(svGross, bbgRV) * rvRate / 2;
+                const kv = Math.min(svGross, bbgKV) * kvRate / 2;
+                const pv = Math.min(svGross, bbgKV) * pvRate / 2;
+                const av = Math.min(svGross, bbgRV) * avRate / 2;
+                return { rv, kv, pv, av, total: rv + kv + pv + av };
+            }
+
+            const sv1 = calcSV(gross1, bav1);
+            const sv2 = calcSV(gross2, bav2);
+
+            // RV contributions (for Rürup limit calculation) - employee + employer
+            // Based on SV-relevant gross (gross minus SV-free bAV, capped at 4% BBG)
+            const svGross1 = Math.max(0, gross1 - Math.min(bav1, bavMaxSVFree));
+            const svGross2 = Math.max(0, gross2 - Math.min(bav2, bavMaxSVFree));
+            const rvTotal1 = Math.min(svGross1, bbgRV) * rvRate;
+            const rvTotal2 = Math.min(svGross2, bbgRV) * rvRate;
+
+            // Rürup limit: Höchstbeitrag minus RV contributions (employer+employee)
+            const ruerupMaxLimit = isMarried ? hoechstbeitrag * 2 : hoechstbeitrag;
+            const rvContributionsTotal = rvTotal1 + rvTotal2;
+            const ruerupAvailable = Math.max(0, ruerupMaxLimit - rvContributionsTotal);
+            const effectiveRuerup1 = Math.min(ruerup1, ruerupAvailable);
+            const effectiveRuerup2 = Math.min(ruerup2, Math.max(0, ruerupAvailable - effectiveRuerup1));
+            const totalEffectiveRuerup = effectiveRuerup1 + effectiveRuerup2;
+
+            updateLimitIndicator('ruerupLimit1', ruerup1 + ruerup2, ruerupAvailable,
+                `Höchstbetrag: €${ruerupMaxLimit.toLocaleString()} − RV contributions (€${Math.round(rvTotal1).toLocaleString()} + €${Math.round(rvTotal2).toLocaleString()}) = <strong>€${Math.round(ruerupAvailable).toLocaleString()} available</strong>${(ruerup1 + ruerup2) > 0 ? ` | Using: €${Math.round(effectiveRuerup1 + effectiveRuerup2).toLocaleString()}` : ''}`);
+            updateLimitIndicator('ruerupLimit2', ruerup1 + ruerup2, ruerupAvailable,
+                `Shared pool with Person 1. Remaining after P1: €${Math.round(Math.max(0, ruerupAvailable - effectiveRuerup1)).toLocaleString()}`);
+
+            // Riester / Altersvorsorgedepot
+            const riesterMax = cfg.privateVorsorgeMaxDeduction;
+            const effectiveRiester1 = Math.min(riester1, riesterMax);
+            const effectiveRiester2 = Math.min(riester2, riesterMax);
+            const riesterNote = selectedYear >= 2027
+                ? `Absolute legal max (§10a EStG): €${riesterMax.toLocaleString()}/person/year (incl. Zulagen). You can invest up to €6,840/yr but only €${riesterMax.toLocaleString()} is tax-deductible.`
+                : `Absolute legal max (§10a EStG): €${riesterMax.toLocaleString()}/person/year (incl. Zulagen). Your out-of-pocket = €${riesterMax.toLocaleString()} minus Zulagen received.`;
+            updateLimitIndicator('riesterLimit1', riester1, riesterMax, riesterNote);
+            updateLimitIndicator('riesterLimit2', riester2, riesterMax, riesterNote);
+
+            // Childcare costs deduction
+            let totalChildcareDeduction = 0;
+            for (let i = 1; i <= numChildren; i++) {
+                const ageYears = parseInt(document.getElementById(`childAge${i}`)?.value) || 0;
+                const cost = parseFloat(document.getElementById(`childcare${i}`)?.value) || 0;
+                if (ageYears < 14 && cost > 0) {
+                    const deductible = Math.min(cost * cfg.childcareDeductionRate, cfg.childcareMaxDeduction);
+                    totalChildcareDeduction += deductible;
+                }
+            }
+
+            // === CALCULATE ZVE ===
+            // Werbungskosten: max(Pauschbetrag, totalWK - jobticket)
+            const effectiveWK = Math.max(0, totalWK - jobticket);
+            const wk1 = Math.max(cfg.werbungskostenPauschbetrag, effectiveWK);
+            const wk2 = cfg.werbungskostenPauschbetrag; // Pauschbetrag for spouse
+
+            // Einkünfte from employment
+            const einkuenfte1 = Math.max(0, taxableGross1 - wk1);
+            const einkuenfte2 = Math.max(0, taxableGross2 - wk2);
+            const sumEinkuenfte = einkuenfte1 + einkuenfte2;
+
+            // Vorsorgeaufwendungen (Sonderausgaben)
+            // 1. Altersvorsorge (RV + Rürup): 100% deductible, minus AG-Anteil (tax-free)
+            const agRV1 = Math.min(taxableGross1, bbgRV) * rvRate / 2; // employer share (tax-free per §3 Nr. 62)
+            const agRV2 = Math.min(taxableGross2, bbgRV) * rvRate / 2;
+            const vorsorge1_basis = Math.min(rvTotal1 + totalEffectiveRuerup, ruerupMaxLimit);
+            const vorsorge1_deductible = vorsorge1_basis - agRV1 - agRV2; // minus tax-free employer shares
+
+            // 2. KV/PV Basisabsicherung (fully deductible)
+            const kvPV_deductible1 = sv1.kv * 0.96 + sv1.pv; // KV minus 4% Krankengeld-Anteil
+            const kvPV_deductible2 = sv2.kv * 0.96 + sv2.pv;
+            const totalKVPV = kvPV_deductible1 + kvPV_deductible2;
+
+            // Sonderausgaben total
+            const sonderausgabenPauschbetrag = isMarried ? 72 : 36;
+            const kirchensteuerEstimate = 0; // circular, will be approximated below
+            const sonderausgaben_riester = effectiveRiester1 + effectiveRiester2;
+
+            // Total Sonderausgaben
+            const totalSonderausgaben = Math.max(sonderausgabenPauschbetrag,
+                Math.max(0, vorsorge1_deductible) + totalKVPV + totalChildcareDeduction + sonderausgaben_riester);
+
+            // ZVE (without Kinderfreibetrag)
+            const zveWithoutKFB = Math.max(0, sumEinkuenfte - totalSonderausgaben);
+
+            // === KINDERFREIBETRAG vs KINDERGELD (Günstigerprüfung) ===
+            const kinderfreibetragTotal = numChildren * cfg.kinderfreibetragPerParent * (isMarried ? 2 : 1);
+            const kindergeldAnnual = numChildren * cfg.kindergeld * 12;
+
+            // Calculate tax WITH Kinderfreibetrag
+            const zveWithKFB = Math.max(0, zveWithoutKFB - kinderfreibetragTotal);
+
+            let estWithoutKFB, estWithKFB;
+            if (isMarried) {
+                estWithoutKFB = calcESt(zveWithoutKFB / 2, cfg) * 2;
+                estWithKFB = calcESt(zveWithKFB / 2, cfg) * 2;
+            } else {
+                estWithoutKFB = calcESt(zveWithoutKFB, cfg);
+                estWithKFB = calcESt(zveWithKFB, cfg);
+            }
+
+            // Tax advantage from Kinderfreibetrag
+            const kfbTaxAdvantage = estWithoutKFB - estWithKFB;
+            // Also add Soli + KiSt advantage
+            const soliWithout = calcSoli(estWithoutKFB, cfg, isMarried);
+            const soliWith = calcSoli(estWithKFB, cfg, isMarried);
+            const kiStWithout = churchMember ? estWithoutKFB * cfg.kirchensteuerRate : 0;
+            const kiStWith = churchMember ? estWithKFB * cfg.kirchensteuerRate : 0;
+            const totalKFBAdvantage = (estWithoutKFB + soliWithout + kiStWithout) - (estWithKFB + soliWith + kiStWith);
+
+            // Günstigerprüfung: Use Kinderfreibetrag if advantage > Kindergeld
+            const useKFB = totalKFBAdvantage > kindergeldAnnual;
+            const finalZVE = useKFB ? zveWithKFB : zveWithoutKFB;
+            const finalESt = useKFB ? estWithKFB : estWithoutKFB;
+            const finalSoli = useKFB ? soliWith : soliWithout;
+            const finalKiSt = churchMember ? finalESt * cfg.kirchensteuerRate : 0;
+
+            // Net benefit from children
+            const childBenefit = useKFB ? totalKFBAdvantage : kindergeldAnnual;
+
+            // Total tax burden
+            const totalTax = finalESt + finalSoli + finalKiSt;
+            const totalGross = gross1 + gross2;
+            const effectiveRate = totalGross > 0 ? (totalTax / totalGross * 100) : 0;
+            const totalSV = sv1.total + sv2.total;
+            const netIncome = totalGross - totalTax - totalSV;
+
+            // === RENDER RESULTS ===
+            const resultsHTML = `
+            <div class="result-row highlight">
+                <span>Zu Versteuerndes Einkommen (ZVE)</span>
+                <span class="result-value">€${finalZVE.toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <hr class="section-divider">
+            <div class="result-row">
+                <span>Combined Gross Income</span>
+                <span class="result-value">€${totalGross.toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div class="result-row sub">
+                <span>− bAV (tax-free)</span>
+                <span class="result-value">−€${(effectiveBav1 + effectiveBav2).toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div class="result-row sub">
+                <span>− Werbungskosten</span>
+                <span class="result-value">−€${(wk1 + (isMarried ? wk2 : 0)).toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div class="result-row">
+                <span>= Sum of Einkünfte</span>
+                <span class="result-value">€${sumEinkuenfte.toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div class="result-row sub">
+                <span>− Vorsorgeaufwendungen (RV + Rürup)</span>
+                <span class="result-value">−€${Math.max(0, vorsorge1_deductible).toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div class="result-row sub">
+                <span>− KV/PV Basisabsicherung</span>
+                <span class="result-value">−€${Math.round(totalKVPV).toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div class="result-row sub">
+                <span>− ${cfg.privateVorsorgeLabel}</span>
+                <span class="result-value">−€${sonderausgaben_riester.toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div class="result-row sub">
+                <span>− Childcare deduction</span>
+                <span class="result-value">−€${Math.round(totalChildcareDeduction).toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            ${useKFB ? `<div class="result-row sub">
+                <span>− Kinderfreibetrag (${numChildren} child${numChildren > 1 ? 'ren' : ''})</span>
+                <span class="result-value">−€${kinderfreibetragTotal.toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>` : ''}
+            <hr class="section-divider">
+            <div class="result-row highlight">
+                <span>Einkommensteuer (ESt)</span>
+                <span class="result-value">€${finalESt.toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div class="result-row">
+                <span>Solidaritätszuschlag</span>
+                <span class="result-value">€${Math.round(finalSoli).toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div class="result-row">
+                <span>Kirchensteuer (8% Bayern)</span>
+                <span class="result-value">€${Math.round(finalKiSt).toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <hr class="section-divider">
+            <div class="result-row highlight">
+                <span>Total Income Tax + Soli + KiSt</span>
+                <span class="result-value">€${Math.round(totalTax).toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div class="result-row">
+                <span>Social Security (employee share)</span>
+                <span class="result-value">€${Math.round(totalSV).toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div class="result-row highlight">
+                <span>Estimated Net Income</span>
+                <span class="result-value">€${Math.round(netIncome).toLocaleString('de-DE', { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div class="result-row">
+                <span>Effective Tax Rate (ESt+Soli+KiSt / Gross)</span>
+                <span class="result-value">${effectiveRate.toFixed(1)}%</span>
+            </div>
+            <div class="result-row">
+                <span>Total Burden Rate (Tax + SV / Gross)</span>
+                <span class="result-value">${((totalTax + totalSV) / totalGross * 100).toFixed(1)}%</span>
+            </div>
+        `;
+            document.getElementById('results').innerHTML = resultsHTML;
+
+            // === RENDER CHARTS ===
+            renderWaterfallChart(totalGross, effectiveBav1 + effectiveBav2, totalEffectiveRuerup, sonderausgaben_riester, totalSV, finalESt, Math.round(finalSoli), Math.round(finalKiSt), Math.round(netIncome));
+            renderPieChart(finalESt, Math.round(finalSoli) + Math.round(finalKiSt), Math.round(totalSV), effectiveBav1 + effectiveBav2, totalEffectiveRuerup, sonderausgaben_riester, Math.round(netIncome));
+
+            // === BENEFITS ===
+            let benefitsHTML = '';
+            if (numChildren > 0) {
+                benefitsHTML += `<div class="result-row highlight">
+                <span>Günstigerprüfung Result</span>
+                <span class="result-value">${useKFB ? 'Kinderfreibetrag' : 'Kindergeld'} wins</span>
+            </div>`;
+
+                if (useKFB) {
+                    benefitsHTML += `<div class="result-row">
+                    <span>Kinderfreibetrag tax saving</span>
+                    <span class="result-value winner">€${Math.round(totalKFBAdvantage).toLocaleString('de-DE')}/yr</span>
+                </div>
+                <div class="result-row sub">
+                    <span>vs. Kindergeld would be</span>
+                    <span class="result-value">€${kindergeldAnnual.toLocaleString('de-DE')}/yr</span>
+                </div>`;
+                } else {
+                    benefitsHTML += `<div class="result-row">
+                    <span>Kindergeld (${numChildren} × €${cfg.kindergeld}/month)</span>
+                    <span class="result-value winner">€${kindergeldAnnual.toLocaleString('de-DE')}/yr</span>
+                </div>
+                <div class="result-row sub">
+                    <span>vs. Kinderfreibetrag would save</span>
+                    <span class="result-value">€${Math.round(totalKFBAdvantage).toLocaleString('de-DE')}/yr</span>
+                </div>`;
+                }
+
+                // Bayerisches Familiengeld
+                // Paid for children age 1 to 3 (12 to 36 months). Pro-rata months within the tax year.
+                let familiengeldTotal = 0;
+                for (let i = 1; i <= numChildren; i++) {
+                    const ageYears = parseInt(document.getElementById(`childAge${i}`)?.value) || 0;
+                    const ageMonths = parseInt(document.getElementById(`childMonth${i}`)?.value) || 0;
+                    const bornBefore2025 = document.getElementById(`childBornBefore2025_${i}`)?.value === 'yes';
+                    if (!bornBefore2025) continue;
+                    // Age in months at start of year (Jan 1)
+                    const ageInMonthsJan = ageYears * 12 + ageMonths;
+                    // Familiengeld is paid from month child turns 12 months to month child turns 36 months
+                    // Calculate eligible months within the 12-month tax year (Jan-Dec)
+                    let eligibleMonths = 0;
+                    for (let m = 0; m < 12; m++) {
+                        const ageAtMonth = ageInMonthsJan + m;
+                        if (ageAtMonth >= 12 && ageAtMonth < 36) {
+                            eligibleMonths++;
+                        }
+                    }
+                    familiengeldTotal += cfg.familiengeldAge1to3 * eligibleMonths;
+                }
+                if (familiengeldTotal > 0) {
+                    benefitsHTML += `<hr class="section-divider">
+                <div class="result-row">
+                    <span>Bayerisches Familiengeld</span>
+                    <span class="result-value">€${familiengeldTotal.toLocaleString('de-DE')}/yr</span>
+                </div>
+                <div class="result-row sub">
+                    <span>(€250/month, age 1-3, born before 2025, tax-free)</span>
+                    <span class="result-value"></span>
+                </div>`;
+                }
+                if (selectedYear === 2026) {
+                    benefitsHTML += `<div class="result-row sub" style="margin-top:8px;">
+                    <span style="font-style:italic;">Note: ${cfg.familiengeldNote}</span>
+                    <span class="result-value"></span>
+                </div>`;
+                }
+            } else {
+                benefitsHTML = '<p style="opacity:0.7;">Add children to see benefits.</p>';
+            }
+            document.getElementById('benefits').innerHTML = benefitsHTML;
+
+            // === DEDUCTION SUMMARY ===
+            const totalDeductions = (effectiveBav1 + effectiveBav2) + Math.max(0, vorsorge1_deductible) + totalKVPV +
+                sonderausgaben_riester + totalChildcareDeduction + (useKFB ? kinderfreibetragTotal : 0) +
+                (wk1 + (isMarried ? wk2 : 0));
+            const taxSaved = totalGross > 0 ? Math.round(totalGross - finalZVE) : 0;
+
+            let deductHTML = `
+            <div class="result-row highlight">
+                <span>Total Reduction from Gross to ZVE</span>
+                <span class="result-value">€${taxSaved.toLocaleString('de-DE')}</span>
+            </div>
+            <hr class="section-divider">
+            <div class="result-row">
+                <span>bAV (Direktversicherung)</span>
+                <span class="result-value">€${(effectiveBav1 + effectiveBav2).toLocaleString('de-DE')}</span>
+            </div>
+            <div class="result-row">
+                <span>Werbungskosten</span>
+                <span class="result-value">€${(wk1 + (isMarried ? wk2 : 0)).toLocaleString('de-DE')}</span>
+            </div>
+            <div class="result-row">
+                <span>Altersvorsorge (RV + Rürup net)</span>
+                <span class="result-value">€${Math.max(0, Math.round(vorsorge1_deductible)).toLocaleString('de-DE')}</span>
+            </div>
+            <div class="result-row">
+                <span>KV/PV Basisabsicherung</span>
+                <span class="result-value">€${Math.round(totalKVPV).toLocaleString('de-DE')}</span>
+            </div>
+            <div class="result-row">
+                <span>${cfg.privateVorsorgeLabel}</span>
+                <span class="result-value">€${sonderausgaben_riester.toLocaleString('de-DE')}</span>
+            </div>
+            <div class="result-row">
+                <span>Childcare Deduction</span>
+                <span class="result-value">€${Math.round(totalChildcareDeduction).toLocaleString('de-DE')}</span>
+            </div>
+            ${useKFB ? `<div class="result-row">
+                <span>Kinderfreibetrag</span>
+                <span class="result-value">€${kinderfreibetragTotal.toLocaleString('de-DE')}</span>
+            </div>` : ''}
+        `;
+            document.getElementById('deductionSummary').innerHTML = deductHTML;
+
+            // Pension info boxes
+            const pensionInfo1 = `
+            <strong>Limits for ${selectedYear}:</strong><br>
+            • bAV tax-free: max €${bavMaxTaxFree.toLocaleString('de-DE')} (8% BBG)<br>
+            • bAV SV-free: max €${bavMaxSVFree.toLocaleString('de-DE')} (4% BBG)<br>
+            • Rürup: 100% deductible, room left ≈ €${Math.round(ruerupAvailable).toLocaleString('de-DE')}<br>
+            • ${cfg.privateVorsorgeLabel}: max €${riesterMax.toLocaleString('de-DE')}/person
+        `;
+            document.getElementById('pensionInfo1').innerHTML = pensionInfo1;
+            if (isMarried) {
+                document.getElementById('pensionInfo2').innerHTML = pensionInfo1;
+            }
+
+            // === INSIGHTS ===
+            renderInsights({
+                gross1, gross2, isMarried, bav1, bav2, bavMaxTaxFree, bavMaxSVFree,
+                ruerup1, ruerup2, ruerupAvailable, totalEffectiveRuerup,
+                riester1, riester2, riesterMax, effectiveRiester1, effectiveRiester2,
+                totalChildcareDeduction, numChildren, churchMember,
+                effectiveWK, wk1, totalWK, jobticket,
+                finalZVE, totalTax, totalGross, effectiveRate, cfg, selectedYear
+            });
+        }
+
+        function updateLimitIndicator(id, value, limit, text) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.innerHTML = text;
+            el.className = 'limit-indicator' + (value > limit ? ' exceeded' : '');
+        }
+
+        // ============ INSIGHTS ============
+        function renderInsights(d) {
+            const container = document.getElementById('insightsSection');
+            if (!container) return;
+
+            const tips = [];
+            const otherOptions = [];
+
+            // --- ZVE Reduction Tips (based on current usage) ---
+
+            // 1. bAV unused room
+            const bavUsed1 = Math.min(d.bav1, d.bavMaxTaxFree);
+            const bavUsed2 = d.isMarried ? Math.min(d.bav2, d.bavMaxTaxFree) : 0;
+            const bavRoom1 = d.bavMaxTaxFree - bavUsed1;
+            const bavRoom2 = d.isMarried ? d.bavMaxTaxFree - bavUsed2 : 0;
+            const bavTotalRoom = bavRoom1 + bavRoom2;
+            if (bavTotalRoom > 0) {
+                tips.push({
+                    icon: '🏦',
+                    title: 'Direktversicherung (bAV) – Unused room',
+                    detail: `You can contribute up to <strong>€${bavTotalRoom.toLocaleString('de-DE')}</strong> more to your employer pension (bAV). This reduces your taxable gross <em>before</em> tax and social security.`,
+                    saving: `Potential ZVE reduction: €${bavTotalRoom.toLocaleString('de-DE')}`,
+                    priority: bavTotalRoom
+                });
+            }
+
+            // 2. Rürup/Basis-Rente unused room
+            const ruerupUsed = d.totalEffectiveRuerup;
+            const ruerupRoom = d.ruerupAvailable - ruerupUsed;
+            if (ruerupRoom > 500) {
+                tips.push({
+                    icon: '📜',
+                    title: 'Rürup-Rente (Basis-Rente) – Unused room',
+                    detail: `You have <strong>€${Math.round(ruerupRoom).toLocaleString('de-DE')}</strong> unused Rürup capacity. Contributions are 100% tax-deductible and reduce your ZVE directly.`,
+                    saving: `Potential ZVE reduction: €${Math.round(ruerupRoom).toLocaleString('de-DE')}`,
+                    priority: ruerupRoom
+                });
+            }
+
+            // 3. Riester / Altersvorsorgedepot unused room
+            const riesterRoom1 = d.riesterMax - d.effectiveRiester1;
+            const riesterRoom2 = d.isMarried ? d.riesterMax - d.effectiveRiester2 : 0;
+            const riesterTotalRoom = riesterRoom1 + riesterRoom2;
+            if (riesterTotalRoom > 0) {
+                const label = d.selectedYear >= 2027 ? 'Altersvorsorgedepot' : 'Riester-Rente';
+                tips.push({
+                    icon: '🌱',
+                    title: `${label} – Unused room`,
+                    detail: `You can deduct up to <strong>€${riesterTotalRoom.toLocaleString('de-DE')}</strong> more as Sonderausgaben via ${label}. ${d.selectedYear >= 2027 ? 'The new Altersvorsorgedepot allows flexible ETF-based investing.' : 'Includes Zulagen (€175/person + €300/child).'}`,
+                    saving: `Potential ZVE reduction: €${riesterTotalRoom.toLocaleString('de-DE')}`,
+                    priority: riesterTotalRoom
+                });
+            }
+
+            // 4. Werbungskosten opportunity
+            if (d.wk1 <= d.cfg.werbungskostenPauschbetrag) {
+                tips.push({
+                    icon: '💼',
+                    title: 'Werbungskosten – Using only Pauschbetrag',
+                    detail: `You're using the flat €${d.cfg.werbungskostenPauschbetrag.toLocaleString('de-DE')} Pauschbetrag. If your actual work expenses (home office, commuting, equipment, professional training) exceed this, itemize them for a higher deduction.`,
+                    saving: 'Potential: varies based on actual expenses',
+                    priority: 500
+                });
+            }
+
+            // 5. Church tax tip
+            if (d.churchMember) {
+                const kiStSaving = d.totalTax * d.cfg.kirchensteuerRate / (1 + d.cfg.kirchensteuerRate);
+                tips.push({
+                    icon: '⛪',
+                    title: 'Kirchensteuer – Consider impact',
+                    detail: `Church tax adds <strong>€${Math.round(kiStSaving).toLocaleString('de-DE')}</strong>/yr to your tax burden. Leaving the church is a legal option that eliminates this entirely. (Kirchenaustritt at Standesamt, ~€35 fee in Bavaria.)`,
+                    saving: `Potential saving: €${Math.round(kiStSaving).toLocaleString('de-DE')}/year`,
+                    priority: kiStSaving
+                });
+            }
+
+            // 6. Childcare deduction opportunity
+            if (d.numChildren > 0 && d.totalChildcareDeduction === 0) {
+                tips.push({
+                    icon: '👶',
+                    title: 'Childcare costs – Not yet claimed',
+                    detail: `If you have children under 14 in Kita, Tagesmutter, or after-school care, you can deduct <strong>2/3 of costs up to €4,000/child</strong>. Enter the amounts above.`,
+                    saving: `Potential ZVE reduction: up to €${(d.numChildren * 4000).toLocaleString('de-DE')}`,
+                    priority: 2000
+                });
+            }
+
+            // --- Other Legal Options ---
+
+            otherOptions.push({
+                icon: '🏠',
+                title: 'Home Office Pauschale',
+                detail: 'Up to €1,260/year (210 days × €6) if you work from home. Counts towards Werbungskosten.'
+            });
+
+            otherOptions.push({
+                icon: '🚗',
+                title: 'Entfernungspauschale (Commuting)',
+                detail: 'First 20km: €0.30/km; from 21km: €0.38/km × working days. Counts towards Werbungskosten. Can push you above the Pauschbetrag.'
+            });
+
+            otherOptions.push({
+                icon: '📚',
+                title: 'Fort- und Weiterbildung (Professional Training)',
+                detail: 'Costs for job-related training, courses, certifications, conferences, and specialist books are fully deductible as Werbungskosten.'
+            });
+
+            otherOptions.push({
+                icon: '🏗️',
+                title: 'Handwerkerleistungen & Haushaltsnahe Dienstleistungen',
+                detail: '20% of labor costs for household services (up to €4,000 tax credit) and craftsmen (up to €1,200 tax credit). Directly reduces tax, not ZVE.'
+            });
+
+            otherOptions.push({
+                icon: '💊',
+                title: 'Außergewöhnliche Belastungen',
+                detail: 'Medical costs, disability expenses, care costs above the "zumutbare Belastung" threshold are deductible. Keep all receipts.'
+            });
+
+            otherOptions.push({
+                icon: '🎁',
+                title: 'Spenden (Donations)',
+                detail: 'Donations to recognized charities are deductible as Sonderausgaben up to 20% of total income. Get official donation receipts (Zuwendungsbestätigung).'
+            });
+
+            otherOptions.push({
+                icon: '🏥',
+                title: 'PKV Beitragsvorauszahlung (Prepaid Private Health Insurance)',
+                detail: 'If privately insured (PKV), you can prepay up to <strong>2.5 years</strong> (30 months) of premiums in one year. The entire Basisanteil is deductible as Sonderausgaben in the year of payment (§10 Abs. 1 Nr. 3 Satz 4 EStG). This "bunching" creates a massive deduction in one year, significantly lowering ZVE. In the following years you claim only the Sonderausgaben-Pauschbetrag (€36/€72). Ask your PKV provider about Vorauszahlung — most major insurers (Allianz, DKV, HUK, Signal Iduna) support this.<sup>[6]</sup>'
+            });
+
+            if (!d.isMarried) {
+                otherOptions.push({
+                    icon: '💍',
+                    title: 'Ehegattensplitting (Marriage)',
+                    detail: 'If your partner earns significantly less, marriage with Zusammenveranlagung can shift income into lower tax brackets, reducing the combined tax rate.'
+                });
+            }
+
+            // Sort tips by priority (biggest potential first)
+            tips.sort((a, b) => b.priority - a.priority);
+
+            // Render
+            let html = '';
+
+            if (tips.length > 0) {
+                html += '<h3 style="color:#27ae60;font-size:0.95rem;margin:0 0 12px;">Ways to Reduce Your ZVE</h3>';
+                tips.forEach(tip => {
+                    html += `<div style="background:rgba(39,174,96,0.08);border:1px solid rgba(39,174,96,0.2);border-radius:8px;padding:12px 14px;margin-bottom:10px;">
+                        <div style="font-weight:600;color:#2ecc71;margin-bottom:4px;">${tip.icon} ${tip.title}</div>
+                        <div style="font-size:0.85rem;color:rgba(255,255,255,0.8);line-height:1.5;">${tip.detail}</div>
+                        <div style="font-size:0.8rem;color:#f39c12;margin-top:6px;font-weight:500;">⚡ ${tip.saving}</div>
+                    </div>`;
+                });
+            }
+
+            html += '<h3 style="color:#3498db;font-size:0.95rem;margin:20px 0 12px;">Other Legal Tax Reduction Options</h3>';
+            otherOptions.forEach(opt => {
+                html += `<div style="background:rgba(52,152,219,0.08);border:1px solid rgba(52,152,219,0.15);border-radius:8px;padding:10px 14px;margin-bottom:8px;">
+                    <div style="font-weight:600;color:#5dade2;margin-bottom:3px;">${opt.icon} ${opt.title}</div>
+                    <div style="font-size:0.83rem;color:rgba(255,255,255,0.75);line-height:1.4;">${opt.detail}</div>
+                </div>`;
+            });
+
+            // Footnotes
+            html += `<div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);">
+                <h4 style="color:rgba(255,255,255,0.6);font-size:0.8rem;margin:0 0 8px;text-transform:uppercase;letter-spacing:0.5px;">Footnotes</h4>
+                <ol style="margin:0;padding-left:20px;color:rgba(255,255,255,0.6);font-size:0.78rem;line-height:1.6;">
+                    <li>All tips are general guidance based on current German tax law. Individual eligibility depends on personal circumstances. Always consult a Steuerberater.</li>
+                    <li>Handwerkerleistungen and Haushaltsnahe Dienstleistungen reduce tax directly (§35a EStG), not the ZVE. They are applied after tax calculation.</li>
+                    <li>Rental property investment (Vermietung & Verpachtung) can reduce taxable income through depreciation (AfA), mortgage interest, and maintenance costs. Losses from rental income can offset employment income, lowering your ZVE. See: <a href="https://akshaim.github.io/Rental_Real_Estate_Wealth_Calculator/index.html" target="_blank" rel="noopener" style="color:#3498db;text-decoration:underline;">Rental Real Estate Wealth Calculator</a></li>
+                    <li>bAV contributions above the SV-free limit (4% BBG) still reduce ZVE up to the tax-free limit (8% BBG), but do not reduce social security contributions.</li>
+                    <li>Rürup and Riester/Altersvorsorgedepot contributions are locked until retirement. Consider liquidity needs before maximizing.</li>
+                    <li><strong>PKV Vorauszahlung:</strong> Confirmed by BFH ruling (Az. X R 43/09, 2011) and codified in §10 Abs. 1 Nr. 3 Satz 4 EStG since 2010. Only the Basisanteil (basic health + long-term care component, typically 70–85% of your PKV premium) is deductible — not Komfort/Wahlleistungen.<br><br><strong>No employer consent needed</strong> — PKV is a private contract between you and your insurer. Your employer's AG-Zuschuss continues monthly as normal; only your own portion is prepaid. Simply contact your PKV provider in Q4.<br><br><strong>Example:</strong> Basisanteil = €400/month. Normal deduction: €4,800/year.<br>• <em>Year 1 (prepay 2.5 yrs):</em> Deduct €12,000. Extra deduction = €7,200. At 42% marginal rate → <strong>€3,024 saved</strong>.<br>• <em>Years 2–3 (already prepaid):</em> Only Pauschbetrag €36 deductible. You lose ~€4,764/year deduction. At 42% → €2,001 extra tax/year → <strong>€4,002 total</strong>.<br>• <em>Same-rate net:</em> Slightly negative (−€978) — only time-value-of-money helps.<br><br><strong>Where it shines:</strong> Prepay in a high-income year (42% rate, bonus year) and have the "empty" years fall on lower-income periods (parental leave, sabbatical, part-time at 30% rate). Then: save €3,024 in Year 1, lose only €1,429/yr in Years 2–3 → <strong>net benefit +€166</strong> plus earlier cash flow.<br><br><em>Best for:</em> Expecting income drop (Elternzeit, Teilzeit, sabbatical) in the next 1–2 years.</li>
+                </ol>
+            </div>`;
+
+            container.innerHTML = html;
+        }
+
+        // ============ CHARTS ============
+        function renderWaterfallChart(gross, bav, ruerup, riester, sv, est, soli, kist, net) {
+            const container = document.getElementById('waterfallChart');
+            if (!container || gross <= 0) return;
+
+            const items = [
+                { label: 'Gross', value: gross, color: '#3498db', type: 'total' },
+                { label: 'bAV', value: -bav, color: '#8e44ad', type: 'deduct' },
+                { label: 'Rürup', value: -ruerup, color: '#9b59b6', type: 'deduct' },
+                { label: 'Riester/AVD', value: -riester, color: '#a569bd', type: 'deduct' },
+                { label: 'Social Security', value: -sv, color: '#e67e22', type: 'deduct' },
+                { label: 'Income Tax', value: -est, color: '#e74c3c', type: 'deduct' },
+                { label: 'Soli + KiSt', value: -(soli + kist), color: '#c0392b', type: 'deduct' },
+                { label: 'Net Income', value: net, color: '#27ae60', type: 'total' },
+            ].filter(item => Math.abs(item.value) > 0);
+
+            const maxVal = gross;
+            let html = '';
+
+            items.forEach(item => {
+                const absVal = Math.abs(item.value);
+                const pct = (absVal / maxVal) * 100;
+                const sign = item.value < 0 ? '−' : '';
+                const displayVal = `${sign}€${absVal.toLocaleString('de-DE')}`;
+
+                html += `<div style="display:flex;align-items:center;margin-bottom:8px;gap:8px;">
+                    <div style="width:100px;font-size:0.75rem;color:rgba(255,255,255,0.7);text-align:right;flex-shrink:0;">${item.label}</div>
+                    <div style="flex:1;position:relative;height:24px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;">
+                        <div style="height:100%;width:${pct}%;background:${item.color};border-radius:4px;transition:width 0.3s;"></div>
+                    </div>
+                    <div style="width:90px;font-size:0.8rem;color:${item.color};font-weight:600;text-align:right;flex-shrink:0;">${displayVal}</div>
+                </div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function renderPieChart(est, soliKist, sv, bav, ruerup, riester, net) {
+            const canvas = document.getElementById('pieChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const total = est + soliKist + sv + bav + ruerup + riester + net;
+            if (total <= 0) return;
+
+            const slices = [
+                { label: 'Net Income', value: net, color: '#27ae60' },
+                { label: 'Income Tax', value: est, color: '#e74c3c' },
+                { label: 'Social Security', value: sv, color: '#e67e22' },
+                { label: 'bAV', value: bav, color: '#8e44ad' },
+                { label: 'Rürup', value: ruerup, color: '#9b59b6' },
+                { label: 'Riester/AVD', value: riester, color: '#a569bd' },
+                { label: 'Soli + KiSt', value: soliKist, color: '#c0392b' },
+            ].filter(s => s.value > 0);
+
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const radius = Math.min(cx, cy) - 5;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            let startAngle = -Math.PI / 2;
+            slices.forEach(slice => {
+                const sliceAngle = (slice.value / total) * 2 * Math.PI;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, radius, startAngle, startAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fillStyle = slice.color;
+                ctx.fill();
+                startAngle += sliceAngle;
+            });
+
+            // Center hole (donut)
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius * 0.55, 0, 2 * Math.PI);
+            ctx.fillStyle = '#1b2631';
+            ctx.fill();
+
+            // Center text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 14px -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            const netPct = ((net / total) * 100).toFixed(0);
+            ctx.fillText(`${netPct}% Net`, cx, cy);
+
+            // Legend
+            const legendContainer = document.getElementById('pieLegend');
+            let legendHtml = '';
+            slices.forEach(slice => {
+                const pct = ((slice.value / total) * 100).toFixed(1);
+                legendHtml += `<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+                    <div style="width:10px;height:10px;border-radius:2px;background:${slice.color};flex-shrink:0;"></div>
+                    <span style="font-size:0.75rem;color:rgba(255,255,255,0.8);">${slice.label}: ${pct}%</span>
+                </div>`;
+            });
+            legendContainer.innerHTML = legendHtml;
+        }
+
+        // ============ EXPORT / IMPORT ============
+        function getFormData() {
+            const data = { _version: 1, _exportDate: new Date().toISOString(), _year: selectedYear };
+            const fields = [
+                'filingStatus', 'churchMember', 'numChildren',
+                'grossSalary1', 'grossSalary2', 'totalWerbungskosten', 'jobticket',
+                'bav1', 'bav2', 'ruerup1', 'ruerup2', 'riester1', 'riester2',
+                'bbgRV', 'bbgKV', 'rvRate', 'kvRate', 'pvRate', 'avRate', 'hoechstbeitragKnRV'
+            ];
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                if (el.type === 'checkbox') data[id] = el.checked;
+                else if (el.type === 'number') data[id] = parseFloat(el.value) || 0;
+                else data[id] = el.value;
+            });
+            // Children details
+            const numChildren = parseInt(document.getElementById('numChildren').value) || 0;
+            data.children = [];
+            for (let i = 1; i <= numChildren; i++) {
+                data.children.push({
+                    age: parseInt(document.getElementById(`childAge${i}`)?.value) || 0,
+                    month: parseInt(document.getElementById(`childMonth${i}`)?.value) || 0,
+                    bornBefore2025: document.getElementById(`childBornBefore2025_${i}`)?.value || 'yes',
+                    childcare: parseFloat(document.getElementById(`childcare${i}`)?.value) || 0
+                });
+            }
+            return data;
+        }
+
+        function exportJSON() {
+            const data = getFormData();
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `zve-calc-${selectedYear}-${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    loadFormData(data);
+                } catch (err) {
+                    alert('Invalid JSON file: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // reset so same file can be re-imported
+        }
+
+        function loadFormData(data) {
+            // Set year first
+            if (data._year) setYear(data._year);
+            // Set basic fields
+            const fields = [
+                'filingStatus', 'numChildren',
+                'grossSalary1', 'grossSalary2', 'totalWerbungskosten', 'jobticket',
+                'bav1', 'bav2', 'ruerup1', 'ruerup2', 'riester1', 'riester2',
+                'bbgRV', 'bbgKV', 'rvRate', 'kvRate', 'pvRate', 'avRate', 'hoechstbeitragKnRV'
+            ];
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el || data[id] === undefined) return;
+                el.value = data[id];
+            });
+            if (data.churchMember !== undefined) {
+                document.getElementById('churchMember').checked = data.churchMember;
+            }
+            // Toggle spouse UI
+            toggleSpouse();
+            // Rebuild children UI then set values
+            updateChildrenUI();
+            if (data.children && data.children.length > 0) {
+                for (let i = 0; i < data.children.length; i++) {
+                    const c = data.children[i];
+                    const idx = i + 1;
+                    const ageEl = document.getElementById(`childAge${idx}`);
+                    const monthEl = document.getElementById(`childMonth${idx}`);
+                    const bornEl = document.getElementById(`childBornBefore2025_${idx}`);
+                    const careEl = document.getElementById(`childcare${idx}`);
+                    if (ageEl) ageEl.value = c.age;
+                    if (monthEl) monthEl.value = c.month;
+                    if (bornEl) bornEl.value = c.bornBefore2025;
+                    if (careEl) careEl.value = c.childcare;
+                }
+            }
+            calculate();
+        }
+
+        // ============ INIT ============
+        document.addEventListener('DOMContentLoaded', () => {
+            setYear(2026);
+            updateChildrenUI();
+            calculate();
+        });
+    </script>
+</body>
+
+</html>
