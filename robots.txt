@@ -1,0 +1,5 @@
+# Everything on this site may be crawled and indexed, including by AI crawlers and agents.
+User-agent: *
+Allow: /
+
+Sitemap: https://akshaim.github.io/sitemap.xml

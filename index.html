@@ -1,247 +1,281 @@
-<!DOCTYPE HTML>
-<!--
- CCA 3.0 license 
--->
-<html>
-	<head>
-		<title>Technology Blog from Akshai M</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-		<script>
-  		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
- 		 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akshai Murukakumar – Embedded software engineer, automotive SDV, Rust and C – Munich</title>
+<meta name="description" content="Staff Software Engineer and software system architect for the automotive software-defined vehicles (SDV) team at Analog Devices in Munich, Germany. Embedded Rust and C, RTOS, Linux and firmware.">
+<meta name="author" content="Akshai Murukakumar">
+<link rel="canonical" href="https://akshaim.github.io/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
 
-  		ga('create', 'UA-82341121-1', 'auto');
-  		ga('send', 'pageview');
-		</script>
-	</head>
-	<body>
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Akshai Murukakumar – Embedded software engineer, automotive SDV, Rust and C">
+<meta property="og:description" content="Staff Software Engineer and software system architect for the automotive software-defined vehicles (SDV) team at Analog Devices in Munich, Germany. Embedded Rust and C, RTOS, Linux and firmware.">
+<meta property="og:url" content="https://akshaim.github.io/">
+<meta property="profile:first_name" content="Akshai">
+<meta property="profile:last_name" content="Murukakumar">
+<meta name="twitter:card" content="summary">
 
-		<!-- Header -->
-			<section id="header">
-				<header>
-					<span class="image avatar"><img src="images/avatar.jpg" alt="" /></span>
-					<h1 id="logo"><a href="#">Akshai M</a></h1>
-					<p>Embedded Developer @ <a href="https://stabl.com/en/" target="_blank" > Stabl Energy GmbH</a>
-				</br>Founder <a href="http://www.microhope.org" target="_blank">MicroHOPE </a> Foundation </p>
-				</header>
-				<nav id="nav">
-					<ul>
-						<li><a href="#one" class="active">About</a></li>
-						<li><a href="#two">Things I try</a></li>
-						<li><a href="#three">Blogs</a></li>
-						<li><a href="#four">Contact</a></li>
-						
-					</ul>
-				</nav>
-				<footer>
-					<ul class="icons">
-						<li><a href="https://twitter.com/m_akshai" target="_blank" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="https://www.facebook.com/akshaimkurup" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-						<li><a href="https://www.instagram.com/akshaim/" target="_blank" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="https://github.com/akshaim" target="_blank" class="icon fa-github"><span class="label">Github</span></a></li>
-						
-					</ul>
-				</footer>
-			</section>
+<!-- Structured data for search engines and AI agents.
+     Every value here also appears as visible text on the page: keep the two in step. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "dateModified": "2026-11-22",
+  "mainEntity": {
+    "@type": "Person",
+    "@id": "https://akshaim.github.io/#person",
+    "name": "Akshai Murukakumar",
+    "alternateName": ["Akshai M", "akshaim"],
+    "url": "https://akshaim.github.io/",
+    "description": "Staff Software Engineer and software system architect for the automotive software-defined vehicles (SDV) team at Analog Devices in Munich, Germany, working in embedded Rust and C on RTOS, Linux and bare-metal firmware.",
+    "jobTitle": "Staff Software Engineer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Analog Devices",
+      "url": "https://www.analog.com/"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Munich",
+      "addressCountry": "DE"
+    },
+    "email": "mail@akshaim.in",
+    "sameAs": [
+      "https://github.com/akshaim",
+      "https://www.linkedin.com/in/akshaim",
+      "https://hackmd.io/@akshaim"
+    ],
+    "memberOf": [
+      { "@type": "Organization", "name": "Open Source Hardware Association" },
+      { "@type": "Organization", "name": "IEEE" }
+    ],
+    "affiliation": [
+      { "@type": "Organization", "name": "ICFOSS" },
+      { "@type": "Organization", "name": "MicroHOPE Foundation" }
+    ],
+    "hasOccupation": {
+      "@type": "Occupation",
+      "name": "Embedded software engineer",
+      "occupationLocation": { "@type": "City", "name": "Munich, Germany" },
+      "skills": "Embedded Rust, embedded C, RTOS, embedded Linux, firmware, automotive software, software-defined vehicle (SDV)"
+    },
+    "knowsAbout": [
+      "Automotive software",
+      "Software-defined vehicle (SDV)",
+      "Embedded systems",
+      "System definition, integration and validation",
+      "BootROM",
+      "Security",
+      "Toolchain development",
+      "Software enablement for embedded hardware targets",
+      "Rust",
+      "Embedded Rust",
+      "Embedded C",
+      "Systems programming",
+      "Real-time operating systems (RTOS)",
+      "Embedded Linux",
+      "Linux kernel development",
+      "Zephyr",
+      "FreeRTOS",
+      "Firmware",
+      "Battery management systems (BMS)",
+      "Wireless battery management (wBMS)",
+      "GMSL",
+      "LoRaWAN",
+      "RIOT-OS",
+      "IEC 61499",
+      "Platform bring-up",
+      "Hardware-in-the-loop (HIL) testing",
+      "Virtual platforms",
+      "SystemC",
+      "Renode",
+      "Safety-critical systems",
+      "Systems engineering"
+    ],
+    "award": [
+      "Platinum Award, Analog Devices (2024)",
+      "Champion, SiFive India Chip Design Contest (2018)",
+      "Ada Lovelace Fellowship, Open Hardware Summit (2018)",
+      "GOSH Fellow, Gathering for Open Science Hardware (2017, 2018)"
+    ]
+  }
+}
+</script>
+</head>
+<body class="profile">
+<a class="skip" href="#main">Skip to content</a>
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+<header class="site-header">
+  <a class="site-name" href="./">Akshai Murukakumar</a>
+  <nav class="site-nav" aria-label="Sections">
+    <a href="#posts">Posts</a>
+    <a href="#talks">Talks</a>
+    <a href="#notes">Notes</a>
+  </nav>
+</header>
 
-				<!-- Main -->
-					<div id="main">
+<main id="main">
 
-						<!-- One -->
-							<section id="one">
-								<div class="container">
-									<header class="major">
-										<h2>Life as a Hacker</h2>
-										<p>How did it start<br />
-</p>
-									</header>
-									<p>Toys, thats where it all started. Hacking the DC motor and LED's to do things of relevance to me. That did suffice my neighbours recommendations to represent myself as a hardware hacker till my 8th Grade , then it happened. I blew up my father's old Optonica- Sharp TV and then I was famous. And then I made a mosquito killer using HV transformer. A massive overkill for the purpose but one which did serve well.Then it happened, I got qualified as a Maker.</p>
-								</div>
-							</section>
+<header class="hero">
+  <h1>Akshai Murukakumar</h1>
+  <p class="headline">Staff Software Engineer: Software System Architect for the Automotive Software-Defined Vehicles (SDV) Team @ Analog Devices</p>
+  <p class="where">Munich, Germany</p>
+  <ul class="links">
+    <li><a rel="me" href="https://github.com/akshaim">GitHub</a></li>
+    <li><a rel="me" href="https://www.linkedin.com/in/akshaim">LinkedIn</a></li>
+    <li><a href="mailto:mail@akshaim.in">mail@akshaim.in</a></li>
+  </ul>
+</header>
 
-						<!-- Two -->
-							<section id="two">
-								<div class="container">
-									<h3>Things I Do</h3>
-									<p>Some techy stuff which I am well into</p>
-									<ul class="feature-icons">
-										<li class="fa-code">Write code. Assembly suits me well</li>
-										<li class="fa-cubes">Open Hardware Developer </li>
-										<li class="fa-book">Consultant for FOSS and IoT </li>
-										<li class="fa-coffee">Techy evening talks</li>
-										<li class="fa-bolt">Innovator in Light Speed</li>
-										<li class="fa-users">Public Speaker</li>
-									</ul>
-								</div>
-							</section>
+<div class="top">
+<div class="intro" id="about">
+<p class="lede">I lead software-defined vehicle (SDV) architecture at Analog Devices in Munich, working with technologies such as GMSL, E2B, A2B and wBMS. I come from product engineering, with hands-on experience in RTOS-based firmware (Zephyr, FreeRTOS, ChibiOS, RIOT-OS) and Linux kernel development, mainly in C and Rust. Today I connect stakeholders and engineering teams so that customers get one consistent journey, from initial integration and end-of-line (EOL) testing to start of production (SoP).</p>
+<p>In Germany, I first joined the RIOT-OS core team in Berlin, where I helped scale the build system across several sensors and boards and wrote a low-level driver for wireless applications. I then became one of the maintainers of the software at <a href="https://stabl.com/">STABL Energy</a>, where I developed the build system, the embedded DevOps infrastructure and several low-level drivers, and introduced release management. After that I joined a product research team at Analog Devices, working on a new class of wireless communication products for automotive and industrial use.</p>
+<p>In India, I worked with ICFOSS and the Kerala Startup Mission (KSUM) on building communities, and was part of the FOSSEE research team at the Aerospace department of IIT Bombay, where we developed platforms based on 4DIAC.</p>
+</div>
 
-						<!-- Three -->
-							<section id="three">
-								<div class="container">
-									<h3>Talks/Workshops/Random Blogs</h3>
-									<p>Hope it helps :)</p>
-									<div class="features">
-										<article>
-											<a href="https://docs.google.com/presentation/d/1g63Sr-srktAzyyd3d-XLChJMmTjDnML9KswTK_R3ejM/edit?usp=sharing" class="image"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Git-logo.svg/320px-Git-logo.svg.png" width = "200px" height = "180px" alt="Git" /></a>
-											<div class="inner">
-												<h4> <a href="https://docs.google.com/presentation/d/1g63Sr-srktAzyyd3d-XLChJMmTjDnML9KswTK_R3ejM/edit?usp=sharing"> Slides on Git Merge vs Rebase workflow</a></h4>
-												<p>Generic slides on Merge vs Rebase workflow</p>
-											</div>
-										</article>
-										<article>
-											<a href="https://docs.google.com/presentation/d/1uK9YJ5NaN8SM2r7ofEKdMfDfXo8odBTB5y7HGiKVhX4/edit?usp=sharing" class="image"><img src="https://www.riot-os.org/assets/img/riot-logo.png" width = "200px" height = "200px" alt="Riot-OS" /></a>
-											<div class="inner">
-												<h4> <a href="https://docs.google.com/presentation/d/1uK9YJ5NaN8SM2r7ofEKdMfDfXo8odBTB5y7HGiKVhX4/edit?usp=sharing"> Slides on Introduction to LoRaWAN using RIOT-OS</a></h4>
-												<p>Workshop held in Lora Alliance meeting : Academia WG, Berlin</p>
-											</div>
-										</article>
-										<article>
-											<a href="https://docs.google.com/presentation/d/1XYDgfFX-gCG6h5SbN5GAgdh6LKt5wbt15y1DKPetCys/edit?usp=sharing" class="image"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/LoRaWAN_Logo.svg/320px-LoRaWAN_Logo.svg.png" width = "200px" height = "150px" alt="Git" /></a>
-											<div class="inner">
-												<h4> <a href="https://docs.google.com/presentation/d/1XYDgfFX-gCG6h5SbN5GAgdh6LKt5wbt15y1DKPetCys/edit?usp=sharing"> Workshop on LoRaWAN for Messaging applications</h4>
-												<p><a href ="https://hasgeek.com/rootconf/technical-alternatives-to-internet-shutdowns/sub/lorawan-demystified-and-its-applications-beyong-io-9ZgtSBEKWDgED8dR2rH3HP" target="_blank"><font color = "blue">Rootconf Delhi, India</font></a> <br><a href ="https://docs.google.com/presentation/d/1XYDgfFX-gCG6h5SbN5GAgdh6LKt5wbt15y1DKPetCys/edit?usp=sharing" target="_blank"><font color = "blue">Link for the slides from the session </font></a> <br><a href ="https://www.youtube.com/watch?v=zKxjNqoo7SQ" target="_blank"><font color = "blue">Link for the video recording from the session</font></a></p>
-											</div>
-										</article>
-										<article>
-											<a href="https://docs.google.com/presentation/d/19dv8l-cwSecX-BucGu3HwyXmdf6CtcuTrplSdc_HW4c/edit?usp=sharing" class="image"><img src="images/RISC-V-logo-square.svg.png" width = "200px" height = "250px" alt="Chisel" /></a>
-											<div class="inner">
-												<h4> <a href="https://docs.google.com/presentation/d/19dv8l-cwSecX-BucGu3HwyXmdf6CtcuTrplSdc_HW4c/edit?usp=sharing"> Slides from Chisel Workshop held as a part of Chisel Bootcamp in Trivandrum, Kerala</a></h4>
-												<p> Guide to creating a RISC-V core </p>
-											</div>
-										</article>
-										<article>
-											<a href="https://gitlab.com/akshaim/pgp_workbook" class="image"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Gnupg_logo.svg/320px-Gnupg_logo.svg.png" width = "200px" height = "150px" alt="Pgp" /></a>
-											<div class="inner">
-												<h4> <a href="https://gitlab.com/akshaim/pgp_workbook"> Wiki : OpenPGP Workbook</a></h4>
-												<p> Noobs guide to OpenPGP, primer for a Key Signing Party</p>
-											</div>
-										</article>
-										<article>
-											<a href="https://docs.google.com/presentation/d/1Lus7LXkkoAx3u4HRx06rXveu8RwguwPo7u2HHncA6vw/edit?usp=sharing" class="image"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Light_dispersion_conceptual_waves.gif/260px-Light_dispersion_conceptual_waves.gif" width = "150px" height = "200px" alt="IoT" /></a>
-											<div class="inner">
-												<h4> <a href="https://docs.google.com/presentation/d/1Lus7LXkkoAx3u4HRx06rXveu8RwguwPo7u2HHncA6vw/edit?usp=sharing"> Pitch on Energy Harvesting Solutions</a></h4>
-												<p> ICFOSS, Internal </p>
-											</div>
-										</article>
-										<article>
-											<a href="https://docs.google.com/presentation/d/10bpG2r6X7vPMYKCos-ZqWHQCV0OYD2Y3SOLdaUxqgRQ/edit?usp=sharing" class="image"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Internet_de_las_Cosas.jpg" width = "250px" height = "300px" alt="IoT" /></a>
-											<div class="inner">
-												<h4> <a href="https://docs.google.com/presentation/d/10bpG2r6X7vPMYKCos-ZqWHQCV0OYD2Y3SOLdaUxqgRQ/edit?usp=sharing"> Slides from OpenIoT Workshop held in Rice University, Houston.</a></h4>
-												<p> Slides from workshop demostration ULPLoRa Hardware </p>
-											</div>
-										</article>
-										<article>
-											<a href="4DIAC/4DIAC.html" class="image"><img src="https://eclipse.org/4diac/img/4diac.png" width = "300px" height = "100px" alt="4DIAC" /></a>
-											<div class="inner">
-												<h4> <a href="4DIAC/4DIAC.html"> 4DIAC , an open source enviroment for control and automation.</a></h4>
-												<p> <font color="orange">[Work in progress]</font> Getting Started on 4DIAC to develop applications for distributed automation and control on IEC 61499 standards. </p>
-											</div>
-										</article>
-										<article>
-											<a href="IoT/NodeMCU/NodeMCU.html" class="image"><img src="IoT/NodeMCU/images/NodeMCU_DEVKIT_1.0.jpg" width = "300px" height = "200px" alt="Node MCU" /></a>
-											<div class="inner">
-												<h4> <a href="IoT/NodeMCU/NodeMCU.html">NodeMCU , a firmware for ESP8266</a></h4>
-												<p>Getting Started on NodeMCU & LUA Programming Language </p>
-											</div>
-										</article>
-										<article>
-											<a href="IoT/internetofthings.html" class="image"><img src="images/pic02.jpg" alt="" /></a>
-											<div class="inner">
-												<h4><a href="IoT/internetofthings.html">Internet of Things (IoT) Lab </a></h4>
-												<p>Documentation on  IoT Lab initiative.Startup guides Arduino , Raspberry Pi and NodeMCU </p>
-											</div>
-										</article>
-										<article>
-											<a href="IoT/MicroPython_ESP8266/MP_ESP_101.html" class="image"><img src="images/upython-with-micro.jpg" alt="uPython" /></a>
-											<div class="inner">
-												<h4><a href="IoT/MicroPython_ESP8266/MP_ESP_101.html">MicroPython on ESP8266 </a></h4>
-												<p>Running uPy interpreter on ESP8266 <br><a href ="https://www.slideshare.net/akshaim/micropython-on-microcontrollers" target="_blank"><font color = "red">Link for slides from workshop during SciPy India Conference</font></a></p>
-											</div>
-										</article>
-										<article>
-											<a href="Fablab/Week_Intro.html" class="image"><img src="images/pic01.jpg" alt="Fab" /></a>
-											<div class="inner">
-												<h4> <a href="Fablab/Week_Intro.html"> Pre Fab Kerala </a></h4>
-												<p>Contains details of the 4 week course on Fab Lab tools and equipment.</p>
-											</div>
-										</article>
-										
-										<article>
-											<a href="https://github.com/akshaim/myopenROV" class="image"><img src="images/pic03.jpg" alt="OpenROV" /></a>
-											<div class="inner">
-												<h4><a href="https://github.com/akshaim/myopenROV">My Open ROV</a></h4>
-												<p>An underwater remote operated vehicle using a Raspberry Pi and Arduino</p>
-											</div>
-										</article>
-									</div>
-								</div>
-							</section>
+<aside aria-label="At a glance">
+  <dl class="glance">
+    <dt>Based in</dt>
+    <dd>Munich, Germany</dd>
+    <dt>Focus</dt>
+    <dd>Software-defined vehicles (SDV), embedded systems, system definition, integration and validation, BootROM, security, toolchain development, software enablement for embedded hardware targets</dd>
+    <dt>Programming</dt>
+    <dd>C, Rust and Python; working knowledge of C++, Chisel (Scala) and Lua</dd>
+    <dt>Affiliations</dt>
+    <dd>
+      <ul class="mini">
+        <li><strong>Open Source Hardware Association</strong> member</li>
+        <li><strong>IEEE</strong> member</li>
+        <li><strong>ICFOSS</strong> honorary fellow</li>
+        <li><strong>MicroHOPE Foundation</strong> co-founder</li>
+      </ul>
+    </dd>
+    <dt>Also known as</dt>
+    <dd>Akshai M; <code>akshaim</code> on GitHub and LinkedIn</dd>
+    <dt>Contact</dt>
+    <dd><a href="mailto:mail@akshaim.in">mail@akshaim.in</a> or <a href="https://www.linkedin.com/in/akshaim">LinkedIn</a></dd>
+  </dl>
+</aside>
+</div>
 
-						<!-- Four -->
-							<section id="four">
-								<div class="container">
-									<h3>Contact Me</h3>
-									<p>You may contact me via email mail(at)akshaim(dot)in or else make a query here</p>
-									<!-- <form method="post" action="http://www.graphenelive.in/akshai.php">
-										<div class="row uniform">
-											<div class="6u 12u(xsmall)"><input type="text" name="name" id="name" placeholder="Name" /></div>
-											<div class="6u 12u(xsmall)"><input type="email" name="email" id="email" placeholder="Email" /></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u"><input type="text" name="subject" id="subject" placeholder="Subject" /></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u"><textarea name="message" id="message" placeholder="Message" rows="6"></textarea></div>
-										</div>
-										<div class="row uniform">
-											<div class="12u">
-												<ul class="actions">
-													<li><input type="submit" class="special" value="Send Message" /></li>
-													<li><input type="reset" value="Reset Form" /></li>
-												</ul>
-											</div>
-										</div>
-									</form> -->
-								</div>
-		
-							</section>
+<section id="posts">
+  <h2>Latest posts</h2>
+  <div class="body">
+    <p>Working notes I publish on <a rel="me" href="https://hackmd.io/@akshaim">HackMD</a>.</p>
+    <ul class="plain dated cols">
+      <li><span class="when">Feb 2026</span> <a href="https://hackmd.io/@akshaim/rust-kernel-rpi5">Rust Linux Kernel Module development</a></li>
+      <li><span class="when">Jun 2024</span> <a href="https://hackmd.io/@akshaim/BkzJ2hSTt">How to find an apartment in Germany?</a></li>
+      <li><span class="when">Dec 2023</span> <a href="https://hackmd.io/@akshaim/r1fqAa_Da">Connecting USB devices to wsl2</a></li>
+      <li><span class="when">Oct 2023</span> <a href="https://hackmd.io/@akshaim/B16oz_Fba">Embedded Rust Tooling - Getting started</a></li>
+      <li><span class="when">Oct 2022</span> <a href="https://hackmd.io/@akshaim/Bkd833s4o">C - Programming</a></li>
+      <li><span class="when">Jul 2022</span> <a href="https://hackmd.io/@akshaim/SkWgTfus5">Setting up SonarLint to analyse C/C++ in VS Code</a></li>
+    </ul>
+  </div>
+</section>
 
-						
-						
-						
+<section id="focus">
+  <h2>What I work on</h2>
+  <div class="body">
+  <ul class="areas">
+    <li><strong>Automotive and software-defined vehicles</strong>
+      Software system architecture for automotive SDV platforms on embedded Linux and no-OS targets, around GMSL video links, Ethernet to the Edge Bus (E2B), the Automotive Audio Bus (A2B) and wireless battery management (wBMS).</li>
+    <li><strong>Rust</strong>
+      I use Rust for embedded firmware development and systems programming. I also work with communities on their move to Rust: see my talk <a href="https://www.youtube.com/watch?v=X687qiy4-EY">From C Ops-Tables to Safe Rust Traits</a> at the 1st Ariel OS Community Day in Grenoble, September 2026 (<a href="https://ariel-os.org/1ad/slides/1AD-4-2-From-C-to-Rust.pdf">slides</a>).</li>
+    <li><strong>Embedded C, RTOS and firmware</strong>
+      Kernel and driver development for real-time operating systems (RTOS), firmware build infrastructure with Kconfig and devicetree, and CI/CD for embedded targets.</li>
+    <li><strong>Battery management and wireless</strong>
+      Firmware and sensor integration for battery management systems (BMS), MAC and link-layer design for wireless battery management networks, and radio drivers.</li>
+    <li><strong>Testing, safety and systems engineering</strong>
+      I have been part of several platform bring-ups, which has meant owning the testbeds for hardware-in-the-loop (HIL) testing, virtual platforms in SystemC, and wireless network emulation platforms built on Renode and internal company tooling. On the systems engineering side, I work on requirements and architecture for safety-critical systems.</li>
+  </ul>
+  </div>
+</section>
 
-					</div>
-			
-				<!-- Footer -->
-					<section id="footer">
-						<div class="container">
-							<ul class="copyright">
-								<li>All content on this site is available under the Creative Commons Attribution-ShareAlike 3.0 Unported  <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">(CC BY-SA 3.0)</a>license.</li>
-							</ul>
-						</div>
-					</section>
+<section id="talks">
+  <h2>Talks and workshops</h2>
+  <div class="body split">
+  <div>
+  <h3>Slides and recordings</h3>
+  <ul class="plain">
+    <li><strong>From C Ops-Tables to Safe Rust Traits: interop patterns for no_std embedded</strong>. 1st Ariel OS Community Day, Grenoble, France. <span class="when">1 September 2026</span>
+      <a href="https://ariel-os.org/1ad/slides/1AD-4-2-From-C-to-Rust.pdf">Slides</a>,
+      <a href="https://www.youtube.com/watch?v=X687qiy4-EY">video recording</a>.</li>
+    <li><strong>Workshop on LoRaWAN for messaging applications</strong>, Rootconf Delhi, India.
+      <a href="https://hasgeek.com/rootconf/technical-alternatives-to-internet-shutdowns/sub/lorawan-demystified-and-its-applications-beyong-io-9ZgtSBEKWDgED8dR2rH3HP">Session page</a>,
+      <a href="https://docs.google.com/presentation/d/1XYDgfFX-gCG6h5SbN5GAgdh6LKt5wbt15y1DKPetCys/edit?usp=sharing">slides</a>,
+      <a href="https://www.youtube.com/watch?v=zKxjNqoo7SQ">video recording</a>.</li>
+    <li><strong>Introduction to LoRaWAN using RIOT-OS</strong>. Workshop held at the LoRa Alliance meeting, Academia Working Group, Berlin.
+      <a href="https://docs.google.com/presentation/d/1uK9YJ5NaN8SM2r7ofEKdMfDfXo8odBTB5y7HGiKVhX4/edit?usp=sharing">Slides</a>.</li>
+    <li><strong>Chisel workshop: guide to creating a RISC-V core</strong>. Held as part of the Chisel Bootcamp in Trivandrum, Kerala.
+      <a href="https://docs.google.com/presentation/d/19dv8l-cwSecX-BucGu3HwyXmdf6CtcuTrplSdc_HW4c/edit?usp=sharing">Slides</a>.</li>
+    <li><strong>OpenIoT workshop at Rice University, Houston</strong>. Workshop demonstrating the ULPLoRa hardware.
+      <a href="https://docs.google.com/presentation/d/10bpG2r6X7vPMYKCos-ZqWHQCV0OYD2Y3SOLdaUxqgRQ/edit?usp=sharing">Slides</a>.</li>
+    <li><strong>MicroPython on microcontrollers</strong>. Workshop at the SciPy India conference.
+      <a href="https://www.slideshare.net/akshaim/micropython-on-microcontrollers">Slides</a>,
+      <a href="IoT/MicroPython_ESP8266/MP_ESP_101.html">notes on running MicroPython on the ESP8266</a>.</li>
+    <li><strong>Git merge vs rebase workflow</strong>. Generic slides on the merge and rebase workflows.
+      <a href="https://docs.google.com/presentation/d/1g63Sr-srktAzyyd3d-XLChJMmTjDnML9KswTK_R3ejM/edit?usp=sharing">Slides</a>.</li>
+    <li><strong>Pitch on energy harvesting solutions</strong>. ICFOSS, internal.
+      <a href="https://docs.google.com/presentation/d/1Lus7LXkkoAx3u4HRx06rXveu8RwguwPo7u2HHncA6vw/edit?usp=sharing">Slides</a>.</li>
+    <li><strong>OpenPGP Workbook</strong>. Noobs guide to OpenPGP, a primer for a key signing party.
+      <a href="https://gitlab.com/akshaim/pgp_workbook">Wiki</a>.</li>
+  </ul>
+  </div>
+  <div>
+  <h3>Conference talks and workshops</h3>
+  <ul class="plain">
+    <li><strong>LoRaWAN in a Box</strong> workshop. LoRa Alliance, Berlin. <span class="when">11–13 June 2019</span></li>
+    <li><strong>LoRa Demystified</strong> workshop. Gathering for Open Science Hardware (GOSH), Shenzhen, China. <span class="when">12 October 2018</span></li>
+    <li><strong>ULPLoRa</strong> workshop. Open Hardware Summit, MIT, Boston. <span class="when">27 September 2018</span></li>
+    <li><strong>Industrial Automation and Control using FLOSS and Open Source Hardware</strong>. RMLL / Libre Software Meeting, Saint-Étienne, France. <span class="when">1–7 July 2017</span></li>
+    <li><strong>OSH enabled Physics</strong>. Gathering for Open Science Hardware, Santiago, Chile. <span class="when">22–25 March 2017</span></li>
+    <li><strong>OSH enabled IoT for the year 2016</strong>. FOSS Young Professionals Meet India 2016. <span class="when">13 January 2017</span></li>
+    <li><strong>MicroPython for MicroControllers</strong> workshop. SciPy India 2016. <span class="when">10 December 2016</span></li>
+    <li><strong>ExpEYES</strong> workshop. GNOME Asia Summit, Indonesia. <span class="when">7 May 2015</span></li>
+    <li><strong>MicroHOPE</strong> workshop. RMLL, Montpellier, France. <span class="when">5–11 July 2014</span></li>
+    <li>Workshops in 22 engineering colleges as part of the IoT Lab community development programme, and regional workshops with IT@School Kerala for the ExpEYES community programme.</li>
+  </ul>
+  </div>
+  </div>
+</section>
 
-			</div>
-			
-    			
-  
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollzer.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
+<section id="awards">
+  <h2>Awards</h2>
+  <div class="body">
+  <ul class="plain dated cols">
+    <li><span class="when">2024</span> Platinum Award, Analog Devices</li>
+    <li><span class="when">2018</span> Champion, SiFive India Chip Design Contest</li>
+    <li><span class="when">2018</span> Ada Lovelace Fellowship, Open Hardware Summit</li>
+    <li><span class="when">2017, 2018</span> GOSH Fellow, Gathering for Open Science Hardware</li>
+  </ul>
+  </div>
+</section>
 
-	</body>
+<section id="notes">
+  <h2>Notes and tutorials, 2015–2017</h2>
+  <div class="body">
+  <p>Hands-on guides written for workshops and labs. They are kept as an archive: tools and versions have moved on since.</p>
+  <ul class="plain cols">
+    <li><a href="4DIAC/4DIAC.html"><strong>4DIAC</strong>, an open source environment for control and automation</a>. Getting started on 4DIAC to develop applications for distributed automation and control on IEC 61499 standards.</li>
+    <li><a href="IoT/internetofthings.html"><strong>Internet of Things (IoT) Lab</strong></a>. Documentation on the IoT Lab initiative, with startup guides for Arduino, Raspberry Pi and NodeMCU:
+      <a href="IoT/Sensors/sensors.html">sensors</a>,
+      <a href="IoT/Wireless/wireless.html">wireless modules</a>,
+      <a href="IoT/RPi/Raspberry_Pi.html">Raspberry Pi</a>.</li>
+    <li><a href="IoT/NodeMCU/NodeMCU.html"><strong>NodeMCU</strong>, a firmware for ESP8266</a>. Getting started on NodeMCU and the Lua programming language.</li>
+    <li><a href="IoT/MicroPython_ESP8266/MP_ESP_101.html"><strong>MicroPython on ESP8266</strong></a>. Running the uPy interpreter on ESP8266.</li>
+    <li><a href="Fablab/Week_Intro.html"><strong>Pre Fab Kerala</strong></a>. Details of the 4 week course on Fab Lab tools and equipment.</li>
+    <li><a href="MicroHOPE/Controllers%20-%20AVR/"><strong>Controllers: AVR</strong></a>. Slide deck: blinking an LED the hard way, with the MicroHOPE development board.</li>
+    <li><a href="https://github.com/akshaim/myopenROV"><strong>My Open ROV</strong></a>. An underwater remote operated vehicle using a Raspberry Pi and Arduino.</li>
+  </ul>
+  </div>
+</section>
+
+</main>
+
+</body>
 </html>
