@@ -1,94 +1,64 @@
-<!DOCTYPE HTML>
-<!--
- CCA 3.0 license 
--->
-<html>
-	<head>
-		<title>Raspberry Pi - Thingspeak</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="../../assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="../../assets/css/main.css" />
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-		<script>
-  		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raspberry Pi - Thingspeak · Raspberry Pi notes · Akshai Murukakumar</title>
+<meta name="description" content="Thingspeak About ,Account and Channel Creation ThingSpeak is a webservice, open source Internet of Things (IoT) application and API to store and retrieve …">
+<meta name="author" content="Akshai Murukakumar">
+<link rel="canonical" href="https://akshaim.github.io/IoT/RPi/RaspberryPi-104.html">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body class="note">
+<a class="skip" href="#main">Skip to content</a>
 
-  		ga('create', 'UA-82341121-1', 'auto');
-  		ga('send', 'pageview');
-		</script>
-	</head>
-	<body>
+<header class="site-header">
+<a class="site-name" href="../../">Akshai Murukakumar</a>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="../../#notes">Notes</a> <span aria-hidden="true">›</span> <a href="../internetofthings.html">IoT Lab</a> <span aria-hidden="true">›</span> <a href="Raspberry_Pi.html">Raspberry Pi</a> <span aria-hidden="true">›</span> <span aria-current="page">Raspberry Pi - Thingspeak</span></nav>
+</header>
 
-		<!-- Header -->
-			<section id="header">
-				<header>
-					<span class="image avatar"><img src="images/avatar.jpg" alt="" /></span>
-					<h1 id="logo"><a href="#">Akshai M</a></h1>
-					<p><a href="https://en.wikipedia.org/wiki/Open-source_hardware" target="_blank">OSHW</a> Developer  @ <a href="http://icfoss.in/"> ICFOSS</a>
-				</br>Founder <a href="http://www.microhope.org" target="_blank">MicroHOPE </a> Foundation </p>
-				</header>
-				<nav id="nav">
-					<ul>
-						<li><a href="#one" class="active">Thingspeak</a></li>
-						<li><a href="#two">Configuration</a></li>
-						<li><a href="#three">Code</a></li>
-						
-					</ul>
-				</nav>
-				<footer>
-					<ul class="icons">
-						<li><a href="https://twitter.com/m_akshai" target="_blank" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="https://www.facebook.com/akshaimkurup" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-						<li><a href="https://www.instagram.com/akshaim/" target="_blank" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="https://github.com/akshaim" target="_blank" class="icon fa-github"><span class="label">Github</span></a></li>
-						
-					</ul>
-				</footer>
-			</section>
+<main id="main">
+<nav class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ul><li><a href="#one">Thingspeak</a></li><li><a href="#two">Configuration</a></li><li><a href="#three">Code</a></li></ul>
+</nav>
+<article>
+<p class="archived">Archived note, written in 2016, while I was an open source hardware developer at ICFOSS. Tools and versions have moved on since.</p>
 
-		<!-- Wrapper -->
-			<div id="wrapper">
-
-				<!-- Main -->
-					<div id="main">
-
-						<!-- One -->
-							<section id="one">
-								<div class="container">
-									<header class="major">
-										<h2>Thingspeak </h2>
-										<p>About ,Account and Channel Creation</p>
-									</header>
-									<p>ThingSpeak is a webservice, open source Internet of Things (IoT) application and API to store and retrieve data from things.</p><img src="images/thingspeak.jpg "  alt="Thingspeak" /><p></p>The service is free and offers a very basic http based service for starters.The platform is very limited but suits the context, for now, since its extremely easy to setup. </br>Lets start<p>
-<ul><li>Sign Up for an account in <a href = "https://thingspeak.com/" target="_blank"> <font color = "red">thingspeak</font></a></li>
+<!-- note-body: original tutorial content -->
+<section id="one">
+<div class="container">
+<header class="major">
+<h1>Thingspeak </h1>
+<p>About ,Account and Channel Creation</p>
+</header>
+<p>ThingSpeak is a webservice, open source Internet of Things (IoT) application and API to store and retrieve data from things.</p><img src="images/thingspeak.jpg "  alt="Thingspeak" /><p></p>The service is free and offers a very basic http based service for starters.The platform is very limited but suits the context, for now, since its extremely easy to setup. </br>Lets start<p>
+<ul><li>Sign Up for an account in <a href = "https://thingspeak.com/" target="_blank"> thingspeak</a></li>
 <li>Create a new channel.</br> <img src="images/thingspeak_channel_creation.png "  width = "700px" height = "400px"alt="Thingspeak Channel Creation" /> </li><br>
 <blockquote>You can select enable/select more fields in a channel to view/capture multiple data streams.Also you may enable public view to publish the channel to anyone with access to your channel id</blockquote>
-<li>Go to the channel setting and copy the API <font color = "blue">Write</font> key.</li><img src="images/thingspeak_api.png "  width = "700px" height = "400px"alt="Thingspeak API" /><blockquote>The API key should be kept secure since it forms the one and only layer of authentication.</blockquote></ul>
+<li>Go to the channel setting and copy the API Write key.</li><img src="images/thingspeak_api.png "  width = "700px" height = "400px"alt="Thingspeak API" /><blockquote>The API key should be kept secure since it forms the one and only layer of authentication.</blockquote></ul>
 
-								</div>
-							</section>
+</div>
+</section>
 
-						<!-- Two -->
-							<section id="two">
-								<div class="container">
-									<h3>Configuration</h3>
-									<p>Raspberry Pi will work as a gateway to publish data from sensors interfaced via its GPIO or sensors connected via external devices such as Arduino.To proceed make sure that you have a working internet connection on Raspberry Pi that can connect to Thingspeak servers.<br>We will use an RPi and Arduino to better understand the concepts.</p>
+<section id="two">
+<div class="container">
+<h3>Configuration</h3>
+<p>Raspberry Pi will work as a gateway to publish data from sensors interfaced via its GPIO or sensors connected via external devices such as Arduino.To proceed make sure that you have a working internet connection on Raspberry Pi that can connect to Thingspeak servers.<br>We will use an RPi and Arduino to better understand the concepts.</p>
 <ul>
-<li>Setup Arduino to send serial data over USB.You may use <a href = "../Sensors/LDR.html" target="_blank"><font color="red"> LDR </font></a> experiment as an example.</li>
+<li>Setup Arduino to send serial data over USB.You may use <a href = "../Sensors/LDR.html" target="_blank"> LDR </a> experiment as an example.</li>
 <li>Connect Arduino to RPi via USB.Try <pre>dmesg | grep tty</pre> to check and identify the device.</li>
 <li>Change permissions to ensure read access to the device <pre>sudo chmod 777 /dev/ttyACM0</pre><blockquote>The device address should be as obtained from previous line of code.It can be ACM0 ACM1 (ACMx series ) or USB0 USB1 (USBx series)</blockquote></li>
 </ul>
-									
-									</div>
-							</section>
-						<!-- Three -->
-							<section id="three">
-								<div class="container">
-									<h3>Code</h3>
-									<p>The code for RPi can be cloned from my github repo. Try in terminal<pre>git clone https://github.com/akshaim/thingspeak</pre><blockquote>The code can also be downloaded from <a href = "https://github.com/akshaim/thingspeak" target="_blank"><font color="red"> here</font></a></blockquote></p>
+
+</div>
+</section>
+
+<section id="three">
+<div class="container">
+<h3>Code</h3>
+<p>The code for RPi can be cloned from my github repo. Try in terminal<pre>git clone https://github.com/akshaim/thingspeak</pre><blockquote>The code can also be downloaded from <a href = "https://github.com/akshaim/thingspeak" target="_blank"> here</a></blockquote></p>
 <ul>
 <li>Go to the cloned/downloaded repository and edit thingspeaktest.py. Try <pre>nano thingspeaktest.py</pre></li>
 <li>Enter you write api key in the field provided and save the file. <blockquote>Press Ctrl + O and then enter to save.Press Ctrl + X to exit from nano</blockquote></li>
@@ -99,33 +69,23 @@
 <li>Now edit thingspeaktestserial.py as in the previous case.The python code sends a dynamic value from Arduino to thingspeak server</li>
 <blockquote>Ensure that the device address(arduino) is same as one you observed. Default value is /dev/ttyACMO</blockquote>
 </ul>
-						
-								</ul>
-									
-								</div>
-							</section>
 
-					</div>
+</ul>
 
-				<!-- Footer -->
-					<section id="footer">
-						<div class="container">
-							<ul class="copyright">
-								<li>All content on this site is available under the Creative Commons Attribution-ShareAlike 3.0 Unported  <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank">(CC BY-SA 3.0)</a>license.</li>
-							</ul>
-						</div>
-					</section>
+</div>
+</section>
+<!-- /note-body -->
 
-			</div>
+<nav class="series" aria-label="More in this series">
+<a rel="prev" href="RaspberryPi-102.html">← Previous: Initial Configuration</a>
+</nav>
+</article>
+</main>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollzer.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
+<footer class="site-footer">
+<p>All content on this site is available under the Creative Commons Attribution-ShareAlike 3.0 Unported <a href="https://creativecommons.org/licenses/by-sa/3.0/">(CC BY-SA 3.0)</a> license.</p>
+<p><a href="Raspberry_Pi.html">Raspberry Pi</a> · <a href="../../">Akshai Murukakumar</a></p>
+</footer>
 
-	</body>
-</html>>
+</body>
+</html>

@@ -253,10 +253,16 @@ main:last-child { padding-bottom: 3.5rem; }
   border-radius: 0.5rem;
 }
 .features article > .image img { width: 100%; }
+/* The old markup left line breaks, the odd paragraph, or no picture at all inside some cards. */
+.features article > br { display: none; }
+.features article > p { grid-column: 1 / -1; margin: 0; }
+.features article > .image:empty { display: none; }
+.features article > .image:empty + .inner { grid-column: 1 / -1; }
 .features .inner h4 { margin: 0 0 0.25rem; }
 .features .inner p { margin: 0; color: var(--muted); }
 
 .feature-icons { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.4rem 1.5rem; padding: 0; list-style: none; }
+.feature-icons li { padding-left: 1.1rem; text-indent: -1.1rem; }
 .feature-icons li::before { content: "\25B8\00A0"; color: var(--accent); }
 
 .series {
